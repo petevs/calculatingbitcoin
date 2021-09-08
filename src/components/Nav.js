@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { numberWithCommas } from 'utils/numberFormatting'
 
 const Nav = () => {
 
@@ -25,7 +26,7 @@ const Nav = () => {
             <Menu>
                 <NavLink to='/'>Home</NavLink>
                 <NavLink to='/calculators'>Calculators</NavLink>
-                {marketStats && <p>${marketStats.current_price.cad}</p>}
+                {marketStats && <p>${numberWithCommas(marketStats.current_price.cad)}</p>}
             </Menu>
         </NavBar>
     )
