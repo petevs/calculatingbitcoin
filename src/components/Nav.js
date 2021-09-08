@@ -1,8 +1,21 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Nav = () => {
+
+    const [marketStats, setMarketStats] = useState(null)
+
+    useEffect(() => {
+        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin?localization=cad')
+            .then(res => {
+                const data = res.data.market_data
+                setMarketStats(data)
+            })
+    }, [])
+
+
     return (
         <NavBar>
             <Logo>
@@ -12,6 +25,7 @@ const Nav = () => {
             <Menu>
                 <NavLink to='/'>Home</NavLink>
                 <NavLink to='/calculators'>Calculators</NavLink>
+                {marketStats && <p>${marketStats.current_price.cad}</p>}
             </Menu>
         </NavBar>
     )
