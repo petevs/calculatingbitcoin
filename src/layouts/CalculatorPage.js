@@ -9,7 +9,6 @@ const CalculatorPage = ({ title, subtitle }) => {
                 title={title}
                 subtitle={subtitle}
             />
-            <p>hi</p>
         </PageWrapper>
     )
 }

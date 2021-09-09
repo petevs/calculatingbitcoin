@@ -8,8 +8,7 @@ const Card = ({ title, subtitle, description, img, path }) => {
             <Wrapper>
                 <ImageBox>
                     <img
-                        src='https://images.unsplash.com/photo-1631102403791-8e33d9be6603?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'
-
+                        src={img}
                         alt='placeholder'
                     />
                 </ImageBox>
@@ -31,6 +30,11 @@ const Wrapper = styled.div`
     gap: 1rem;
     border: solid .1rem #E7ECF2;
     padding: 1rem;
+    @media only screen and (max-width: 600px) {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+    }
 `
 
 const CardLink = styled(Link)`
@@ -41,6 +45,10 @@ const CardLink = styled(Link)`
 const ImageBox = styled.div`
     display: grid;
     grid-template-columns: 150px;
+    @media only screen and (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+
 
     & img{
         width: 100%;
