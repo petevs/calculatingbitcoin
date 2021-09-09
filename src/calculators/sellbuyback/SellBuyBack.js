@@ -12,6 +12,8 @@ import CalcContainer from 'layouts/CalcContainer'
 import CalcColumn from 'layouts/CalcColumn'
 import ResultsCol from 'layouts/ResultsCol'
 import SBBResults from 'calculators/sellbuyback/SBBResults'
+import Scorecard from 'components/Scorecard'
+import styled from 'styled-components'
 
 const SellBuyBack = () => {
 
@@ -122,6 +124,22 @@ const SellBuyBack = () => {
             title='Sell The Top and Buy Back'
             subtitle='Think you can time the top and buy back in? Find out how much the price would have to drop for you to end up with the same amount of bitcoin and how well you would fair under different scenarios.'
         >
+            <SummaryRow>
+                <Scorecard
+                    name='Change Bitcoin Balance'
+                    value={results.netBitcoin}
+                />
+                <Scorecard
+                    name='Change Cash Balance'
+                    value={results.netCash}
+                    prefix='$'
+                />
+                <Scorecard
+                    name='Change in Portfolio Value'
+                    value={results.netValue.toFixed()}
+                    prefix='$'
+                />
+            </SummaryRow>
             <CalcContainer>
                 <CalcColumn>
                     <h3>Sale Details</h3>
@@ -199,8 +217,52 @@ const SellBuyBack = () => {
                         control={<Switch checked={details.capitalGain} name='capitalGain' onChange={handleTax} color='primary' />}
                         label='Capital Gain'
                     />
+
                     <h3>Buyback Details</h3>
                     <p>{`To end up with the same amount of bitcoin you started with, the buyback price of bitcoin will need to be: $${Math.round(results.breakEven)}. Requiring an ${results.percentageLess}% drop in price`}</p>
+                    <NumberFormat
+                        id='buyBackPrice'
+                        label='Buyback Price'
+                        value={details.buyBackPrice}
+                        customInput={TextField}
+                        onValueChange={
+                            ({ value: v }) => {
+                                newHandleChange(v, 'buyBackPrice')
+                            }
+                        }
+                        variant='filled'
+                        thousandSeparator={true}
+                        prefix={'$'}
+                    />
+                    <NumberFormat
+                        id='amountSpent'
+                        label='Amount Spent'
+                        value={details.amountSpent}
+                        customInput={TextField}
+                        onValueChange={
+                            ({ value: v }) => {
+                                newHandleChange(v, 'amountSpent')
+                            }
+                        }
+                        variant='filled'
+                        thousandSeparator={true}
+                        prefix={'$'}
+                    />
+                    <h3>Current Details</h3>
+                    <NumberFormat
+                        id='portfolioPrice'
+                        label='Price of Bitcoin'
+                        value={details.portfolioPrice}
+                        customInput={TextField}
+                        onValueChange={
+                            ({ value: v }) => {
+                                newHandleChange(v, 'portfolioPrice')
+                            }
+                        }
+                        variant='filled'
+                        thousandSeparator={true}
+                        prefix={'$'}
+                    />
                 </CalcColumn>
                 <ResultsCol>
                     <SBBResults
@@ -214,3 +276,11 @@ const SellBuyBack = () => {
 }
 
 export default SellBuyBack
+
+
+const SummaryRow = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 0 0 2rem;
+`
