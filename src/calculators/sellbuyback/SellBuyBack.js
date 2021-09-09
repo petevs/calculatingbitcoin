@@ -10,7 +10,8 @@ import {
 import React, { useState, useEffect } from 'react'
 import CalcContainer from 'layouts/CalcContainer'
 import CalcColumn from 'layouts/CalcColumn'
-import ResultSummary from 'layouts/ResultSummary'
+import ResultsCol from 'layouts/ResultsCol'
+import SBBResults from 'calculators/sellbuyback/SBBResults'
 
 const SellBuyBack = () => {
 
@@ -38,57 +39,64 @@ const SellBuyBack = () => {
         netValue: 0
     })
 
-    const updateResults = () => {
 
-        const proceeds = details.bitcoin * details.currentPrice
-        const cost = details.bitcoin * details.averageCost
-        const profit = proceeds - cost
-        let tax
-        let taxableGain
-        let gainRate
+    useEffect(() => {
 
-        if (details.capitalGain === true) {
-            tax = Math.round(profit * .5 * (details.taxRate / 100))
-            taxableGain = profit * .5
-            gainRate = 50
+        const updateResults = () => {
+
+            const proceeds = details.bitcoin * details.currentPrice
+            const cost = details.bitcoin * details.averageCost
+            const profit = proceeds - cost
+            let tax
+            let taxableGain
+            let gainRate
+
+            if (details.capitalGain === true) {
+                tax = Math.round(profit * .5 * (details.taxRate / 100))
+                taxableGain = profit * .5
+                gainRate = 50
+            }
+
+            if (details.capitalGain === false) {
+                tax = Math.round(profit * (details.taxRate / 100))
+                taxableGain = profit
+                gainRate = 100
+            }
+
+            const netProfit = profit - tax
+            const leftoverCash = proceeds - tax
+
+            const breakEven = leftoverCash / details.bitcoin
+            const percentageLess = Math.round((1 - (breakEven / details.currentPrice)) * 100)
+
+            const newBitcoin = details.amountSpent / details.buyBackPrice
+
+            const netBitcoin = (newBitcoin - details.bitcoin).toFixed(8)
+            const netCash = leftoverCash - details.amountSpent
+
+            const netValue = netBitcoin * details.portfolioPrice
+
+            setResults({
+                proceeds: proceeds,
+                cost: cost,
+                profit: profit,
+                taxes: tax,
+                netProfit: netProfit,
+                breakEven: breakEven,
+                percentageLess: percentageLess,
+                leftoverCash: leftoverCash,
+                taxableGain: taxableGain,
+                gainRate: gainRate,
+                newBitcoin: newBitcoin.toFixed(8),
+                netBitcoin: netBitcoin,
+                netCash: netCash,
+                netValue: netValue
+            })
         }
 
-        if (details.capitalGain === false) {
-            tax = Math.round(profit * (details.taxRate / 100))
-            taxableGain = profit
-            gainRate = 100
-        }
+        updateResults()
 
-        const netProfit = profit - tax
-        const leftoverCash = proceeds - tax
-
-        const breakEven = leftoverCash / details.bitcoin
-        const percentageLess = Math.round((1 - (breakEven / details.currentPrice)) * 100)
-
-        const newBitcoin = details.amountSpent / details.buyBackPrice
-
-        const netBitcoin = (newBitcoin - details.bitcoin).toFixed(8)
-        const netCash = leftoverCash - details.amountSpent
-
-        const netValue = netBitcoin * details.portfolioPrice
-
-        setResults({
-            proceeds: proceeds,
-            cost: cost,
-            profit: profit,
-            taxes: tax,
-            netProfit: netProfit,
-            breakEven: breakEven,
-            percentageLess: percentageLess,
-            leftoverCash: leftoverCash,
-            taxableGain: taxableGain,
-            gainRate: gainRate,
-            newBitcoin: newBitcoin.toFixed(8),
-            netBitcoin: netBitcoin,
-            netCash: netCash,
-            netValue: netValue
-        })
-    }
+    }, [details])
 
     const handleTax = (e) => {
         setDetails({
@@ -96,11 +104,6 @@ const SellBuyBack = () => {
             [e.target.name]: e.target.checked
         })
     }
-
-
-    useEffect(() => {
-        updateResults()
-    }, [details])
 
     const newHandleChange = (val, fName) => {
         setDetails({
@@ -199,9 +202,12 @@ const SellBuyBack = () => {
                     <h3>Buyback Details</h3>
                     <p>{`To end up with the same amount of bitcoin you started with, the buyback price of bitcoin will need to be: $${Math.round(results.breakEven)}. Requiring an ${results.percentageLess}% drop in price`}</p>
                 </CalcColumn>
-                <ResultSummary>
-                    <h1>Hi</h1>
-                </ResultSummary>
+                <ResultsCol>
+                    <SBBResults
+                        details={details}
+                        results={results}
+                    />
+                </ResultsCol>
             </CalcContainer>
         </CalculatorPage>
     )

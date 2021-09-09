@@ -2,7 +2,7 @@ import React from 'react'
 import NumberFormat from 'react-number-format'
 import styled from 'styled-components'
 
-export const ResultRow = ({ label, value, thousandSeparator, prefix, suffix, size, border, type, icon, cursor }) => {
+const ResultRow = ({ label, value, thousandSeparator, prefix, suffix, size, border, type, icon, cursor }) => {
     return (
         <Wrapper className={`${size} ${type}`}>
             <Label className={cursor}>{label}{icon}</Label>
@@ -19,6 +19,8 @@ export const ResultRow = ({ label, value, thousandSeparator, prefix, suffix, siz
         </Wrapper>
     )
 }
+
+export default ResultRow
 
 const Wrapper = styled.div`
     display: grid;
