@@ -1,0 +1,33 @@
+import React from 'react'
+import Card from 'components/Card'
+
+
+const AllCalcs = () => {
+
+    const listOfCalcs = [
+        {
+            title: 'Sell The Top and Buy Back',
+            description: 'Think you can time the top and buy back in? Find out how much the price would have to drop for you to end up with the same amount of bitcoin and how well you would fair under different scenarios.',
+            path: 'hello'
+        },
+        {
+            title: 'Retire on Bitcoin',
+            description: 'Figure out how much bitcoin you would need to retire'
+        }
+    ]
+
+    return (
+        <div>
+            {listOfCalcs.map(calc =>
+                <Card
+                    title={calc.title}
+                    description={calc.description}
+                    path={calc.path}
+                />
+            )}
+
+        </div>
+    )
+}
+
+export default AllCalcs
