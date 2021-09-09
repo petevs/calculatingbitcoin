@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from 'react'
 import CalcContainer from 'layouts/CalcContainer'
 import CalcColumn from 'layouts/CalcColumn'
+import ResultSummary from 'layouts/ResultSummary'
 
 const SellBuyBack = () => {
 
@@ -198,6 +199,9 @@ const SellBuyBack = () => {
                     <h3>Buyback Details</h3>
                     <p>{`To end up with the same amount of bitcoin you started with, the buyback price of bitcoin will need to be: $${Math.round(results.breakEven)}. Requiring an ${results.percentageLess}% drop in price`}</p>
                 </CalcColumn>
+                <ResultSummary>
+                    <h1>Hi</h1>
+                </ResultSummary>
             </CalcContainer>
         </CalculatorPage>
     )
