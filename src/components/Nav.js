@@ -1,21 +1,8 @@
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { numberWithCommas } from 'utils/numberFormatting'
 
 const Nav = () => {
-
-    const [marketStats, setMarketStats] = useState(null)
-
-    useEffect(() => {
-        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin?localization=cad')
-            .then(res => {
-                const data = res.data.market_data
-                setMarketStats(data)
-            })
-    }, [])
-
 
     return (
         <NavBar>
@@ -26,7 +13,6 @@ const Nav = () => {
             <Menu>
                 <NavLink to='/'>Home</NavLink>
                 <NavLink to='/calculators'>Calculators</NavLink>
-                {marketStats && <p>${numberWithCommas(marketStats.current_price.cad)}</p>}
             </Menu>
         </NavBar>
     )
