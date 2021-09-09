@@ -1,5 +1,7 @@
 import React from 'react'
 import Card from 'components/Card'
+import PageWrapper from 'layouts/PageWrapper'
+import Hero from 'components/Hero'
 
 
 const AllCalcs = () => {
@@ -8,7 +10,7 @@ const AllCalcs = () => {
         {
             title: 'Sell The Top and Buy Back',
             description: 'Think you can time the top and buy back in? Find out how much the price would have to drop for you to end up with the same amount of bitcoin and how well you would fair under different scenarios.',
-            path: 'hello'
+            path: 'calculators/hello'
         },
         {
             title: 'Retire on Bitcoin',
@@ -17,7 +19,11 @@ const AllCalcs = () => {
     ]
 
     return (
-        <div>
+        <PageWrapper>
+            <Hero
+                title='Calculators'
+                subtitle='All Calculators'
+            />
             {listOfCalcs.map(calc =>
                 <Card
                     title={calc.title}
@@ -26,7 +32,7 @@ const AllCalcs = () => {
                 />
             )}
 
-        </div>
+        </PageWrapper>
     )
 }
 
