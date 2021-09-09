@@ -42,7 +42,7 @@ const NavBar = styled.div`
     background-color: #fff;
     color: #002237;
     font-weight: 600;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #E7ECF2;
     @media (max-width: 768px) {
         justify-content: center;
         justify-items: center;
