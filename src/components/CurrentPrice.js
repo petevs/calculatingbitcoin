@@ -2,21 +2,21 @@ import React from 'react'
 import NumberFormat from 'react-number-format'
 import styled from 'styled-components'
 
-const CurrentPrice = ({ price, priceChange, percentageChange }) => {
+const CurrentPrice = ({ price, priceChange, percentageChange, currency }) => {
 
 
     const changeClass = () => {
         if (priceChange < 0) {
             return { class: 'neg', prefix: '' }
         } else {
-            return { class: '', prefix: '⬆' }
+            return { class: '', prefix: '+' }
         }
     }
 
     return (
         <PriceDetails>
             <Subhead>
-                Current Bitcoin Price (CAD)
+                Current Bitcoin Price ({currency})
             </Subhead>
             <h1>
                 <NumberFormat
@@ -25,7 +25,6 @@ const CurrentPrice = ({ price, priceChange, percentageChange }) => {
                     thousandSeparator={true}
                     prefix={'$'}
                 />
-                {/* <Currency>CAD</Currency> */}
             </h1>
             <Change>
                 <h5 className={changeClass().class}>
@@ -63,6 +62,7 @@ const PriceDetails = styled.div`
         padding: .5rem 1rem .5rem 0;
         border-right: 1px solid #E7ECF2;
     } 
+    padding: 1rem 1rem;
     & h1 {
         font-size: 2.4rem;
     }

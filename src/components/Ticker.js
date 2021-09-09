@@ -7,6 +7,7 @@ const Ticker = () => {
 
     const [dateRange, setDateRange] = useState('24h')
     const [marketData, setMarketData] = useState(null)
+    const [currentPrice, setCurrentPrice] = useState(null)
     const [priceChange, setPriceChange] = useState(null)
     const [percentageChange, setPercentageChange] = useState(null)
     const [currency, setCurrency] = useState('cad')
@@ -27,9 +28,17 @@ const Ticker = () => {
             .then(res => {
                 const data = res.data.market_data
                 setMarketData(data)
+                setCurrentPrice(data.current_price[currency])
                 setPercentageChange(data[`price_change_percentage_${dateRange}_in_currency`][currency])
+
+
+                const changeInPrice = currentPrice - (currentPrice * (1 - (percentageChange / 100)))
+
+                setPriceChange(changeInPrice)
+
+
             })
-    }, [dateRange, currency])
+    }, [dateRange, currency, currentPrice, percentageChange])
 
 
     const handleDateChange = (e) => {
@@ -46,6 +55,12 @@ const Ticker = () => {
         }
     }
 
+
+    const handleCurrencyChange = (e) => {
+        setCurrency(e.target.value)
+    }
+
+
     if (!marketData) {
         return (<p>Loading...</p>)
     }
@@ -54,9 +69,10 @@ const Ticker = () => {
         <MyContainer >
             <Inner>
                 <CurrentPrice
-                    price={marketData.current_price.cad}
+                    price={marketData.current_price[currency]}
                     priceChange={priceChange}
                     percentageChange={percentageChange}
+                    currency={currency}
                 />
                 <TimeScale>
                     {dateSelectors.map((item) => {
@@ -70,6 +86,10 @@ const Ticker = () => {
                             </button>
                         )
                     })}
+                    <select onChange={handleCurrencyChange}>
+                        <option value='cad'>CAD</option>
+                        <option value='usd'>USD</option>
+                    </select>
                 </TimeScale>
             </Inner>
         </MyContainer>
