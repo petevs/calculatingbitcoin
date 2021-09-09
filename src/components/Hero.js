@@ -19,6 +19,10 @@ const Wrapper = styled.div`
     justify-content: center;
     align-content: center;
     text-align: center;
+    & h2 {
+        font-weight: 400;
+        font-size: 1.2rem;
+    }
 `
 
 const Headline = styled.h1`
