@@ -18,7 +18,14 @@ const AllCalcs = () => {
             description: 'Figure out how much bitcoin you would need to retire',
             path: 'calculators/retire',
             img: 'https://images.unsplash.com/photo-1473186578172-c141e6798cf4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1932&q=80'
+        },
+        {
+            title: 'Dollar Cost Average',
+            description: 'If you would have bought each day',
+            path: 'calculators/dca',
+            img: 'https://images.unsplash.com/photo-1620496866641-af6f9aef5131?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1867&q=80'
         }
+
     ]
 
     return (
