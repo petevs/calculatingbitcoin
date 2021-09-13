@@ -1,4 +1,5 @@
 import AllCalcs from 'calculators/AllCalcs'
+import DollarCostAverage from 'calculators/dca/DollarCostAverage'
 import SellBuyBack from 'calculators/sellbuyback/SellBuyBack'
 import React from 'react'
 import {
@@ -15,6 +16,9 @@ const Calculators = () => {
         <Switch>
             <Route path={`${match.path}/hello`}>
                 <SellBuyBack />
+            </Route>
+            <Route path={`${match.path}/dca`}>
+                <DollarCostAverage />
             </Route>
             <Route path={match.path}>
                 <AllCalcs />
