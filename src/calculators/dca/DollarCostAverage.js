@@ -3,6 +3,7 @@ import axios from 'axios'
 import Row from 'components/Row'
 import { TextField } from '@material-ui/core'
 import styled from 'styled-components'
+import MyChart from 'components/MyChart'
 
 const DollarCostAverage = () => {
 
@@ -93,6 +94,14 @@ const DollarCostAverage = () => {
             <label for='start'>Start Date:</label>
             <input id='start' type='date' onChange={handleDateChange} />
             <button onClick={getValues}>Calculate</button>
+            <MyChart
+                dates={prices.map(item => {
+                    return item.date
+                })}
+                data={prices.map(item => {
+                    return item.value
+                })}
+            />
 
             <Results>
                 <Row 
