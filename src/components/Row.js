@@ -26,7 +26,7 @@ export default Row
 
 const MyRow = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(7,1fr);
     text-align: center;
     font-size: .75rem;
 `
