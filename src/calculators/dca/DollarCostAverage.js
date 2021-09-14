@@ -101,6 +101,9 @@ const DollarCostAverage = () => {
                 data={prices.map(item => {
                     return item.value
                 })}
+                invested={prices.map(item => {
+                    return item.totalInvested
+                })}
             />
 
             <Results>

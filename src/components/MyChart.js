@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Chart from 'react-apexcharts'
 
-const MyChart = ({dates, data}) => {
+const MyChart = ({dates, data, invested}) => {
 
 // const ath = marketData.data.ath.cad
 
@@ -66,8 +66,12 @@ const options = {
 
 const series = [
     {
-        name: "Price",
+        name: "Value",
         data: data.reverse()
+    },
+    {
+        name: "Amount Invested",
+        data: invested.reverse()
     }
 ]
 
