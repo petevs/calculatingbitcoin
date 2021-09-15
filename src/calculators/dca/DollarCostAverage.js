@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Row from 'components/Row'
 import { Button, TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import MyChart from 'components/MyChart'
 import Scorecard from 'components/Scorecard'
+import NumberFormat from 'react-number-format'
+import Hero from 'components/Hero'
 
 const DollarCostAverage = () => {
 
@@ -32,12 +34,12 @@ const DollarCostAverage = () => {
     const [inputs, setInputs] = useState({
         purchaseAmount: '5'
     })
+    const [lastEntry, setLastEntry] = useState(null)
 
-
-    const handleChange = (e) => {
+    const newHandleChange = (val, fName) => {
         setInputs({
             ...inputs,
-            [e.target.id]: e.target.value
+            [fName]: val
         })
     }
 
@@ -94,30 +96,53 @@ const DollarCostAverage = () => {
                 setPrices(historicalData)
 
             })
+        
     }
+
+
+    useEffect(() => {
+        const latestEntry = prices[prices.length - 1]
+        // const averageCost = latestEntry.totalInvested
+                
+        setLastEntry({
+            ...latestEntry,
+            averageCost: Math.round(latestEntry.totalInvested / latestEntry.bal)
+        })
+    },[prices])
 
     return (
         <Wrapper>
-
+            <h1>Dollar Cost Average Calculator</h1>
             <SummaryRow>
                 <Scorecard 
-                    value={!condition(prices) ? '' : prices[prices.length - 1].value}
+                    // value={!condition(prices) ? '' : prices[prices.length - 1].value}
+                    value={!lastEntry ? '' : lastEntry.value}
                     name='Portfolio Value (CAD)'
                     prefix='$'
+                />                
+                <Scorecard 
+                    value={!lastEntry ? '' : lastEntry.bal}
+                    name='Bitcoin Balance'
                 />
                 <Scorecard 
-                    value={!condition(prices) ? '' : prices[prices.length - 1].totalInvested}
+                    value={!lastEntry ? '' : lastEntry.totalInvested}
                     name='Total Invested (CAD)'
                     prefix='$'
                 />
                 <Scorecard 
-                    value={!condition(prices) ? '' : prices[prices.length - 1].roi}
-                    name='ROI'
-                    suffix='%'
+                    value={!lastEntry ? '' : lastEntry.averageCost}
+                    name='Avg. BTC Purchase Price'
+                    prefix='$'
                 />
                 <Scorecard 
-                    value={!condition(prices) ? '' : prices[prices.length - 1].bal}
-                    name='Bitcoin Balance'
+                    value={!lastEntry ? '' : lastEntry.profit}
+                    name='Profit'
+                    prefix='$'
+                />
+                <Scorecard 
+                    value={!lastEntry ? '' : lastEntry.roi}
+                    name='ROI'
+                    suffix='%'
                 />
             </SummaryRow>
 
@@ -137,14 +162,22 @@ const DollarCostAverage = () => {
 
                 <InputBox>
                     <h3>DCA Settings</h3>
-                    <TextField
-                        id='purchaseAmount' 
-                        label='Daily Purchase Amount'
-                        onChange={handleChange}
+                    <NumberFormat
+                        id='purchaseAmount'
+                        customInput={TextField}
+                        label='Daily Purcahse Amount'
                         value={inputs.purchaseAmount}
                         variant='filled'
                         size='small'
+                        thousandSeparator={true}
+                        prefix={'$'}
+                        onValueChange={
+                            ({ value: v }) => {
+                                newHandleChange(v, 'purchaseAmount')
+                            }
+                        }
                     />
+
                     <TextField
                         id='start'
                         label='Start Date'
@@ -203,6 +236,9 @@ export default DollarCostAverage
 
 const Wrapper = styled.div`
     padding: 2rem;
+    & h1{
+        padding: 1rem 0;
+    }
 `
 
 const Results = styled.div`
