@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import Row from 'components/Row'
-import { TextField } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import MyChart from 'components/MyChart'
+import PageWrapper from 'layouts/PageWrapper'
+import Scorecard from 'components/Scorecard'
 
 const DollarCostAverage = () => {
 
@@ -11,6 +13,9 @@ const DollarCostAverage = () => {
         const theDate = new Date(x)
         return theDate.toLocaleDateString()
     }
+
+    let todayDate = new Date()
+    todayDate = todayDate.toISOString().split('T')[0]
 
 
     const getTimeBetweenDates = (x) => {
@@ -42,6 +47,14 @@ const DollarCostAverage = () => {
     }
 
 
+    const condition = (x) => {
+        if (x.length < 1) {
+            return false
+        } else {
+            return true
+        }
+    }
+
     const getValues = () => {
 
         axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=cad&days=${daysBtwn}&interval=daily`)
@@ -63,6 +76,7 @@ const DollarCostAverage = () => {
                     totalInvested = totalInvested + Number(inputs.purchaseAmount)
 
                     const value = Number((price * runningBal).toFixed(2))
+                    const profit = (value - totalInvested)
 
                     const roi = (value - totalInvested) / totalInvested * 100
 
@@ -73,7 +87,8 @@ const DollarCostAverage = () => {
                         bal: runningBal.toFixed(8),
                         value: value,
                         totalInvested: totalInvested,
-                        roi: `${roi.toFixed(2)}%`
+                        roi: `${roi.toFixed(2)}%`,
+                        profit: Math.round(profit)
                     })
                 })
 
@@ -83,31 +98,82 @@ const DollarCostAverage = () => {
     }
 
     return (
-        <div>
-            {/* {convertDate('2018-01-01')} */}
-            <TextField
-                id='purchaseAmount' 
-                label='Purchase Amount'
-                onChange={handleChange}
-                value={inputs.purchaseAmount}
-            />
-            <label for='start'>Start Date:</label>
-            <input id='start' type='date' onChange={handleDateChange} />
-            <button onClick={getValues}>Calculate</button>
-            <MyChart
-                dates={prices.map(item => {
-                    return item.date
-                })}
-                data={prices.map(item => {
-                    return item.value
-                })}
-                invested={prices.map(item => {
-                    return item.totalInvested
-                })}
-            />
+        <PageWrapper>
+
+            <SummaryRow>
+                <Scorecard 
+                    value={!condition(prices) ? '' : prices[prices.length - 1].value}
+                    name='Portfolio Value (CAD)'
+                    prefix='$'
+                />
+                <Scorecard 
+                    value={!condition(prices) ? '' : prices[prices.length - 1].totalInvested}
+                    name='Total Invested (CAD)'
+                    prefix='$'
+                />
+                <Scorecard 
+                    value={!condition(prices) ? '' : prices[prices.length - 1].roi}
+                    name='ROI'
+                    suffix='%'
+                />
+                <Scorecard 
+                    value={!condition(prices) ? '' : prices[prices.length - 1].bal}
+                    name='Bitcoin Balance'
+                />
+            </SummaryRow>
+
+            <TwoCol>
+                
+                <MyChart
+                    dates={prices.map(item => {
+                        return item.date
+                    })}
+                    data={prices.map(item => {
+                        return item.value
+                    })}
+                    invested={prices.map(item => {
+                        return item.totalInvested
+                    })}
+                />
+
+                <InputBox>
+                    <h3>DCA Settings</h3>
+                    <TextField
+                        id='purchaseAmount' 
+                        label='Daily Purchase Amount'
+                        onChange={handleChange}
+                        value={inputs.purchaseAmount}
+                        variant='filled'
+                        size='small'
+                    />
+                    <TextField
+                        id='start'
+                        label='Start Date'
+                        type='date'
+                        variant='filled'
+                        size='small'
+                        onChange={handleDateChange}
+                        defaultValue={todayDate}
+                        inputProps={
+                            {
+                                max: todayDate
+                            }
+                        }
+
+                    />
+                    <Button
+                        color='secondary'
+                        variant='contained'
+                        onClick={getValues}
+                        size='medium'
+                    >
+                        Calculate
+                    </Button>
+                </InputBox>
+            </TwoCol>
 
             <Results>
-                <h2>Details</h2>
+                <h3>Details</h3>
                 <Row 
                     item={{
                         'col1': 'Date',
@@ -116,7 +182,8 @@ const DollarCostAverage = () => {
                         'col4': 'BTC Balance',
                         'col5': 'Portfolio Value (CAD)',
                         'col6': 'Total Invested (CAD)',
-                        'col7': 'ROI'
+                        'col7': 'ROI',
+                        'col8': 'Gain / Loss'
                     }}
 
                     itemClass='header'
@@ -129,7 +196,7 @@ const DollarCostAverage = () => {
                     )
                 })}
             </Results>
-        </div>
+        </PageWrapper>
     )
 }
 
@@ -139,14 +206,36 @@ const Results = styled.div`
     display: grid;
     gap: .5rem;
     padding: 1rem;
+    background-color: #fff;
     box-shadow: 
         rgb(145 158 171 / 24%) 0px 0px 2px 0px, 
         rgb(145 158 171 / 24%) 0px 16px 32px -4px;
-    margin: 3rem;
     border-radius: 1rem;
     overflow-x: scroll;
 
-    & h2{
+    & h3{
         padding: 1rem;
     }
+`
+
+const TwoCol = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 1rem;
+    align-items: start;
+`
+
+const SummaryRow = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 1rem;
+    padding: 1rem 0 1rem;
+`
+
+const InputBox = styled.div`
+    display: grid;
+    background-color: rgb(244, 246, 248);
+    border-radius: 1rem;
+    padding: 2rem;
+    gap: 1rem;
 `

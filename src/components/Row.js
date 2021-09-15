@@ -51,7 +51,7 @@ export default Row
 
 const MyRow = styled.div`
     display: grid;
-    grid-template-columns: repeat(7,1fr);
+    grid-template-columns: repeat(8,1fr);
     font-size: .85rem;
 
     &.header{

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Chart from 'react-apexcharts'
+import { numberWithCommas } from 'utils/numberFormatting'
 
 const MyChart = ({dates, data, invested}) => {
 
@@ -9,9 +10,10 @@ const MyChart = ({dates, data, invested}) => {
 const options = {
     chart: {
         toolbar: {
-            tools: {
-                download: false,
-            }
+            show: false
+            // tools: {
+            //     download: false,
+            // }
         }
     },
     dataLabels: {
@@ -19,21 +21,22 @@ const options = {
       },
       yaxis: {
         labels: {
+            // show: false,
         //   show: false,
-            // formatter: function (value) {
-            //   return "$" + numberWithCommas(value);
-            // }
-            style: {
-                colors: ['#fff']
+            formatter: function (value) {
+              return "$" + numberWithCommas(value);
             }
+            // style: {
+            //     colors: ['#fff']
+            // }
           },
-        opposite: true,
+        // opposite: true,
     },
     xaxis: {
         type: 'datetime',
         categories: dates.reverse(),
     },
-    colors: ['#2E93fA', '#E91E63'],
+    colors: ['#2E99FE', '#FF2F30'],
     tooltip: {
         x: {
             format: 'dd MMM HH:mm'
@@ -61,22 +64,27 @@ const options = {
                   show: false,
               }
           }
+      },
+      legend: {
+          position: 'top',
+          horizontalAlign: 'right'
       }
 }
 
 const series = [
     {
-        name: "Value",
+        name: "Portfolio Value (CAD)",
         data: data.reverse()
     },
     {
-        name: "Amount Invested",
+        name: "Amount Invested (CAD)",
         data: invested.reverse()
     }
 ]
 
 return (
     <Wrapper>
+        <h3>Portfolio Value Over Time</h3>
         <ChartWrapper>
             <Chart
                 options={options}
@@ -96,17 +104,21 @@ const Wrapper = styled.div`
     display: grid;
     width: 100%;
     grid-template-columns: 1fr;
-    justify-items: center;
-    // background-color: #fff;
-    // box-shadow: 0 0 1px 0 rgba(0,0,0,0.70), 0 3px 4px -2px rgba(0,0,0,0.50);
-    // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    border-radius: 4px;
+    // justify-items: center;
+    background-color: #fff;
+    border-radius: 1rem;
     // color: #263238;
     padding: 1rem;
     @media (min-width: 900px) {
       width: 100%;
     }
-    margin-top: 1rem;
+    box-shadow: 
+    rgb(145 158 171 / 24%) 0px 0px 2px 0px, 
+    rgb(145 158 171 / 24%) 0px 16px 32px -4px;
+
+    & h3{
+        padding: 1rem;
+    }
     `
 
 const ChartWrapper = styled.div`
