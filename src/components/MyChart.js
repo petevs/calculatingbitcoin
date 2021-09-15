@@ -33,7 +33,7 @@ const options = {
         type: 'datetime',
         categories: dates.reverse(),
     },
-    colors: ['#F7931C'],
+    colors: ['#2E93fA', '#E91E63'],
     tooltip: {
         x: {
             format: 'dd MMM HH:mm'

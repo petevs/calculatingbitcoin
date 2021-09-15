@@ -9,7 +9,7 @@ const DollarCostAverage = () => {
 
     const convertDate = (x) => {
         const theDate = new Date(x)
-        return theDate.toString("MMM dd")
+        return theDate.toLocaleDateString()
     }
 
 
@@ -117,6 +117,8 @@ const DollarCostAverage = () => {
                         'col6': 'Total Invested',
                         'col7': 'ROI'
                     }}
+
+                    itemClass='header'
                 />
                 {prices.map(item => {
                     return (
@@ -133,5 +135,13 @@ const DollarCostAverage = () => {
 export default DollarCostAverage
 
 const Results = styled.div`
+    display: grid;
+    gap: .5rem;
     padding: 1rem;
+    box-shadow: 
+        rgb(145 158 171 / 24%) 0px 0px 2px 0px, 
+        rgb(145 158 171 / 24%) 0px 16px 32px -4px;
+    margin: 3rem;
+    border-radius: 1rem;
+    overflow-x: scroll;
 `
