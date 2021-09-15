@@ -107,14 +107,15 @@ const DollarCostAverage = () => {
             />
 
             <Results>
+                <h2>Details</h2>
                 <Row 
                     item={{
                         'col1': 'Date',
-                        'col2': 'Price',
+                        'col2': 'BTC Price',
                         'col3': 'BTC Purchased',
-                        'col4': 'BTC Portfolio',
+                        'col4': 'BTC Balance',
                         'col5': 'Portfolio Value (CAD)',
-                        'col6': 'Total Invested',
+                        'col6': 'Total Invested (CAD)',
                         'col7': 'ROI'
                     }}
 
@@ -144,4 +145,8 @@ const Results = styled.div`
     margin: 3rem;
     border-radius: 1rem;
     overflow-x: scroll;
+
+    & h2{
+        padding: 1rem;
+    }
 `
