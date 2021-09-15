@@ -103,7 +103,7 @@ export default MyChart
 const Wrapper = styled.div`
     display: grid;
     width: 100%;
-    grid-template-columns: 1fr;
+    // grid-template-columns: 1fr;
     // justify-items: center;
     background-color: #fff;
     border-radius: 1rem;

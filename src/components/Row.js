@@ -24,6 +24,17 @@ const Row = (props) => {
             }
         }
 
+        if (key === 'profit') {
+            if(item[key] < 0) {
+                valClass = 'neg'
+                theItem = `-$${numberWithCommas(item[key].toFixed()).slice(1)}`
+            }
+            else {
+                valClass = 'pos'
+                theItem=`$${numberWithCommas(theItem)}`
+            }
+        }
+
         if (key.match(/^(price|value|totalInvested)$/)) {
             theItem = `$${numberWithCommas(theItem)}`
         }

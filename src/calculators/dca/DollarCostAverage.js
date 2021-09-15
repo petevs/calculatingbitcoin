@@ -223,9 +223,14 @@ const Results = styled.div`
 
 const TwoCol = styled.div`
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: auto 300px;
     gap: 1rem;
+    padding: 1rem 0;
     align-items: start;
+    @media (max-width: 900px) {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 `
 
 const SummaryRow = styled.div`
@@ -241,4 +246,7 @@ const InputBox = styled.div`
     border-radius: 1rem;
     padding: 2rem;
     gap: 1rem;
+    @media (max-width: 900px) {
+        width: 100%;
+    }
 `
