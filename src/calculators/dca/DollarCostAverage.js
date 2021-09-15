@@ -112,7 +112,7 @@ const DollarCostAverage = () => {
 
     return (
         <Wrapper>
-            <h1>Dollar Cost Average Calculator</h1>
+            <h2>Dollar Cost Average Calculator</h2>
             <SummaryRow>
                 <Scorecard 
                     // value={!condition(prices) ? '' : prices[prices.length - 1].value}
@@ -220,13 +220,15 @@ const DollarCostAverage = () => {
 
                     itemClass='header'
                 />
-                {prices.map(item => {
-                    return (
-                        <Row
-                            item={{ ...item }}
-                        />
-                    )
-                })}
+                <RowResults>
+                    {prices.map(item => {
+                        return (
+                            <Row
+                                item={{ ...item }}
+                            />
+                        )
+                    })}
+                </RowResults>
             </Results>
         </Wrapper>
     )
@@ -236,7 +238,7 @@ export default DollarCostAverage
 
 const Wrapper = styled.div`
     padding: 2rem;
-    & h1{
+    & h2{
         padding: 1rem 0;
     }
 `
@@ -251,10 +253,15 @@ const Results = styled.div`
         rgb(145 158 171 / 24%) 0px 16px 32px -4px;
     border-radius: 1rem;
     overflow-x: scroll;
-
     & h3{
         padding: 1rem;
     }
+`
+
+const RowResults = styled.div`
+    position: relative;
+    height: 200px;
+    overflow: auto;
 `
 
 const TwoCol = styled.div`
