@@ -47,15 +47,6 @@ const DollarCostAverage = () => {
         setDaysBtwn(getTimeBetweenDates(e.target.value))
     }
 
-
-    const condition = (x) => {
-        if (x.length < 1) {
-            return false
-        } else {
-            return true
-        }
-    }
-
     const getValues = () => {
 
         axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=cad&days=${daysBtwn}&interval=daily`)
@@ -101,13 +92,17 @@ const DollarCostAverage = () => {
 
 
     useEffect(() => {
-        const latestEntry = prices[prices.length - 1]
-        // const averageCost = latestEntry.totalInvested
-                
-        setLastEntry({
-            ...latestEntry,
-            averageCost: Math.round(latestEntry.totalInvested / latestEntry.bal)
-        })
+
+        if(prices.length > 1){
+
+            const latestEntry = prices[prices.length - 1]
+            // const averageCost = latestEntry.totalInvested
+                    
+            setLastEntry({
+                ...latestEntry,
+                averageCost: Math.round(latestEntry.totalInvested / latestEntry.bal)
+            })
+        }
     },[prices])
 
     return (
