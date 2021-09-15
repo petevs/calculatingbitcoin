@@ -4,7 +4,6 @@ import Row from 'components/Row'
 import { Button, TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import MyChart from 'components/MyChart'
-import PageWrapper from 'layouts/PageWrapper'
 import Scorecard from 'components/Scorecard'
 
 const DollarCostAverage = () => {
@@ -98,7 +97,7 @@ const DollarCostAverage = () => {
     }
 
     return (
-        <PageWrapper>
+        <Wrapper>
 
             <SummaryRow>
                 <Scorecard 
@@ -196,11 +195,15 @@ const DollarCostAverage = () => {
                     )
                 })}
             </Results>
-        </PageWrapper>
+        </Wrapper>
     )
 }
 
 export default DollarCostAverage
+
+const Wrapper = styled.div`
+    padding: 2rem;
+`
 
 const Results = styled.div`
     display: grid;
@@ -227,7 +230,7 @@ const TwoCol = styled.div`
 
 const SummaryRow = styled.div`
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat( auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     padding: 1rem 0 1rem;
 `
