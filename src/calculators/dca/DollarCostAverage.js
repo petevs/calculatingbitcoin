@@ -108,7 +108,6 @@ const DollarCostAverage = () => {
     return (
         <Wrapper>
             <h2>Dollar Cost Average Calculator</h2>
-            <p>hi</p>
             <SummaryRow>
                 <Scorecard 
                     // value={!condition(prices) ? '' : prices[prices.length - 1].value}
