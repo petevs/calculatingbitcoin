@@ -20,6 +20,7 @@ const MyLogo = styled.div`
     letter-spacing: -.5px;
     font-size:  .75rem;
     margin: 1.5rem;
+    cursor: pointer;
 `
 
 const Image = styled.img`
