@@ -29,7 +29,7 @@ const DollarCostAverage = () => {
         return Math.round(diff_in_days)
     }
 
-    const [daysBtwn, setDaysBtwn] = useState(null)
+    const [daysBtwn, setDaysBtwn] = useState(getTimeBetweenDates('2021-01-01'))
     const [prices, setPrices] = useState([])
     const [inputs, setInputs] = useState({
         purchaseAmount: '5'
@@ -46,6 +46,7 @@ const DollarCostAverage = () => {
     const handleDateChange = (e) => {
         setDaysBtwn(getTimeBetweenDates(e.target.value))
     }
+
 
     const getValues = () => {
 
@@ -105,6 +106,11 @@ const DollarCostAverage = () => {
         }
     },[prices])
 
+
+    useEffect(() => {
+        getValues()
+    },[])
+
     return (
         <Wrapper>
             <h2>Dollar Cost Average Calculator</h2>
@@ -160,7 +166,7 @@ const DollarCostAverage = () => {
                     <NumberFormat
                         id='purchaseAmount'
                         customInput={TextField}
-                        label='Daily Purcahse Amount'
+                        label='Daily Purchase Amount'
                         value={inputs.purchaseAmount}
                         variant='filled'
                         size='small'
@@ -180,7 +186,7 @@ const DollarCostAverage = () => {
                         variant='filled'
                         size='small'
                         onChange={handleDateChange}
-                        defaultValue={todayDate}
+                        defaultValue={'2021-01-01'}
                         inputProps={
                             {
                                 max: todayDate

@@ -72,6 +72,7 @@ const ProfileCard = styled.div`
     gap: 1rem;
     align-items: center;
     margin: 1rem;
+    margin-bottom: 0;
 `
 
 const ProfileImage = styled.img`
@@ -98,6 +99,8 @@ const Logo = styled.div`
     align-items: center;
     letter-spacing: -1px;
     font-size:  .75rem;
+    margin: 1.5rem;
+    margin-bottom: 0;
 `
 
 const Image = styled.img`
