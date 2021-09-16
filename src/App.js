@@ -8,7 +8,7 @@ import Ticker from 'components/Ticker';
 import styled from 'styled-components'
 
 import './App.css';
-import SideBar from 'components/SideBar';
+import SideBar from 'components/sidebar/SideBar';
 
 function App() {
   return (
