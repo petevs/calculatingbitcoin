@@ -1,41 +1,38 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Accordion, AccordionDetails, AccordionSummary } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CalculateIcon from '@mui/icons-material/Calculate';
+import SubMenuItem from './SubMenuItem';
 
-
-const SideBarMenu = ({item}) => {
-
+const SideBarDropdown = ({item}) => {
     return (
         <MyAccordion>
-        <MyAccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-        >
-            <MenuHeading>
-                {/* {item.icon} */}
-                {/* <span>{item.title}</span> */}
-            </MenuHeading>
-        </MyAccordionSummary>
+            <MyAccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+            >
+
+                <MenuHeading>
+                    {item.icon}
+                    <span>{item.title}</span>
+                </MenuHeading>
+
+            </MyAccordionSummary>
+
             <AccordionDetails>
                 <MyList>
-                        <li>
-                            <Link to='/calculators/hello'>
-                                Sell and Buy Back
-                            </Link>
-                        </li>
-                    <li>
-                        <Link to='/calculators/dca'>
-                            Dollar Cost Average
-                        </Link></li>
+                    {item.subMenu.map(subMenuItem => {
+                        return(
+                            <SubMenuItem item={{...subMenuItem}} />
+                        )
+                    })}
                 </MyList>
             </AccordionDetails>
-    </MyAccordion>
+        </MyAccordion>
     )
 }
 
-export default SideBarMenu
+export default SideBarDropdown
+
 
 const MenuHeading = styled.div`
     display: grid;
