@@ -45,10 +45,6 @@ const Ticker = () => {
         setDateRange(e.target.value)
     }
 
-    useEffect(() => {
-        console.log(dateRange)
-    }, [dateRange])
-
     const checkActive = (x) => {
         if (x === dateRange) {
             return 'active'
