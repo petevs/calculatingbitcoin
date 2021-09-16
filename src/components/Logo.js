@@ -17,7 +17,7 @@ const MyLogo = styled.div`
     grid-template-columns: auto 1fr;
     justify-items: start;
     align-items: center;
-    letter-spacing: -1px;
+    letter-spacing: -.5px;
     font-size:  .75rem;
     margin: 1.5rem;
 `
@@ -32,7 +32,7 @@ const Image = styled.img`
 const Headline = styled.h1`
     padding-left: .5rem;
     // text-shadow: 2px 3px 3px rgba(0,0,0,0.3);
-    font-size: 1rem;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.85);
+    font-size: 1.25rem;
+    text-transform: capitalize;
+    color: #555;
 `
