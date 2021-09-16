@@ -1,6 +1,10 @@
 import { Accordion, AccordionDetails, AccordionSummary } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CalculateIcon from '@mui/icons-material/Calculate';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
@@ -19,6 +23,14 @@ const SideBar = () => {
                     <h6>Some Text</h6>
                 </div>
             </ProfileCard>
+            <Heading>
+                        <BusinessCenterIcon />
+                        <span>Portfolio</span>
+                    </Heading>
+            <Heading>
+                        <QueryStatsIcon />
+                        <span>Current Market</span>
+                    </Heading>
             <MyAccordion>
                 <MyAccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -41,6 +53,14 @@ const SideBar = () => {
                         </MyList>
                     </AccordionDetails>
             </MyAccordion>
+            <Heading>
+                        <PersonIcon />
+                        <span>Profile</span>
+                    </Heading>
+            <Heading>
+                        <SettingsIcon />
+                        <span>Settings</span>
+                    </Heading>
         </MyDrawer>
     )
 }
@@ -50,7 +70,7 @@ export default SideBar
 const MyDrawer = styled.div`
     display: grid;
     align-content: start;
-    gap: 1.5rem;
+    gap: 0rem;
     border-right: 1px solid rgba(145, 158, 171, 0.24);
     background-color: #fff;
     grid-area: sidecar;
@@ -72,12 +92,27 @@ const ProfileCard = styled.div`
     gap: 1rem;
     align-items: center;
     margin: 1rem;
-    margin-bottom: 0;
 `
 
 const ProfileImage = styled.img`
     width: 100%;
     border-radius: 50%;
+`
+
+const Heading = styled.div`
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: .5rem;
+    font-size: .875rem;
+    color: rgb(99, 115, 129);
+    font-weight: 400;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: #F7F7F8 !important;
+    }
 `
 
 const MenuHeading = styled.div`
@@ -100,7 +135,6 @@ const Logo = styled.div`
     letter-spacing: -1px;
     font-size:  .75rem;
     margin: 1.5rem;
-    margin-bottom: 0;
 `
 
 const Image = styled.img`
@@ -120,12 +154,19 @@ const Headline = styled.h1`
 
 const MyAccordion = styled(Accordion)`
     box-shadow: none !important;
+
+    &.Mui-expanded {
+        margin: 0 !important;
+    }
     &:before {
         background-color: transparent !important;
     }
 `
 
 const MyAccordionSummary = styled(AccordionSummary)`
+    &.Mui-expanded{
+        min-height: 0 !important;
+    }
     &:hover {
         background-color: #F7F7F8 !important;
     }
