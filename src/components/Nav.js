@@ -6,10 +6,6 @@ const Nav = () => {
 
     return (
         <NavBar>
-            <Logo>
-                <Image src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579" alt='bitcoin logo' />
-                <Headline>Calculating Bitcoin</Headline>
-            </Logo>
             <Menu>
                 <NavLink to='/'>Home</NavLink>
                 <NavLink to='/calculators'>Calculators</NavLink>
@@ -22,7 +18,7 @@ export default Nav
 
 const NavBar = styled.div`
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr;
     align-items: center;
     padding: 1rem;
     background-color: #fff;
@@ -52,23 +48,3 @@ const NavLink = styled(Link)`
 
 `
 
-const Logo = styled.div`
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-items: start;
-    align-items: center;
-    letter-spacing: -1px;
-    font-size:  .75rem;
-`
-
-const Image = styled.img`
-    width: 25px;
-    justify-self: end;
-    box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
-    border-radius: 50%;
-`
-
-const Headline = styled.h1`
-    padding-left: .5rem;
-    // text-shadow: 2px 3px 3px rgba(0,0,0,0.3);
-`
