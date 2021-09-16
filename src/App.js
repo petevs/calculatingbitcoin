@@ -8,14 +8,13 @@ import Ticker from 'components/Ticker';
 import styled from 'styled-components'
 
 import './App.css';
+import SideBar from 'components/SideBar';
 
 function App() {
   return (
     <Router>
       <Container>
-        <SideCar>
-          <h2>Hello</h2>
-        </SideCar>
+        <SideBar />
         <Header>
           <Nav />
         </Header>
@@ -40,12 +39,6 @@ const Container = styled.div`
     "sidecar header"
     "sidecar content";
   height: 100vh;
-`
-
-const SideCar = styled.div`
-  border-right: 1px solid rgba(145, 158, 171, 0.24);
-  background-color: red;
-  grid-area: sidecar;
 `
 
 const Header = styled.div`
