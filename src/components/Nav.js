@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { MarketDataContext } from 'state/contexts/MarketData'
 import styled from 'styled-components'
 
 const Nav = () => {
+
+    const { marketData } = useContext(MarketDataContext)
+
+    console.log(marketData)
 
     return (
         <NavBar>
