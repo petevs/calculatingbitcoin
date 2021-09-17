@@ -45,6 +45,7 @@ const MyChart = ({ dates, data, invested }) => {
       x: {
         format: "dd MMM HH:mm",
       },
+      theme: "dark",
     },
     annotations: {
       // yaxis: [
@@ -72,6 +73,9 @@ const MyChart = ({ dates, data, invested }) => {
     legend: {
       position: "top",
       horizontalAlign: "right",
+      labels: {
+        colors: "#fff",
+      },
     },
   };
 

@@ -173,7 +173,6 @@ const DollarCostAverage = () => {
               newHandleChange(v, "purchaseAmount");
             }}
           />
-
           <TextField
             id="start"
             label="Start Date"
