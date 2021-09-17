@@ -10,7 +10,7 @@ const ProfileCard = ({ name, img}) => {
         <MyProfileCard>
             <ProfileImage src={img} />
             <div>
-                <h5>Welcome, {settings.name}</h5>
+                <h5>Welcome, {settings.firstName}</h5>
                 <h6>Happy Calculating!</h6>
             </div>
         </MyProfileCard>

@@ -1,7 +1,8 @@
 export const UPDATE_SETTINGS= 'UPDATE_SETTINGS'
 
 export const initialState = {
-    name: 'Jane',
+    firstName: 'Jane',
+    lastName: 'VS',
     colorMode: 'dark',
     currency: 'cad'
 }

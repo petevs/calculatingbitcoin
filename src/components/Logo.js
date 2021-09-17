@@ -35,5 +35,5 @@ const Headline = styled.h1`
     // text-shadow: 2px 3px 3px rgba(0,0,0,0.3);
     font-size: 1.25rem;
     text-transform: capitalize;
-    color: #555;
+    color: #fff;
 `
