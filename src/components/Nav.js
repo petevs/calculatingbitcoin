@@ -6,6 +6,8 @@ import { updateSettings } from "state/actions/updateSettings";
 import styled from "styled-components";
 import CurrencySelect from "./CurrencySelect";
 import { numberWithCommas } from "utils/numberFormatting";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 
 const Nav = () => {
   const { marketData } = useContext(MarketDataContext);
@@ -43,9 +45,16 @@ const Nav = () => {
         <ColOne>
           <h2>
             ${numberWithCommas(price)}
-            <span className={direction}>{`${numberWithCommas(
-              changeInPrice
-            )} (${percentageChange.toFixed(2)}%)`}</span>
+            <span className={direction}>
+              {direction === "pos" ? (
+                <TrendingUpIcon fontSize="inherit" />
+              ) : (
+                <TrendingDownIcon fontSize="inherit" />
+              )}
+              {`${numberWithCommas(changeInPrice)} (${percentageChange.toFixed(
+                2
+              )}%)`}
+            </span>
           </h2>
         </ColOne>
         <CurrencySelect />
@@ -93,6 +102,9 @@ const ColOne = styled.div`
   grid-template-columns: 1fr;
   justify-self: start;
   & span {
+    & svg {
+      margin-right: 0.25rem;
+    }
     font-size: 0.75rem;
     padding-left: 0.5rem;
     color: #408e36;

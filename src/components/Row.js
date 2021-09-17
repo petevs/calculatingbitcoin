@@ -80,6 +80,7 @@ const Cell = styled.div`
   &.header {
     background-color: #333d48;
     height: 100%;
+    text-transform: uppercase;
 
     &:first-of-type {
       border-radius: 0.5rem 0 0 0.5rem;
