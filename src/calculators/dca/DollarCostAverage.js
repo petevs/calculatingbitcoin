@@ -172,6 +172,7 @@ const DollarCostAverage = () => {
             onValueChange={({ value: v }) => {
               newHandleChange(v, "purchaseAmount");
             }}
+            autoComplete="off"
           />
           <MyCalField
             id="start"
