@@ -1,21 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { MarketDataContext } from 'state/contexts/MarketData'
+import { UserContext } from 'state/contexts/UserContext'
 import styled from 'styled-components'
 
 const Nav = () => {
 
     const { marketData } = useContext(MarketDataContext)
+    const { currency } = useContext(UserContext)
 
-    console.log(marketData)
+    console.log(currency)
 
     return (
         <NavBar>
             <Menu>
+                    <select value={currency}>
+                        <option value='cad'>CAD</option>
+                        <option value='usd'>USD</option>
+                    </select>
                 <ProfileImage className='square' src='https://cdn.countryflags.com/thumbs/canada/flag-800.png' />
                 <ProfileImage src='https://avatars.githubusercontent.com/u/23281466?v=4' />
-                {/* <NavLink to='/'>Home</NavLink>
-                <NavLink to='/calculators'>Calculators</NavLink> */}
             </Menu>
         </NavBar>
     )

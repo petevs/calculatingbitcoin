@@ -9,25 +9,28 @@ import styled from 'styled-components'
 
 import './App.css';
 import SideBar from 'components/sidebar/SideBar';
+import UserProvider from 'state/contexts/UserContext';
 
 
 function App() {
   return (
-    <Router>
-      <MarketDataProvider>
-        <Container>
-          <SideBar />
-          <Header>
-            <Nav />
-          </Header>
-          <Main>
-              <Ticker />
-              <Route exact path='/' component={Home} />
-              <Route path='/calculators' component={Calculators} />
-          </Main>
-        </Container>
-      </MarketDataProvider>
-    </Router>
+    <UserProvider>
+      <Router>
+        <MarketDataProvider>
+          <Container>
+            <SideBar />
+            <Header>
+              <Nav />
+            </Header>
+            <Main>
+                <Ticker />
+                <Route exact path='/' component={Home} />
+                <Route path='/calculators' component={Calculators} />
+            </Main>
+          </Container>
+        </MarketDataProvider>
+      </Router>
+    </UserProvider>
   );
 }
 
