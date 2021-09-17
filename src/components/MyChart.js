@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Chart from "react-apexcharts";
 import { numberWithCommas } from "utils/numberFormatting";
 
-const MyChart = ({ dates, data, invested }) => {
+const MyChart = ({ dates, data, invested, currency }) => {
   // const ath = marketData.data.ath.cad
 
   const options = {
@@ -81,11 +81,11 @@ const MyChart = ({ dates, data, invested }) => {
 
   const series = [
     {
-      name: "Portfolio Value (CAD)",
+      name: `Portfolio Value (${currency})`,
       data: data.reverse(),
     },
     {
-      name: "Amount Invested (CAD)",
+      name: `Amount Invested (${currency})`,
       data: invested.reverse(),
     },
   ];

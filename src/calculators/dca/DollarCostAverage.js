@@ -156,6 +156,7 @@ const DollarCostAverage = () => {
           invested={prices.map((item) => {
             return item.totalInvested;
           })}
+          currency={settings.currency}
         />
 
         <InputBox>
