@@ -1,20 +1,28 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { MarketDataContext } from 'state/contexts/MarketData'
 import { UserContext } from 'state/contexts/UserContext'
+import { updateCurrency } from 'state/actions/updateSettings'
 import styled from 'styled-components'
 
 const Nav = () => {
 
     const { marketData } = useContext(MarketDataContext)
-    const { currency } = useContext(UserContext)
+    const { settings, settingsDispatch } = useContext(UserContext)
 
-    console.log(currency)
+    const handleCurrencyChange = (e) => {
+        const payload = {
+            name: e.target.name,
+            value: e.target.value
+        }
+        settingsDispatch(updateCurrency(payload))
+    }
 
     return (
         <NavBar>
             <Menu>
-                    <select value={currency}>
+                <h2>{marketData.data.current_price[settings.currency]}</h2>
+                    <select name='currency' value={settings.currency} onChange={handleCurrencyChange}>
                         <option value='cad'>CAD</option>
                         <option value='usd'>USD</option>
                     </select>
@@ -41,6 +49,9 @@ const NavBar = styled.div`
         justify-items: center;
         grid-template-columns: 1fr;
         padding: 1rem;
+    }
+    & h2 {
+        color: #fff;
     }
 `
 

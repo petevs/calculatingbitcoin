@@ -1,17 +1,17 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useReducer } from 'react'
+import { userReducer, initialState } from 'state/reducers/userReducer'
 
 export const UserContext = createContext()
 
 const UserProvider = ({children}) => {
 
-    const [currency, setCurrency] = useState('usd')
-
-
+    const [settings, settingsDispatch] = useReducer(userReducer, initialState)
 
     return (
         <UserContext.Provider
             value={{
-                currency
+                settings,
+                settingsDispatch
             }}
         >
             {children}

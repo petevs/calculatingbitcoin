@@ -1,13 +1,16 @@
-import { imageListItemBarClasses } from '@mui/material'
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { UserContext } from 'state/contexts/UserContext'
 
 const ProfileCard = ({ name, img}) => {
+
+    const { settings } = useContext(UserContext)
+
     return (
         <MyProfileCard>
             <ProfileImage src={img} />
             <div>
-                <h5>Welcome, {name}</h5>
+                <h5>Welcome, {settings.name}</h5>
                 <h6>Happy Calculating!</h6>
             </div>
         </MyProfileCard>
