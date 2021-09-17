@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-
+import MarketDataProvider from 'state/contexts/MarketData'
 import Home from 'pages/Home';
 import Calculators from 'pages/Calculators';
 import Nav from 'components/Nav';
@@ -9,22 +9,28 @@ import styled from 'styled-components'
 
 import './App.css';
 import SideBar from 'components/sidebar/SideBar';
+import UserProvider from 'state/contexts/UserContext';
+
 
 function App() {
   return (
-    <Router>
-      <Container>
-        <SideBar />
-        <Header>
-          <Nav />
-        </Header>
-        <Main>
-            <Ticker />
-            <Route exact path='/' component={Home} />
-            <Route path='/calculators' component={Calculators} />
-        </Main>
-      </Container>
-    </Router>
+    <UserProvider>
+      <Router>
+        <MarketDataProvider>
+          <Container>
+            <SideBar />
+            <Header>
+              <Nav />
+            </Header>
+            <Main>
+                <Ticker />
+                <Route exact path='/' component={Home} />
+                <Route path='/calculators' component={Calculators} />
+            </Main>
+          </Container>
+        </MarketDataProvider>
+      </Router>
+    </UserProvider>
   );
 }
 
