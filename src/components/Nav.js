@@ -5,6 +5,7 @@ import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from "state/actions/updateSettings";
 import styled from "styled-components";
 import CurrencySelect from "./CurrencySelect";
+import { numberWithCommas } from "utils/numberFormatting";
 
 const Nav = () => {
   const { marketData } = useContext(MarketDataContext);
@@ -18,17 +19,35 @@ const Nav = () => {
     settingsDispatch(updateSettings(payload));
   };
 
+  const price = marketData.data.current_price[settings.currency];
+  const percentageChange =
+    marketData.data.price_change_percentage_24h_in_currency[settings.currency];
+
+  const changeInPrice = Math.round(
+    price - price * (1 - percentageChange / 100)
+  );
+
+  const [direction, setDirection] = useState();
+
+  useEffect(() => {
+    if (changeInPrice < 0) {
+      setDirection("neg");
+    } else {
+      setDirection("pos");
+    }
+  }, [settings, changeInPrice]);
+
   return (
     <NavBar>
       <Menu>
-        <select
-          name="currency"
-          value={settings.currency}
-          onChange={handleSettingsChange}
-        >
-          <option value="cad">CAD</option>
-          <option value="usd">USD</option>
-        </select>
+        <ColOne>
+          <h2>
+            ${numberWithCommas(price)}
+            <span className={direction}>{`${numberWithCommas(
+              changeInPrice
+            )} (${percentageChange.toFixed(2)}%)`}</span>
+          </h2>
+        </ColOne>
         <CurrencySelect />
         <Link to="/user">
           <ProfileImage src="https://avatars.githubusercontent.com/u/23281466?v=4" />
@@ -49,7 +68,7 @@ const NavBar = styled.div`
   color: #002237;
   font-weight: 600;
   height: 100%;
-  border-bottom: 1px solid #e7ecf2;
+  //   border-bottom: 1px solid #e7ecf2;
   @media (max-width: 768px) {
     justify-content: center;
     justify-items: center;
@@ -67,6 +86,20 @@ const Menu = styled.div`
   justify-items: center;
   gap: 2rem;
   align-items: center;
+`;
+
+const ColOne = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-self: start;
+  & span {
+    font-size: 0.75rem;
+    padding-left: 0.5rem;
+    color: #408e36;
+    &.neg {
+      color: #f72e2f;
+    }
+  }
 `;
 
 const NavLink = styled(Link)`
