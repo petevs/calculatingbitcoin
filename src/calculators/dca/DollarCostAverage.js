@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Row from "components/Row";
 import { Button, TextField } from "@material-ui/core";
@@ -7,8 +7,11 @@ import MyChart from "components/MyChart";
 import Scorecard from "components/Scorecard";
 import NumberFormat from "react-number-format";
 import Hero from "components/Hero";
+import { UserContext } from "state/contexts/UserContext";
 
 const DollarCostAverage = () => {
+  const { settings, settingsDispatch } = useContext(UserContext);
+
   const convertDate = (x) => {
     const theDate = new Date(x);
     return theDate.toLocaleDateString();
@@ -48,7 +51,7 @@ const DollarCostAverage = () => {
   const getValues = () => {
     axios
       .get(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=cad&days=${daysBtwn}&interval=daily`
+        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${daysBtwn}&interval=daily`
       )
       .then((res) => {
         const data = res.data.prices;
@@ -104,7 +107,7 @@ const DollarCostAverage = () => {
 
   useEffect(() => {
     getValues();
-  }, []);
+  }, [settings.currency]);
 
   return (
     <Wrapper>
@@ -113,7 +116,7 @@ const DollarCostAverage = () => {
         <Scorecard
           // value={!condition(prices) ? '' : prices[prices.length - 1].value}
           value={!lastEntry ? "" : lastEntry.value}
-          name="Portfolio Value (CAD)"
+          name={`Portfolio Value (${settings.currency})`}
           prefix="$"
         />
         <Scorecard
@@ -122,7 +125,7 @@ const DollarCostAverage = () => {
         />
         <Scorecard
           value={!lastEntry ? "" : lastEntry.totalInvested}
-          name="Total Invested (CAD)"
+          name={`Total Invested (${settings.currency})`}
           prefix="$"
         />
         <Scorecard
@@ -202,8 +205,8 @@ const DollarCostAverage = () => {
             col2: "BTC Price",
             col3: "BTC Purchased",
             col4: "BTC Balance",
-            col5: "Portfolio Value (CAD)",
-            col6: "Total Invested (CAD)",
+            col5: `Portfolio Value (${settings.currency})`,
+            col6: `Total Invested (${settings.currency})`,
             col7: "ROI",
             col8: "Gain / Loss",
           }}
