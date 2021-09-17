@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { styles } from 'styles/theme'
 
 const SideBarItem = ({item}) => {
     return (
@@ -18,12 +19,12 @@ const Heading = styled.div`
     align-items: center;
     gap: .5rem;
     font-size: .875rem;
-    color: rgb(99, 115, 129);
+    color: ${styles.fontColor};
     font-weight: 400;
     padding: 1rem 2rem;
     cursor: pointer;
     
     &:hover {
-        background-color: #F7F7F8 !important;
+        background-color: ${styles.backgroundColorHover} !important;
     }
 `

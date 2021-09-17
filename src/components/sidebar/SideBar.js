@@ -4,6 +4,7 @@ import { menuList } from 'data/sidebar';
 import SideBarMenu from './SideBarMenu';
 import Logo from '../Logo';
 import ProfileCard from '../ProfileCard';
+import { styles } from 'styles/theme'
 
 const SideBar = () => {
     return (
@@ -33,6 +34,6 @@ const MyDrawer = styled.div`
     align-content: start;
     gap: 0rem;
     border-right: 1px solid rgba(145, 158, 171, 0.24);
-    background-color: #fff;
+    background-color: ${styles.backgroundColor};
     grid-area: sidecar;
 `

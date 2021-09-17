@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import './App.css';
 import SideBar from 'components/sidebar/SideBar';
 import UserProvider from 'state/contexts/UserContext';
+import User from 'pages/User';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                 <Ticker />
                 <Route exact path='/' component={Home} />
                 <Route path='/calculators' component={Calculators} />
+                <Route path='/user' render={() => <User />} />
             </Main>
           </Container>
         </MarketDataProvider>

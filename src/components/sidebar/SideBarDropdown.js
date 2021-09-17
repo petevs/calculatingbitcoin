@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Accordion, AccordionDetails, AccordionSummary } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SubMenuItem from './SubMenuItem';
+import { styles } from 'styles/theme'
 
 const SideBarDropdown = ({item}) => {
     return (
@@ -18,7 +19,7 @@ const SideBarDropdown = ({item}) => {
 
             </MyAccordionSummary>
 
-            <AccordionDetails>
+            <MyAccordionDetails>
                 <MyList>
                     {item.subMenu.map(subMenuItem => {
                         return(
@@ -26,7 +27,7 @@ const SideBarDropdown = ({item}) => {
                         )
                     })}
                 </MyList>
-            </AccordionDetails>
+            </MyAccordionDetails>
         </MyAccordion>
     )
 }
@@ -40,7 +41,7 @@ const MenuHeading = styled.div`
     align-items: center;
     gap: .5rem;
     font-size: .875rem;
-    color: rgb(99, 115, 129);
+    color: rgb(145, 158, 171);
     font-weight: 400;
     padding: 0 1rem;
 
@@ -58,12 +59,20 @@ const MyAccordion = styled(Accordion)`
 `
 
 const MyAccordionSummary = styled(AccordionSummary)`
+    background-color: ${styles.backgroundColor} !important;
     &.Mui-expanded{
         min-height: 0 !important;
     }
     &:hover {
-        background-color: #F7F7F8 !important;
+        background-color: ${styles.backgroundColorHover} !important;
     }
+    & span {
+        color: ${styles.fontColor};
+    }
+`
+
+const MyAccordionDetails = styled(AccordionDetails)`
+    background-color: ${styles.backgroundColor} !important;
 `
 
 const MyList = styled.ul`
