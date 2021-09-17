@@ -1,5 +1,5 @@
-import { UPDATE_CURRENCY } from '../reducers/userReducer'
+import { UPDATE_SETTINGS } from '../reducers/userReducer'
 
-export const updateCurrency = (data) => {
-    return { type: UPDATE_CURRENCY, payload: data }
+export const updateSettings = (data) => {
+    return { type: UPDATE_SETTINGS, payload: data }
 }

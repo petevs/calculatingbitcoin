@@ -1,4 +1,4 @@
-export const UPDATE_CURRENCY= 'UPDATE_CURRENCY'
+export const UPDATE_SETTINGS= 'UPDATE_SETTINGS'
 
 export const initialState = {
     name: 'Jane',
@@ -8,7 +8,7 @@ export const initialState = {
 
 export const userReducer = (state, action) => {
     switch(action.type){
-        case UPDATE_CURRENCY:
+        case UPDATE_SETTINGS:
             return {
                 ...state,
                 [action.payload.name]: action.payload.value
