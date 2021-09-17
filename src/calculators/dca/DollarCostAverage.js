@@ -160,12 +160,12 @@ const DollarCostAverage = () => {
 
         <InputBox>
           <h3>DCA Settings</h3>
-          <NumberFormat
+          <MyNumberFormat
             id="purchaseAmount"
             customInput={TextField}
             label="Daily Purchase Amount"
             value={inputs.purchaseAmount}
-            variant="filled"
+            variant="outlined"
             size="small"
             thousandSeparator={true}
             prefix={"$"}
@@ -173,11 +173,11 @@ const DollarCostAverage = () => {
               newHandleChange(v, "purchaseAmount");
             }}
           />
-          <TextField
+          <MyCalField
             id="start"
             label="Start Date"
             type="date"
-            variant="filled"
+            variant="outlined"
             size="small"
             onChange={handleDateChange}
             defaultValue={"2021-01-01"}
@@ -277,5 +277,37 @@ const InputBox = styled.div`
   gap: 1rem;
   @media (max-width: 900px) {
     width: 100%;
+  }
+`;
+
+const MyNumberFormat = styled(NumberFormat)`
+  & .MuiFormLabel-root {
+    color: #fff !important;
+  }
+
+  & .MuiInputBase-root {
+    color: #fff !important;
+  }
+
+  & .MuiOutlinedInput-notchedOutline {
+    border-color: #fff !important;
+  }
+`;
+
+const MyCalField = styled(TextField)`
+  & .MuiFormLabel-root {
+    color: #fff !important;
+  }
+
+  & .MuiInputBase-root {
+    color: #fff !important;
+  }
+
+  & .MuiOutlinedInput-notchedOutline {
+    border-color: #fff !important;
+  }
+
+  & ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
   }
 `;
