@@ -3,6 +3,10 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from "state/actions/updateSettings";
 import styled from "styled-components";
+import PrivateRoute from "routes/PrivateRoute";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
+import AuthForm from "components/AuthForm";
+import Card from "components/Card";
 
 const User = () => {
   const { settings, settingsDispatch } = useContext(UserContext);
@@ -29,30 +33,18 @@ const User = () => {
     }
   };
 
+  let match = useRouteMatch();
+
   return (
-    <Wrapper>
-      {settings.firstName} {settings.lastName}
-      <UserBox>
-        <MyTextField
-          name="firstName"
-          label="First Name"
-          variant="filled"
-          value={userDetails.firstName}
-          onChange={handleChange}
-        />
-        <MyTextField
-          color="primary"
-          name="lastName"
-          label="Last Name"
-          variant="filled"
-          value={userDetails.lastName}
-          onChange={handleChange}
-        />
-        <button onClick={() => handleSettingsChange(userDetails)}>
-          Save Changes
-        </button>
-      </UserBox>
-    </Wrapper>
+    <p>hi</p>
+    // <Switch>
+    //   <Route path={`${match.path}/login`}>
+    //     <AuthForm type="login" />
+    //   </Route>
+    //   <Route path={`${match.path}/signup`}>
+    //     <AuthForm type="signup" />
+    //   </Route>
+    // </Switch>
   );
 };
 

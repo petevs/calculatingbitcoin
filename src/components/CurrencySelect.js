@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { styles } from "styles/theme";
 import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from "state/actions/updateSettings";
+import NavDropDown from "components/styledComponents/NavDropDown";
+import NavMenuItem from "components/styledComponents/NavMenuItem";
 
 const CurrencySelect = () => {
   const { settings, settingsDispatch } = useContext(UserContext);
@@ -44,7 +46,7 @@ const CurrencySelect = () => {
   return (
     <>
       <Image onClick={handleClick} src={menuImage} />
-      <MyMenu
+      <NavDropDown
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -57,8 +59,7 @@ const CurrencySelect = () => {
           horizontal: "right",
         }}
       >
-        <span className="topArrow"></span>
-        <MyMenuItem
+        <NavMenuItem
           data-name="currency"
           data-my-value="cad"
           onClick={(event) => handleSettingsChange(event)}
@@ -70,7 +71,7 @@ const CurrencySelect = () => {
             />
             CAD
           </Heading>
-        </MyMenuItem>
+        </NavMenuItem>
         <MyMenuItem
           data-name="currency"
           data-my-value="usd"
@@ -84,56 +85,12 @@ const CurrencySelect = () => {
             USD
           </Heading>
         </MyMenuItem>
-      </MyMenu>
+      </NavDropDown>
     </>
   );
 };
 
 export default CurrencySelect;
-
-const MyButton = styled(Button)`
-  height: 100%;
-`;
-
-const MyMenu = styled(Popover)`
-  & span.topArrow {
-    top: -7px;
-    z-index: 1;
-    width: 12px;
-    right: 20px;
-    height: 12px;
-    content: "";
-    position: absolute;
-    border-radius: 0px 0px 4px;
-    transform: rotate(-135deg);
-    background: rgb(33, 43, 54);
-    border-right: 1px solid rgba(145, 158, 171, 0.12);
-    border-bottom: 1px solid rgba(145, 158, 171, 0.12);
-  }
-
-  & .MuiPopover-paper {
-    background-color: rgb(33, 43, 54);
-    color: rgb(255, 255, 255);
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    border-radius: 8px;
-    background-image: none;
-    position: absolute;
-    min-width: 16px;
-    min-height: 16px;
-    max-width: calc(100% - 32px);
-    max-height: calc(100% - 32px);
-    outline: 0px;
-    margin-top: 12px;
-    margin-left: 4px;
-    overflow: inherit;
-    box-shadow: rgb(0 0 0 / 24%) 0px 0px 2px 0px,
-      rgb(0 0 0 / 24%) 0px 20px 40px -4px;
-    border: 1px solid rgba(145, 158, 171, 0.08);
-    // width: 200px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-`;
 
 const Image = styled.img`
   border-radius: 0;
