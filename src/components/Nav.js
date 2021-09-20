@@ -10,6 +10,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import AvatarDropdown from "components/AvatarDropdown";
 
+
 const Nav = () => {
   const { marketData } = useContext(MarketDataContext);
   const { settings, settingsDispatch } = useContext(UserContext);

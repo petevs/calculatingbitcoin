@@ -1,11 +1,13 @@
 import React from "react";
-import Hero from "components/Hero";
 import styled from "styled-components";
 
 const CalculatorPage = ({ title, subtitle, children }) => {
   return (
     <Wrapper>
-      <Hero title={title} subtitle={subtitle} />
+      <TitleBox>
+        <h2>{title}</h2>
+        <p>{subtitle}</p>
+      </TitleBox>
       {children}
     </Wrapper>
   );
@@ -18,4 +20,8 @@ const Wrapper = styled.div`
   & h2 {
     padding: 1rem 0;
   }
+`;
+
+const TitleBox = styled.div`
+  padding: 0 0 1rem 0;
 `;

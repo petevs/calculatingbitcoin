@@ -55,6 +55,10 @@ const Container = styled.div`
     "sidecar header"
     "sidecar content";
   height: 100vh;
+
+  // @media (max-width: 1024px) {
+  //   grid-template-columns: 1fr;
+  // }
 `;
 
 const Header = styled.div`
