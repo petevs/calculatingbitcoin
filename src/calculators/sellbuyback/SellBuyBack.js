@@ -14,6 +14,7 @@ import ResultsCol from "layouts/ResultsCol";
 import SBBResults from "calculators/sellbuyback/SBBResults";
 import Scorecard from "components/Scorecard";
 import styled from "styled-components";
+import CalculatorWrapper from "styledComponents/CalculatorWrapper";
 
 const SellBuyBack = () => {
   const initialDetails = {
@@ -115,10 +116,17 @@ const SellBuyBack = () => {
   const withValueLimit = ({ floatValue }) => floatValue <= MAX_VAL;
 
   return (
-    <CalculatorPage
-      title="Sell The Top and Buy Back"
-      subtitle="Think you can time the top and buy back in? Find out how much the price would have to drop for you to end up with the same amount of bitcoin and how well you would fair under different scenarios."
-    >
+    // <CalculatorPage
+    //   title="Sell The Top and Buy Back"
+    //   subtitle="Think you can time the top and buy back in? Find out how much the price would have to drop for you to end up with the same amount of bitcoin and how well you would fair under different scenarios."
+    // >
+    <CalculatorWrapper>
+      <h2>Sell and Buy Back</h2>
+      <p>
+        Think you can time the top and buy back in? Find out how much the price
+        would have to drop for you to end up with the same amount of bitcoin and
+        how well you would fair under different scenarios.
+      </p>
       <SummaryRow>
         <Scorecard name="Change Bitcoin Balance" value={results.netBitcoin} />
         <Scorecard
@@ -258,7 +266,7 @@ const SellBuyBack = () => {
           <SBBResults details={details} results={results} />
         </ResultsCol>
       </CalcContainer>
-    </CalculatorPage>
+    </CalculatorWrapper>
   );
 };
 

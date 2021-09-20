@@ -7,6 +7,7 @@ import MyChart from "components/MyChart";
 import Scorecard from "components/Scorecard";
 import NumberFormat from "react-number-format";
 import Hero from "components/Hero";
+import CalculatorWrapper from "styledComponents/CalculatorWrapper";
 import { UserContext } from "state/contexts/UserContext";
 
 const DollarCostAverage = () => {
@@ -110,7 +111,7 @@ const DollarCostAverage = () => {
   }, [settings.currency]);
 
   return (
-    <Wrapper>
+    <CalculatorWrapper>
       <h2>Dollar Cost Average Calculator</h2>
       <SummaryRow>
         <Scorecard
@@ -219,18 +220,11 @@ const DollarCostAverage = () => {
           })}
         </RowResults>
       </Results>
-    </Wrapper>
+    </CalculatorWrapper>
   );
 };
 
 export default DollarCostAverage;
-
-const Wrapper = styled.div`
-  padding: 2rem;
-  & h2 {
-    padding: 1rem 0;
-  }
-`;
 
 const Results = styled.div`
   display: grid;
