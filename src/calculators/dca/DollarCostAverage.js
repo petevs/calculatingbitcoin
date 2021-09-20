@@ -6,7 +6,7 @@ import styled from "styled-components";
 import MyChart from "components/MyChart";
 import Scorecard from "components/Scorecard";
 import NumberFormat from "react-number-format";
-import Hero from "components/Hero";
+import CalculatorPage from "layouts/CalculatorPage";
 import { UserContext } from "state/contexts/UserContext";
 
 const DollarCostAverage = () => {
@@ -110,8 +110,7 @@ const DollarCostAverage = () => {
   }, [settings.currency]);
 
   return (
-    <Wrapper>
-      <h2>Dollar Cost Average Calculator</h2>
+    <CalculatorPage title="Dollar Cost Average">
       <SummaryRow>
         <Scorecard
           // value={!condition(prices) ? '' : prices[prices.length - 1].value}
@@ -219,18 +218,11 @@ const DollarCostAverage = () => {
           })}
         </RowResults>
       </Results>
-    </Wrapper>
+    </CalculatorPage>
   );
 };
 
 export default DollarCostAverage;
-
-const Wrapper = styled.div`
-  padding: 2rem;
-  & h2 {
-    padding: 1rem 0;
-  }
-`;
 
 const Results = styled.div`
   display: grid;
