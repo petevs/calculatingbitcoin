@@ -3,6 +3,10 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from "state/actions/updateSettings";
 import styled from "styled-components";
+import PrivateRoute from "routes/PrivateRoute";
+import { Switch, Route } from "react-router-dom";
+import AuthForm from "components/AuthForm";
+import Card from "components/Card";
 
 const User = () => {
   const { settings, settingsDispatch } = useContext(UserContext);
@@ -30,29 +34,17 @@ const User = () => {
   };
 
   return (
-    <Wrapper>
-      {settings.firstName} {settings.lastName}
-      <UserBox>
-        <MyTextField
-          name="firstName"
-          label="First Name"
-          variant="filled"
-          value={userDetails.firstName}
-          onChange={handleChange}
-        />
-        <MyTextField
-          color="primary"
-          name="lastName"
-          label="Last Name"
-          variant="filled"
-          value={userDetails.lastName}
-          onChange={handleChange}
-        />
-        <button onClick={() => handleSettingsChange(userDetails)}>
-          Save Changes
-        </button>
-      </UserBox>
-    </Wrapper>
+    <>
+      <PrivateRoute path="/user">
+        <Card title="hi" />
+      </PrivateRoute>
+      <Route path="/user/login">
+        <AuthForm type="login" />
+      </Route>
+      <Route path="/user/signup">
+        <AuthForm type="signup" />
+      </Route>
+    </>
   );
 };
 

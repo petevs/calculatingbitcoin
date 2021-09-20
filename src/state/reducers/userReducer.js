@@ -1,8 +1,8 @@
 export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 
 export const initialState = {
-  firstName: "Jane",
-  lastName: "VS",
+  firstName: "User",
+  lastName: "",
   colorMode: "dark",
   currency: "cad",
 };
