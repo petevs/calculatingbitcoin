@@ -8,6 +8,7 @@ import CurrencySelect from "./CurrencySelect";
 import { numberWithCommas } from "utils/numberFormatting";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import { Avatar } from "@mui/material";
 
 const Nav = () => {
   const { marketData } = useContext(MarketDataContext);
@@ -59,7 +60,7 @@ const Nav = () => {
         </ColOne>
         <CurrencySelect />
         <Link to="/user">
-          <ProfileImage src="https://avatars.githubusercontent.com/u/23281466?v=4" />
+          <Avatar />
         </Link>
       </Menu>
     </NavBar>
