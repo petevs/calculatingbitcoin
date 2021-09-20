@@ -4,7 +4,7 @@ import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from "state/actions/updateSettings";
 import styled from "styled-components";
 import PrivateRoute from "routes/PrivateRoute";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import AuthForm from "components/AuthForm";
 import Card from "components/Card";
 
@@ -33,18 +33,18 @@ const User = () => {
     }
   };
 
+  let match = useRouteMatch();
+
   return (
-    <>
-      <PrivateRoute path="/user">
-        <Card title="hi" />
-      </PrivateRoute>
-      <Route path="/user/login">
-        <AuthForm type="login" />
-      </Route>
-      <Route path="/user/signup">
-        <AuthForm type="signup" />
-      </Route>
-    </>
+    <p>hi</p>
+    // <Switch>
+    //   <Route path={`${match.path}/login`}>
+    //     <AuthForm type="login" />
+    //   </Route>
+    //   <Route path={`${match.path}/signup`}>
+    //     <AuthForm type="signup" />
+    //   </Route>
+    // </Switch>
   );
 };
 

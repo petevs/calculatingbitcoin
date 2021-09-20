@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
         userDispatch(setUser(initialState));
       }
       setPending(false);
-      console.log(user.uid);
     });
   }, []);
 

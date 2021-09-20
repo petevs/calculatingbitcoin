@@ -12,6 +12,8 @@ import SideBar from "components/sidebar/SideBar";
 import UserProvider from "state/contexts/UserContext";
 import { AuthProvider } from "state/contexts/Auth";
 import User from "pages/User";
+import PrivateRoute from "routes/PrivateRoute";
+import AuthForm from "components/AuthForm";
 
 function App() {
   return (
@@ -28,7 +30,12 @@ function App() {
                 {/* <Ticker /> */}
                 <Route exact path="/" component={Home} />
                 <Route path="/calculators" component={Calculators} />
-                <Route path="/user" render={() => <User />} />
+                <PrivateRoute path="/user" component={User} />
+                <Route path="/login" render={() => <AuthForm type="login" />} />
+                <Route
+                  path="/signup"
+                  render={() => <AuthForm type="signup" />}
+                />
               </Main>
             </Container>
           </MarketDataProvider>

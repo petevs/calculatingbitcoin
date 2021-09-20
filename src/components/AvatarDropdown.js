@@ -56,7 +56,7 @@ const AvatarDropdown = () => {
             </Heading>
           </Link>
           {!user.uid ? (
-            <LinkButton to="/user/login">Login</LinkButton>
+            <LinkButton to="/login">Login</LinkButton>
           ) : (
             <button
               onClick={() => auth.signOut().then(() => history.push("/"))}

@@ -45,12 +45,12 @@ const AuthForm = ({ type }) => {
   const generateLink = () => {
     if (type === "login") {
       return {
-        link: "/user/signup",
+        link: "/signup",
         text: "Don't have an account? Sign Up",
       };
     } else {
       return {
-        link: "/user/login",
+        link: "/login",
         text: "Already have an account? Log in",
       };
     }
