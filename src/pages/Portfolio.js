@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import Row from "components/Row";
+import NavDropDown from 'components/styledComponents/NavDropDown';
+import { styles } from "styles/theme";
+import SummaryRow from 'components/styledComponents/SummaryRow';
+import Scorecard from 'components/Scorecard';
+import { Modal } from '@mui/material';
 
 const Portfolio = () => {
 
@@ -26,13 +31,55 @@ const Portfolio = () => {
         e.preventDefault()
         setTransactions([...transactions, currentTransaction])
         setCurrentTransaction(initialTransaction)
-        console.log(transactions)
+        setOpen(false)
     }
 
 
+    const summaryValues = [
+        {
+            name: 'Portfolio Value',
+            prefix: '$',
+            suffix: '',
+            value: 1000000
+        },
+        {
+            name: 'ROI',
+            suffix: '%',
+            prefix: '',
+            value: 350
+        }
+    ]
+
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        backgroundColor: '#fff',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    }
+
+    const [open, setOpen] = useState(false)
+
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+
     return (
         <Wrapper>
-            I am the Portfolio
+            <h2>I am the Portfolio</h2>
+            <SummaryRow>
+                {summaryValues.map(item => {
+                    return( <Scorecard {...item} />)
+                })}
+            </SummaryRow>
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <div style={modalStyle}>
             <MyForm onSubmit={handleSubmit}>
                 <TextField 
                     label='date'
@@ -63,22 +110,29 @@ const Portfolio = () => {
                     Add Transaction
                 </button>
             </MyForm>
+                </div>
+            </Modal>
             <Results>
-                <h2>Transactions</h2>
+                <HeaderRow>
+                    <h2>Transactions</h2>
+                    <button
+                        onClick={handleOpen}
+                    >Add Transaction</button>
+                </HeaderRow>
                 <Row
-          item={{
-            col1: "Date",
-            col2: "Type",
-            col3: "Description",
-            col4: "Amount"
-          }}
-          itemClass="header"
-        />
-        <RowResults>
-          {transactions.map((item) => {
-              return <Row item={{...item}} />
-          })}
-        </RowResults>
+                    item={{
+                        col1: "Date",
+                        col2: "Type",
+                        col3: "Description",
+                        col4: "Amount"
+                    }}
+                    itemClass="header"
+                    />
+                    <RowResults>
+                    {transactions.map((item) => {
+                        return <Row item={{...item}} />
+                    })}
+                    </RowResults>
             </Results>
         </Wrapper>
     )
@@ -113,8 +167,55 @@ const Results = styled.div`
   }
 `;
 
+const HeaderRow = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  & h2 {
+      justify-self: start;
+  }
+  & button {
+      justify-self: end;
+      padding: .5rem;
+  }
+
+`
+
 const RowResults = styled.div`
   position: relative;
   height: 200px;
   overflow: auto;
+`;
+
+
+const MenuWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  min-width: 200px;
+
+  & a {
+    text-decoration: none;
+  }
+  & div {
+    padding: 0.5rem;
+    &:hover {
+      background-color: ${styles.backgroundColorHover};
+    }
+  }
+  & button {
+    border: 1px solid #fff;
+    padding: 0.5rem;
+    width: 75%;
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+    justify-self: center;
+    background-color: transparent;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    &:hover {
+      background-color: ${styles.backgroundColorHover};
+    }
+  }
 `;

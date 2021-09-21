@@ -8,6 +8,7 @@ import Scorecard from "components/Scorecard";
 import NumberFormat from "react-number-format";
 import CalculatorPage from "layouts/CalculatorPage";
 import { UserContext } from "state/contexts/UserContext";
+import SummaryRow from "components/styledComponents/SummaryRow";
 
 const DollarCostAverage = () => {
   const { settings, settingsDispatch } = useContext(UserContext);
@@ -254,13 +255,6 @@ const TwoCol = styled.div`
     display: flex;
     flex-direction: column-reverse;
   }
-`;
-
-const SummaryRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  padding: 1rem 0 1rem;
 `;
 
 const InputBox = styled.div`
