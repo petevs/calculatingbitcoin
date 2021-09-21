@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { auth } from "../firebase";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
+import CardWrapper from "components/CardWrapper";
+import CalculatorWrapper from "styledComponents/CalculatorWrapper";
 
 const AuthForm = ({ type }) => {
   const initialFormState = {
@@ -47,40 +49,43 @@ const AuthForm = ({ type }) => {
       return {
         link: "/signup",
         text: "Don't have an account? Sign Up",
+        title: "Sign Up"
       };
     } else {
       return {
         link: "/login",
         text: "Already have an account? Log in",
+        title: "Login"
       };
     }
   };
 
   return (
-    <>
-      <h2>{type}</h2>
-      <form onSubmit={handleSubmit}>
-        <FormControl size="small">
-          {formInputs.map((input) => (
-            <MyTextField
-              key={input.name}
-              name={input.name}
-              value={form[input.name]}
-              onChange={handleChange}
-              type={input.type}
-              variant="outlined"
-              label={input.name}
-              margin="dense"
-              required
-            />
-          ))}
-          <Button variant="contained" color="primary" type="submit">
-            {type}
-          </Button>
-        </FormControl>
-      </form>
-      <Link to={generateLink().link}>{generateLink().text}</Link>
-    </>
+    <CalculatorWrapper>
+      <CardWrapper>
+        <h2>{generateLink().title}</h2>
+        <MyForm onSubmit={handleSubmit}>
+            {formInputs.map((input) => (
+              <MyTextField
+                key={input.name}
+                name={input.name}
+                value={form[input.name]}
+                onChange={handleChange}
+                type={input.type}
+                variant="outlined"
+                label={input.name}
+                margin="dense"
+                required
+              />
+            ))}
+            <Button variant="contained" color="primary" type="submit">
+              {type}
+            </Button>
+        </MyForm>
+        <Link to={generateLink().link}>{generateLink().text}</Link>
+      </CardWrapper>
+    </CalculatorWrapper>
+
   );
 };
 
@@ -103,3 +108,9 @@ const MyTextField = styled(TextField)`
     filter: invert(1);
   }
 `;
+
+const MyForm = styled.form`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .25rem;
+`
