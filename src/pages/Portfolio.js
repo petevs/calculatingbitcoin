@@ -9,40 +9,12 @@ import { Modal } from '@mui/material';
 import { db } from 'firebase'
 import { AuthContext } from "state/contexts/Auth";
 import { UserContext } from "state/contexts/UserContext";
+import { updateSettings } from 'state/actions/updateSettings';
 
 const Portfolio = () => {
     
     const { user } = useContext(AuthContext);
-    const { portfolio } = useContext(UserContext)
-
-    //Establish today's date for add transaction default value
-    let todayDate = new Date();
-    todayDate = todayDate.toISOString().split("T")[0];
-
-
-
-    const initialTransaction = {
-        date: {todayDate}.toString(),
-        type: '',
-        description: '',
-        amount: 0
-    }
-
-    const [currentTransaction, setCurrentTransaction] = useState(initialTransaction)
-
-    const handleChange = (e) => {
-        setCurrentTransaction({
-            ...currentTransaction,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        db.collection('users').doc(user.uid).collection('transactions').doc().set(currentTransaction)
-        setCurrentTransaction(initialTransaction)
-        setOpen(false)
-    }
+    const { settingsDispatch, portfolio } = useContext(UserContext)
 
 
     const summaryValues = [
@@ -60,22 +32,15 @@ const Portfolio = () => {
         }
     ]
 
-    const modalStyle = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        backgroundColor: '#fff',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-    }
 
-    const [open, setOpen] = useState(false)
+    const handleOpen = () => {
 
-    const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
+            const payload = {
+                name: 'modalOpen',
+                value: true
+            }
+            settingsDispatch(updateSettings(payload))
+        }
 
     return (
         <Wrapper>
@@ -85,44 +50,7 @@ const Portfolio = () => {
                     return( <Scorecard {...item} />)
                 })}
             </SummaryRow>
-            <Modal
-                open={open}
-                onClose={handleClose}
-            >
-                <div style={modalStyle}>
-            <MyForm onSubmit={handleSubmit}>
-                <h3>Add Transaction</h3>
-                <TextField 
-                    label='date'
-                    type='date'
-                    defaultValue={todayDate}
-                    onChange={handleChange}
-                    name='date'
-                />
-                <TextField 
-                    label='type'
-                    value={currentTransaction.type}
-                    onChange={handleChange}
-                    name='type' 
-                />
-                <TextField 
-                    label='description'
-                    value={currentTransaction.description}
-                    onChange={handleChange}
-                    name='description' 
-                />
-                <TextField 
-                    label='amount'
-                    value={currentTransaction.amount}
-                    onChange={handleChange}
-                    name='amount' 
-                />
-                <button>
-                    Add Transaction
-                </button>
-            </MyForm>
-                </div>
-            </Modal>
+
             <Results>
                 <HeaderRow>
                     <h2>Transactions</h2>
@@ -156,16 +84,6 @@ export default Portfolio
 
 const Wrapper = styled.div`
     padding: 2rem;
-`
-
-const MyForm = styled.form`
-    display: grid;
-    grid-template-columns: 1fr;
-    padding: 2rem;
-    background-color: white;
-    & h3 {
-        margin-bottom: 1rem;
-    }
 `
 
 const Results = styled.div`

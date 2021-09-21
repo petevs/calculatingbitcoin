@@ -5,12 +5,19 @@ import NavDropDown from './styledComponents/NavDropDown';
 import MenuWrapper from './styledComponents/MenuWrapper';
 import MenuHeading from './styledComponents/MenuHeading';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { db } from 'firebase'
 import { AuthContext } from 'state/contexts/Auth';
+import MainModal from 'components/MainModal'
+import TransactionForm from './TransactionForm';
+import { UserContext } from "state/contexts/UserContext";
+import { updateSettings } from 'state/actions/updateSettings';
+
 
 const EditTransaction = (props) => {
 
     const { user } = useContext(AuthContext);
+    const { settingsDispatch } = useContext(UserContext)
 
     const [anchorEl, setAnchorEl] = useState(null)
 
@@ -28,6 +35,17 @@ const EditTransaction = (props) => {
     const handleDelete = () => {
         db.collection('users').doc(user.uid).collection('transactions').doc(props.id).delete()
         handleClose()
+    }
+
+    const handleOpen = () => {
+
+        console.log(props)
+
+        const payload = {
+            name: 'modalOpen',
+            value: true
+        }
+        settingsDispatch(updateSettings(payload))
     }
 
     return (
@@ -51,6 +69,12 @@ const EditTransaction = (props) => {
                   }}
             >
                 <MenuWrapper>
+                    <div onClick={handleOpen}>
+                        <MenuHeading>
+                            <EditIcon />
+                            Edit
+                        </MenuHeading>
+                    </div>
                     <div onClick={handleDelete}>
                         <MenuHeading>
                             <DeleteIcon />
@@ -59,6 +83,9 @@ const EditTransaction = (props) => {
                     </div>
                 </MenuWrapper>
             </NavDropDown>
+            {/* <MainModal>
+                <TransactionForm {...props} />
+            </MainModal> */}
         </div>
     )
 }
