@@ -3,8 +3,6 @@ import MarketDataProvider from "state/contexts/MarketData";
 import Home from "pages/Home";
 import Calculators from "pages/Calculators";
 import Nav from "components/Nav";
-import Ticker from "components/Ticker";
-
 import styled from "styled-components";
 
 import "./App.css";

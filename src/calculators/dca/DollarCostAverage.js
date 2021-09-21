@@ -11,7 +11,7 @@ import { UserContext } from "state/contexts/UserContext";
 import SummaryRow from "components/styledComponents/SummaryRow";
 
 const DollarCostAverage = () => {
-  const { settings, settingsDispatch } = useContext(UserContext);
+  const { settings } = useContext(UserContext);
 
   const convertDate = (x) => {
     const theDate = new Date(x);

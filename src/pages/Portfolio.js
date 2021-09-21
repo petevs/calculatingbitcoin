@@ -10,8 +10,13 @@ import { Modal } from '@mui/material';
 
 const Portfolio = () => {
 
+    let todayDate = new Date();
+    todayDate = todayDate.toISOString().split("T")[0];
+
+    console.log(todayDate.toString())
+
     const initialTransaction = {
-        date: '',
+        date: {todayDate}.toString(),
         type: '',
         description: '',
         amount: ''
@@ -81,10 +86,11 @@ const Portfolio = () => {
             >
                 <div style={modalStyle}>
             <MyForm onSubmit={handleSubmit}>
+                <h3>Add Transaction</h3>
                 <TextField 
                     label='date'
                     type='date'
-                    value={currentTransaction.date}
+                    defaultValue={todayDate}
                     onChange={handleChange}
                     name='date'
                 />
@@ -150,7 +156,9 @@ const MyForm = styled.form`
     grid-template-columns: 1fr;
     padding: 2rem;
     background-color: white;
-
+    & h3 {
+        margin-bottom: 1rem;
+    }
 `
 
 const Results = styled.div`
