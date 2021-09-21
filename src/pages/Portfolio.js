@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import Row from "components/Row";
-import NavDropDown from 'components/styledComponents/NavDropDown';
 import { styles } from "styles/theme";
 import SummaryRow from 'components/styledComponents/SummaryRow';
 import Scorecard from 'components/Scorecard';
 import { Modal } from '@mui/material';
 import { db } from 'firebase'
 import { AuthContext } from "state/contexts/Auth";
+import { UserContext } from "state/contexts/UserContext";
 
 const Portfolio = () => {
 
@@ -24,7 +24,8 @@ const Portfolio = () => {
         amount: ''
     }
 
-    const [transactions, setTransactions] = useState([{}])
+    const { portfolio } = useContext(UserContext)
+
     const [currentTransaction, setCurrentTransaction] = useState(initialTransaction)
 
     const handleChange = (e) => {
@@ -34,18 +35,9 @@ const Portfolio = () => {
         })
     }
 
-    useEffect(() => {
-        db.collection('users').doc(user.uid).collection('transactions').onSnapshot(snapshot => {
-            setTransactions(snapshot.docs.map(doc => doc.data()))
-            })
-    },[])
-
-
-
     const handleSubmit = (e) => {
         e.preventDefault()
         db.collection('users').doc(user.uid).collection('transactions').doc().set(currentTransaction)
-        setTransactions([...transactions, currentTransaction])
         setCurrentTransaction(initialTransaction)
         setOpen(false)
     }
@@ -146,7 +138,7 @@ const Portfolio = () => {
                     itemClass="header"
                     />
                     <RowResults>
-                    {transactions.map((item) => {
+                    {portfolio.transactions.map((item) => {
                         return <Row item={{...item}} />
                     })}
                     </RowResults>
@@ -204,6 +196,7 @@ const RowResults = styled.div`
   position: relative;
   height: 200px;
   overflow: auto;
+  scrollbar-color: light;
 `;
 
 
