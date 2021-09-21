@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import Row from "components/Row";
@@ -7,13 +7,15 @@ import { styles } from "styles/theme";
 import SummaryRow from 'components/styledComponents/SummaryRow';
 import Scorecard from 'components/Scorecard';
 import { Modal } from '@mui/material';
+import { db } from 'firebase'
+import { AuthContext } from "state/contexts/Auth";
 
 const Portfolio = () => {
 
     let todayDate = new Date();
     todayDate = todayDate.toISOString().split("T")[0];
 
-    console.log(todayDate.toString())
+    const { user } = useContext(AuthContext);
 
     const initialTransaction = {
         date: {todayDate}.toString(),
@@ -32,8 +34,17 @@ const Portfolio = () => {
         })
     }
 
+    useEffect(() => {
+        db.collection('users').doc(user.uid).collection('transactions').onSnapshot(snapshot => {
+            setTransactions(snapshot.docs.map(doc => doc.data()))
+            })
+    },[])
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault()
+        db.collection('users').doc(user.uid).collection('transactions').doc().set(currentTransaction)
         setTransactions([...transactions, currentTransaction])
         setCurrentTransaction(initialTransaction)
         setOpen(false)
