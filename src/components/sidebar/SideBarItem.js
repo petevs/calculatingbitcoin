@@ -1,13 +1,16 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { styles } from 'styles/theme'
 
 const SideBarItem = ({item}) => {
     return (
-        <Heading>
-            {item.icon}
-            {item.title}
-        </Heading>
+        <MyLink to={item.path}>
+            <Heading>
+                {item.icon}
+                {item.title}
+            </Heading>
+        </MyLink>
     )
 }
 
@@ -27,4 +30,7 @@ const Heading = styled.div`
     &:hover {
         background-color: ${styles.backgroundColorHover} !important;
     }
+`
+const MyLink = styled(Link)`
+    text-decoration: none;
 `

@@ -16,10 +16,12 @@ export const menuList = [
     {
         title: 'Portfolio',
         icon: <BusinessCenterIcon />,
+        path: '/portfolio'
     },
     {
         title: 'Current Market',
-        icon: <QueryStatsIcon />
+        icon: <QueryStatsIcon />,
+        path: '/current-market'
     },
     {
         title: 'Calculators',
