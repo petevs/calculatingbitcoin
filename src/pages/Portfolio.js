@@ -11,20 +11,22 @@ import { AuthContext } from "state/contexts/Auth";
 import { UserContext } from "state/contexts/UserContext";
 
 const Portfolio = () => {
+    
+    const { user } = useContext(AuthContext);
+    const { portfolio } = useContext(UserContext)
 
+    //Establish today's date for add transaction default value
     let todayDate = new Date();
     todayDate = todayDate.toISOString().split("T")[0];
 
-    const { user } = useContext(AuthContext);
+
 
     const initialTransaction = {
         date: {todayDate}.toString(),
         type: '',
         description: '',
-        amount: ''
+        amount: 0
     }
-
-    const { portfolio } = useContext(UserContext)
 
     const [currentTransaction, setCurrentTransaction] = useState(initialTransaction)
 
@@ -130,16 +132,18 @@ const Portfolio = () => {
                 </HeaderRow>
                 <Row
                     item={{
-                        col1: "Date",
-                        col2: "Type",
-                        col3: "Description",
-                        col4: "Amount"
+                        col1: "id",
+                        col2: "Date",
+                        col3: "Type",
+                        col4: "Description",
+                        col5: "Amount",
+                        col6: 'edit'
                     }}
                     itemClass="header"
                     />
                     <RowResults>
                     {portfolio.transactions.map((item) => {
-                        return <Row item={{...item}} />
+                        return <Row type='transaction' item={{...item}} />
                     })}
                     </RowResults>
             </Results>
@@ -197,37 +201,4 @@ const RowResults = styled.div`
   height: 200px;
   overflow: auto;
   scrollbar-color: light;
-`;
-
-
-const MenuWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  min-width: 200px;
-
-  & a {
-    text-decoration: none;
-  }
-  & div {
-    padding: 0.5rem;
-    &:hover {
-      background-color: ${styles.backgroundColorHover};
-    }
-  }
-  & button {
-    border: 1px solid #fff;
-    padding: 0.5rem;
-    width: 75%;
-    margin: 0.5rem 0;
-    border-radius: 0.5rem;
-    justify-self: center;
-    background-color: transparent;
-    color: #fff;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    &:hover {
-      background-color: ${styles.backgroundColorHover};
-    }
-  }
 `;

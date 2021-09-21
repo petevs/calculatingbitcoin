@@ -16,8 +16,13 @@ const UserProvider = ({children}) => {
 
     useEffect(() => {
         db.collection('users').doc(user.uid).collection('transactions').onSnapshot(snapshot => {
-            portfolioDispatch(updatePortfolioTransactions(snapshot.docs.map(doc => doc.data())))
-            })
+            portfolioDispatch(updatePortfolioTransactions(snapshot.docs.map(doc => {
+                const data = doc.data()
+                const id = doc.id
+                return { id, ...data}
+                })
+            ))
+        })
     },[])
 
 

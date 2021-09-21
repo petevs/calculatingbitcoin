@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import NavDropDown from "components/styledComponents/NavDropDown";
 import { Avatar, Button, MenuItem } from "@mui/material";
+import MenuWrapper from 'components/styledComponents/MenuWrapper'
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import styled from "styled-components";
@@ -9,6 +10,7 @@ import { Link, useHistory } from "react-router-dom";
 
 import { AuthContext } from "state/contexts/Auth";
 import { auth } from "firebase";
+import MenuHeading from "./styledComponents/MenuHeading";
 
 const AvatarDropdown = () => {
   const history = useHistory();
@@ -44,16 +46,16 @@ const AvatarDropdown = () => {
       >
         <MenuWrapper>
           <Link to="/user">
-            <Heading>
+            <MenuHeading>
               <PersonIcon />
               Profile
-            </Heading>
+            </MenuHeading>
           </Link>
           <Link to="/settings">
-            <Heading>
+            <MenuHeading>
               <SettingsIcon />
               Settings
-            </Heading>
+            </MenuHeading>
           </Link>
           {!user.uid ? (
             <LinkButton to="/login">Login</LinkButton>
@@ -76,53 +78,6 @@ const MyAvatar = styled(Avatar)`
   cursor: pointer;
 `;
 
-const MenuWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  min-width: 200px;
-
-  & a {
-    text-decoration: none;
-  }
-  & div {
-    padding: 0.5rem;
-    &:hover {
-      background-color: ${styles.backgroundColorHover};
-    }
-  }
-  & button {
-    border: 1px solid #fff;
-    padding: 0.5rem;
-    width: 75%;
-    margin: 0.5rem 0;
-    border-radius: 0.5rem;
-    justify-self: center;
-    background-color: transparent;
-    color: #fff;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    &:hover {
-      background-color: ${styles.backgroundColorHover};
-    }
-  }
-`;
-
-const Heading = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  min-width: 150px;
-  gap: 1.5rem;
-  font-size: 0.875rem;
-  color: rgb(255, 255, 255);
-  font-weight: 400;
-  cursor: pointer;
-
-  & img {
-    width: 30px;
-  }
-`;
 
 const LinkButton = styled(Link)`
   border: 1px solid #fff;

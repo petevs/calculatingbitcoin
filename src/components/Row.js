@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { numberWithCommas } from "utils/numberFormatting";
+import EditTransaction from "./EditTransaction";
 
 const Row = (props) => {
-  const { item, itemClass } = props;
+
+  const { item, itemClass, type } = props;
 
   const columns = [];
 
@@ -50,6 +52,11 @@ const Row = (props) => {
           </Cell>
         );
       })}
+
+      {
+        type === 'transaction'
+        && <Cell><EditTransaction {...item} /></Cell>
+      }
     </MyRow>
   );
 };
