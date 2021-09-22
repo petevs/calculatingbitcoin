@@ -1,20 +1,22 @@
 import React, { useState, useContext } from 'react'
-import { TextField } from '@material-ui/core'
+import { TextField, Modal } from '@material-ui/core'
 import styled from 'styled-components'
 import Row from "components/Row";
 import { styles } from "styles/theme";
 import SummaryRow from 'components/styledComponents/SummaryRow';
 import Scorecard from 'components/Scorecard';
-import { Modal } from '@mui/material';
 import { db } from 'firebase'
 import { AuthContext } from "state/contexts/Auth";
 import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from 'state/actions/updateSettings';
+import TransactionForm from 'components/TransactionForm';
+import MainModal from 'components/MainModal';
+import { updateEditingTransaction } from 'state/actions/updatePortfolio';
 
 const Portfolio = () => {
     
     const { user } = useContext(AuthContext);
-    const { settingsDispatch, portfolio } = useContext(UserContext)
+    const { settings, settingsDispatch, portfolio, portfolioDispatch } = useContext(UserContext)
 
 
     const summaryValues = [
@@ -42,6 +44,25 @@ const Portfolio = () => {
             settingsDispatch(updateSettings(payload))
         }
 
+    const handleClose = () => {
+
+        const initialTransaction = {
+            id: null,
+            date: '',
+            type: '',
+            description: '',
+            amount: 0
+        }
+
+
+        const payload = {
+            name: 'modalOpen',
+            value: false
+        }
+        settingsDispatch(updateSettings(payload))
+        portfolioDispatch(updateEditingTransaction({...initialTransaction}))
+    }
+
     return (
         <Wrapper>
             <h2>I am the Portfolio</h2>
@@ -50,7 +71,9 @@ const Portfolio = () => {
                     return( <Scorecard {...item} />)
                 })}
             </SummaryRow>
-
+            <MainModal open={settings.modalOpen} onClose={handleClose}>
+                <TransactionForm />
+            </MainModal>
             <Results>
                 <HeaderRow>
                     <h2>Transactions</h2>
@@ -70,9 +93,9 @@ const Portfolio = () => {
                     itemClass="header"
                     />
                     <RowResults>
-                    {portfolio.transactions.map((item) => {
-                        return <Row type='transaction' item={{...item}} />
-                    })}
+                        {portfolio.transactions.map((item) => {
+                            return <Row type='transaction' item={{...item}} />
+                        })}
                     </RowResults>
             </Results>
         </Wrapper>

@@ -1,43 +1,38 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button } from '@mui/material'
 import { db } from 'firebase'
-import { updateSettings } from 'state/actions/updateSettings'
-import { UserContext } from 'state/contexts/UserContext'
 import { AuthContext } from 'state/contexts/Auth'
 import MyTextField from './styledComponents/MyTextField'
+import { UserContext } from 'state/contexts/UserContext'
+import { updateEditingTransaction } from 'state/actions/updatePortfolio'
+import { updateSettings } from 'state/actions/updateSettings'
 
-const TransactionForm = (props) => {
+const TransactionForm = () => {
 
-    if(props){
-        console.log('ive got props')
-    }
-
-    const { settings, settingsDispatch } = useContext(UserContext)
     const { user } = useContext(AuthContext)
-
-    const handleClose = () => {
-        const payload = {
-            name: 'modalOpen',
-            value: !settings.modalOpen
-        }
-        settingsDispatch(updateSettings(payload))
-    }
+    const { portfolio, portfolioDispatch, settingsDispatch } = useContext(UserContext)
 
 
-    //Establish today's date for add transaction default value
+    // Establish today's date for add transaction default value
     let todayDate = new Date();
     todayDate = todayDate.toISOString().split("T")[0];
 
-    const initialTransaction = {
-        date: {todayDate}.toString(),
+    let initialTransaction = {
+        id: null,
+        date: '',
         type: '',
         description: '',
         amount: 0
     }
 
+    const [currentTransaction, setCurrentTransaction] = useState(portfolio.editing)
 
-    const [currentTransaction, setCurrentTransaction] = useState(initialTransaction)
+    useEffect(() => {
+        setCurrentTransaction(portfolio.editing.values)
+        console.log(portfolio.editing.id, portfolio.editing.values)
+    },[portfolio.editing])
+
 
     const handleChange = (e) => {
         setCurrentTransaction({
@@ -48,41 +43,64 @@ const TransactionForm = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        db.collection('users').doc(user.uid).collection('transactions').doc().set(currentTransaction)
-        setCurrentTransaction(initialTransaction)
-        handleClose()
+
+        if(portfolio.editing.id){
+            db.collection('users').doc(user.uid).collection('transactions').doc(portfolio.editing.id).update(currentTransaction)
+            setCurrentTransaction(initialTransaction)
+            portfolioDispatch(updateEditingTransaction({...initialTransaction}))
+
+            const payload = {
+                name: 'modalOpen',
+                value: false
+            }
+            settingsDispatch(updateSettings(payload))
+        }
+    
+        else {
+            db.collection('users').doc(user.uid).collection('transactions').doc().set(currentTransaction)
+            setCurrentTransaction(initialTransaction)
+            portfolioDispatch(updateEditingTransaction({...initialTransaction}))
+
+            const payload = {
+                name: 'modalOpen',
+                value: false
+            }
+            settingsDispatch(updateSettings(payload))
+        }
+        
+
     }
 
     return (
         <MyForm onSubmit={handleSubmit}>
-                <h3>{settings.modalType === 'addTransaction' ? 'Add Transaction' : 'Edit Transaction'}</h3>
+            <h3>{!portfolio.editing.id ? 'Add Transaction' : 'Edit Transaction'}</h3>
                 <MyTextField 
+                    name='date'
                     label='date'
                     type='date'
                     defaultValue={todayDate}
                     onChange={handleChange}
-                    name='date'
                 />
                 <MyTextField 
-                    label='type'
-                    value={currentTransaction.type}
-                    onChange={handleChange}
                     name='type' 
+                    label='type'
+                    // value={32}
+                    // onChange={handleChange}
                 />
                 <MyTextField 
+                    name='description' 
                     label='description'
                     value={currentTransaction.description}
                     onChange={handleChange}
-                    name='description' 
                 />
                 <MyTextField 
+                    name='amount' 
                     label='amount'
                     value={currentTransaction.amount}
                     onChange={handleChange}
-                    name='amount' 
                 />
                 <Button variant='outlined' color='primary' type='submit'>
-                {settings.modalType === 'addTransaction' ? 'Add Transaction' : 'Edit Transaction'}
+                    {!portfolio.editing.id ? 'Add Transaction' : 'Edit Transaction'}
                 </Button>
             </MyForm>
     )

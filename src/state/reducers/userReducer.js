@@ -4,7 +4,8 @@ export const initialState = {
   firstName: "User",
   lastName: "",
   colorMode: "dark",
-  currency: "cad"
+  currency: "cad",
+  modalOpen: false
 };
 
 export const userReducer = (state, action) => {

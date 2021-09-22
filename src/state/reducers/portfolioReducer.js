@@ -1,6 +1,7 @@
 export const UPDATE_PORTFOLIO = 'UPDATE_PORTFOLIO'
 export const UPDATE_PRICE = 'UPDATE_PRICE'
 export const UPDATE_PORTFOLIO_TRANSACTIONS = 'UPDATE_PORTFOLIO_TRANSACTIONS'
+export const UPDATE_EDITING_TRANSACTION = 'UPDATE_EDITING_TRANSACTION'
 
 export const initialPortfolio = {
     bitcoin: 0,
@@ -25,7 +26,17 @@ export const initialPortfolio = {
     },
     transactions: [
         {}
-    ]
+    ],
+    currentlyEditing: false,
+    editing: {
+        id: null,
+        values: {
+            type: '',
+            date: '',
+            description: '',
+            amount: 0,
+        }
+    }
 }
 
 
@@ -42,7 +53,22 @@ export const portfolioReducer = (state, action) => {
                 ...state,
                 transactions: action.payload
             }
-        default:
-            return state
+        case UPDATE_EDITING_TRANSACTION:
+            return {
+                ...state,
+                editing: {
+                    ...state.editing,
+                    id: action.payload.id,
+                    values: {
+                        ...state.values,
+                        type: action.payload.type,
+                        date: action.payload.date,
+                        description: action.payload.description,
+                        amount: action.payload.amount
+                        }
+                    }
+                }
+            default:
+                return state
+        }
     }
-}

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { formLabelClasses, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import NavDropDown from './styledComponents/NavDropDown';
 import MenuWrapper from './styledComponents/MenuWrapper';
 import MenuHeading from './styledComponents/MenuHeading';
@@ -8,16 +8,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { db } from 'firebase'
 import { AuthContext } from 'state/contexts/Auth';
-import MainModal from 'components/MainModal'
-import TransactionForm from './TransactionForm';
+
 import { UserContext } from "state/contexts/UserContext";
+import { updateEditingTransaction } from 'state/actions/updatePortfolio';
 import { updateSettings } from 'state/actions/updateSettings';
 
 
 const EditTransaction = (props) => {
 
     const { user } = useContext(AuthContext);
-    const { settingsDispatch } = useContext(UserContext)
+    const { settingsDispatch, portfolioDispatch } = useContext(UserContext)
 
     const [anchorEl, setAnchorEl] = useState(null)
 
@@ -37,28 +37,17 @@ const EditTransaction = (props) => {
         handleClose()
     }
 
-    const handleOpen = () => {
 
-        console.log(props)
-
+    const handleEditClick = () => {
         const payload = {
             name: 'modalOpen',
             value: true
         }
         settingsDispatch(updateSettings(payload))
+        portfolioDispatch(updateEditingTransaction({...props}))
+        handleClose()
     }
 
-    //Modal
-
-    const [modalOpen, setModalOpen] = useState(false)
-
-    const handleEditClick = () => {
-        setModalOpen(true)
-    }
-
-    const handleModalClose = () => {
-        setModalOpen(false)
-    }
 
     return (
         <div>
@@ -95,9 +84,6 @@ const EditTransaction = (props) => {
                     </div>
                 </MenuWrapper>
             </NavDropDown>
-            <MainModal open={modalOpen} onClose={handleModalClose}>
-                <TransactionForm {...props} />
-            </MainModal>
         </div>
     )
 }

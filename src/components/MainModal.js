@@ -1,7 +1,7 @@
 import { Modal } from '@mui/material'
 import React from 'react'
 
-const MainModal = ({open, onClose, children}) => {
+const MainModal = (props) => {
 
     const modalStyle = {
         position: 'absolute',
@@ -21,11 +21,12 @@ const MainModal = ({open, onClose, children}) => {
 
     return (
         <Modal
-            open={open}
-            onClose={onClose}
+            open={props.open}
+            onClose={props.onClose}
+            disableEnforceFocus
         >
             <div style={modalStyle}>
-                {children}
+                {props.children}
             </div>
         </Modal>
     )
