@@ -12,6 +12,10 @@ import { updateSettings } from 'state/actions/updateSettings';
 import TransactionForm from 'components/TransactionForm';
 import MainModal from 'components/MainModal';
 import { updateEditingTransaction } from 'state/actions/updatePortfolio';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import MyTableHead from 'components/styledComponents/MyTableHead';
+import MyTableRow from 'components/styledComponents/MyTableRow';
+import EditTransaction from 'components/EditTransaction';
 
 const Portfolio = () => {
     
@@ -77,26 +81,47 @@ const Portfolio = () => {
             <Results>
                 <HeaderRow>
                     <h2>Transactions</h2>
-                    <button
+                    <Button
+                        color='primary'
                         onClick={handleOpen}
-                    >Add Transaction</button>
+                    >Add Transaction</Button>
                 </HeaderRow>
-                <Row
-                    item={{
-                        col1: "id",
-                        col2: "Date",
-                        col3: "Type",
-                        col4: "Description",
-                        col5: "Amount",
-                        col6: 'edit'
-                    }}
-                    itemClass="header"
-                    />
-                    <RowResults>
-                        {portfolio.transactions.map((item) => {
-                            return <Row type='transaction' item={{...item}} />
-                        })}
-                    </RowResults>
+                    <Table>
+                        <MyTableHead>
+                            <TableRow>
+                                <TableCell>Date</TableCell>
+                                <TableCell>Type</TableCell>
+                                <TableCell>Description</TableCell>
+                                <TableCell>Amount</TableCell>
+                                <TableCell>Actions</TableCell>
+                            </TableRow>
+                        </MyTableHead>
+                        <TableBody>
+                            {
+                                portfolio.transactions.map((row) => (
+                                    <MyTableRow
+                                        key={row.id}
+                                    >
+                                        <TableCell>
+                                            {row.date}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.type}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.description}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.amount}
+                                        </TableCell>
+                                        <TableCell>
+                                            <EditTransaction {...row} />
+                                        </TableCell>
+                                    </MyTableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
             </Results>
         </Wrapper>
     )

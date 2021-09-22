@@ -84,8 +84,8 @@ const TransactionForm = () => {
                 <MyTextField 
                     name='type' 
                     label='type'
-                    // value={32}
-                    // onChange={handleChange}
+                    value={currentTransaction.type}
+                    onChange={handleChange}
                 />
                 <MyTextField 
                     name='description' 
