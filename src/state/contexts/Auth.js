@@ -1,3 +1,4 @@
+import { Backdrop, CircularProgress } from "@mui/material";
 import React, { useState, useReducer, useEffect, createContext } from "react";
 import { setUser } from "state/actions/setUser";
 import { auth } from "../../firebase";
@@ -21,7 +22,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   if (pending) {
-    return <>Loading...</>;
+    return (
+    <Backdrop sx={{ backgroundColor: 'black'}}>
+      <CircularProgress />
+    </Backdrop>);
   }
 
   return (
