@@ -17,7 +17,6 @@ const MarketDataProvider = ({children}) => {
             .then(res => {
                 const data = res.data.market_data
                 marketDataDispatch(setMarketData(data))
-                console.log(data.current_price[settings.currency])
             })
     },[settings.currency])
 

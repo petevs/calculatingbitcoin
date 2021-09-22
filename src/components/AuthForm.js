@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import CardWrapper from "components/CardWrapper";
 import CalculatorWrapper from "styledComponents/CalculatorWrapper";
+import MyTextField from "./styledComponents/MyTextField";
 
 const AuthForm = ({ type }) => {
   const initialFormState = {
@@ -90,24 +91,6 @@ const AuthForm = ({ type }) => {
 };
 
 export default AuthForm;
-
-const MyTextField = styled(TextField)`
-  & .MuiFormLabel-root {
-    color: #fff !important;
-  }
-
-  & .MuiInputBase-root {
-    color: #fff !important;
-  }
-
-  & .MuiOutlinedInput-notchedOutline {
-    border-color: #fff !important;
-  }
-
-  & ::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-  }
-`;
 
 const MyForm = styled.form`
   display: grid;

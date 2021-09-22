@@ -3,8 +3,6 @@ import MarketDataProvider from "state/contexts/MarketData";
 import Home from "pages/Home";
 import Calculators from "pages/Calculators";
 import Nav from "components/Nav";
-import Ticker from "components/Ticker";
-
 import styled from "styled-components";
 
 import "./App.css";
@@ -14,6 +12,7 @@ import { AuthProvider } from "state/contexts/Auth";
 import User from "pages/User";
 import PrivateRoute from "routes/PrivateRoute";
 import AuthForm from "components/AuthForm";
+import Portfolio from "pages/Portfolio";
 
 function App() {
   return (
@@ -27,7 +26,6 @@ function App() {
                 <Nav />
               </Header>
               <Main>
-                {/* <Ticker /> */}
                 <Route exact path="/" component={Home} />
                 <Route path="/calculators" component={Calculators} />
                 <PrivateRoute path="/user" component={User} />
@@ -36,6 +34,7 @@ function App() {
                   path="/signup"
                   render={() => <AuthForm type="signup" />}
                 />
+                <Route path='/portfolio' component={Portfolio} />
               </Main>
             </Container>
           </MarketDataProvider>
