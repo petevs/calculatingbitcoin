@@ -9,6 +9,7 @@ import { updateEditingTransaction } from 'state/actions/updatePortfolio'
 import { updateSettings } from 'state/actions/updateSettings'
 import { Select } from '@mui/material'
 import MySelect from './styledComponents/MySelect'
+import { StyledButton } from './styledComponents/Button'
 
 const TransactionForm = () => {
 
@@ -115,9 +116,9 @@ const TransactionForm = () => {
                     value={currentTransaction.amount}
                     onChange={handleChange}
                 />
-                <Button variant='outlined' color='primary' type='submit'>
+                <StyledButton primary type='submit'>
                     {!portfolio.editing.id ? 'Add Transaction' : 'Edit Transaction'}
-                </Button>
+                </StyledButton>
             </MyForm>
     )
 }
