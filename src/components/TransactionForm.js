@@ -1,12 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button } from '@mui/material'
+import { Button, FormControl, InputLabel, MenuItem } from '@mui/material'
 import { db } from 'firebase'
 import { AuthContext } from 'state/contexts/Auth'
 import MyTextField from './styledComponents/MyTextField'
 import { UserContext } from 'state/contexts/UserContext'
 import { updateEditingTransaction } from 'state/actions/updatePortfolio'
 import { updateSettings } from 'state/actions/updateSettings'
+import { Select } from '@mui/material'
+import MySelect from './styledComponents/MySelect'
 
 const TransactionForm = () => {
 
@@ -81,12 +83,26 @@ const TransactionForm = () => {
                     defaultValue={todayDate}
                     onChange={handleChange}
                 />
-                <MyTextField 
+                {/* <MyTextField 
                     name='type' 
                     label='type'
                     value={currentTransaction.type}
                     onChange={handleChange}
-                />
+                /> */}
+                <FormControl fullWidth>
+                    <InputLabel id='type'>Type</InputLabel>
+                    <Select
+                        name='type' 
+                        id='type'
+                        label='type'
+                        value={currentTransaction.type}
+                        onChange={handleChange}
+                        defaultValue={portfolio.editing.values.type}
+                    >
+                        <MenuItem value='Purchase'>Purchase</MenuItem>
+                        <MenuItem value='Sale'>Sale</MenuItem>
+                    </Select>
+                </FormControl>
                 <MyTextField 
                     name='description' 
                     label='description'
