@@ -29,7 +29,7 @@ const Portfolio = () => {
             name: 'Portfolio Value',
             prefix: '$',
             suffix: '',
-            value: 1000000
+            value: portfolio.calculatedTotal()
         },
         {
             name: 'ROI',

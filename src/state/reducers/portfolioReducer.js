@@ -36,6 +36,11 @@ export const initialPortfolio = {
             description: '',
             amount: 0,
         }
+    },
+    calculatedTotal: function(){
+        let total = 0
+        this.transactions.map(trans => (total += Number(trans.amount) ))
+        return total
     }
 }
 
