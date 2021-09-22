@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButton } from '@mui/material';
+import { formLabelClasses, IconButton } from '@mui/material';
 import NavDropDown from './styledComponents/NavDropDown';
 import MenuWrapper from './styledComponents/MenuWrapper';
 import MenuHeading from './styledComponents/MenuHeading';
@@ -48,6 +48,18 @@ const EditTransaction = (props) => {
         settingsDispatch(updateSettings(payload))
     }
 
+    //Modal
+
+    const [modalOpen, setModalOpen] = useState(false)
+
+    const handleEditClick = () => {
+        setModalOpen(true)
+    }
+
+    const handleModalClose = () => {
+        setModalOpen(false)
+    }
+
     return (
         <div>
             <IconButton
@@ -69,7 +81,7 @@ const EditTransaction = (props) => {
                   }}
             >
                 <MenuWrapper>
-                    <div onClick={handleOpen}>
+                    <div onClick={handleEditClick}>
                         <MenuHeading>
                             <EditIcon />
                             Edit
@@ -83,9 +95,9 @@ const EditTransaction = (props) => {
                     </div>
                 </MenuWrapper>
             </NavDropDown>
-            {/* <MainModal>
+            <MainModal open={modalOpen} onClose={handleModalClose}>
                 <TransactionForm {...props} />
-            </MainModal> */}
+            </MainModal>
         </div>
     )
 }

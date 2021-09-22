@@ -1,19 +1,7 @@
 import { Modal } from '@mui/material'
-import React, { useContext } from 'react'
-import { updateSettings } from 'state/actions/updateSettings'
-import { UserContext } from 'state/contexts/UserContext'
+import React from 'react'
 
-const MainModal = ({children}) => {
-
-    const { settings, settingsDispatch } = useContext(UserContext)
-
-    const handleClose = () => {
-        const payload = {
-            name: 'modalOpen',
-            value: !settings.modalOpen
-        }
-        settingsDispatch(updateSettings(payload))
-    }
+const MainModal = ({open, onClose, children}) => {
 
     const modalStyle = {
         position: 'absolute',
@@ -33,8 +21,8 @@ const MainModal = ({children}) => {
 
     return (
         <Modal
-            open={settings.modalOpen}
-            onClose={handleClose}
+            open={open}
+            onClose={onClose}
         >
             <div style={modalStyle}>
                 {children}
