@@ -12,10 +12,11 @@ import { updateSettings } from 'state/actions/updateSettings';
 import TransactionForm from 'components/TransactionForm';
 import MainModal from 'components/MainModal';
 import { updateEditingTransaction } from 'state/actions/updatePortfolio';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import MyTableHead from 'components/styledComponents/MyTableHead';
 import MyTableRow from 'components/styledComponents/MyTableRow';
 import EditTransaction from 'components/EditTransaction';
+import { StyledButton } from 'components/styledComponents/Button'
 
 const Portfolio = () => {
     
@@ -81,10 +82,10 @@ const Portfolio = () => {
             <Results>
                 <HeaderRow>
                     <h2>Transactions</h2>
-                    <Button
-                        color='primary'
+                    <StyledButton
+                        primary
                         onClick={handleOpen}
-                    >Add Transaction</Button>
+                    >Add Transaction</StyledButton>
                 </HeaderRow>
                     <Table>
                         <MyTableHead>

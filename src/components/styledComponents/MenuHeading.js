@@ -1,17 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const MenuHeading = ({children}) => {
-    return (
-        <Wrapper>
-            {children}
-        </Wrapper>
-    )
-}
-
-export default MenuHeading
-
-const Wrapper = styled.div`
+const MenuHeading = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -26,3 +16,5 @@ const Wrapper = styled.div`
     width: 30px;
   }
 `;
+
+export default MenuHeading

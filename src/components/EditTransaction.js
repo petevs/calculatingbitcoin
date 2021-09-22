@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton } from '@mui/material';
 import NavDropDown from './styledComponents/NavDropDown';
-import MenuWrapper from './styledComponents/MenuWrapper';
+import { MenuWrapper } from './styledComponents/MenuWrapper';
 import MenuHeading from './styledComponents/MenuHeading';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';

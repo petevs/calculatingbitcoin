@@ -2,15 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { TextField } from '@mui/material'
 
-const MyTextField = (props) => {
-    return (
-        <StyledField {...props} autoComplete="off"/>
-    )
-}
 
-export default MyTextField
-
-const StyledField = styled(TextField)`
+const MyTextField = styled(TextField).attrs({
+  autoComplete: "off"
+})`
   & .MuiFormLabel-root {
     color: #fff !important;
   }
@@ -27,4 +22,6 @@ const StyledField = styled(TextField)`
     filter: invert(1);
   }
 `;
+
+export default MyTextField
 

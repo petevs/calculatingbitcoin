@@ -3,7 +3,8 @@ import MarketDataProvider from "state/contexts/MarketData";
 import Home from "pages/Home";
 import Calculators from "pages/Calculators";
 import Nav from "components/Nav";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import { theme } from 'theme'
 
 import "./App.css";
 import SideBar from "components/sidebar/SideBar";
@@ -14,33 +15,36 @@ import PrivateRoute from "routes/PrivateRoute";
 import AuthForm from "components/AuthForm";
 import Portfolio from "pages/Portfolio";
 
+
 function App() {
   return (
-    <AuthProvider>
-      <UserProvider>
-        <Router>
-          <MarketDataProvider>
-            <Container>
-              <SideBar />
-              <Header>
-                <Nav />
-              </Header>
-              <Main>
-                <Route exact path="/" component={Home} />
-                <Route path="/calculators" component={Calculators} />
-                <PrivateRoute path="/user" component={User} />
-                <Route path="/login" render={() => <AuthForm type="login" />} />
-                <Route
-                  path="/signup"
-                  render={() => <AuthForm type="signup" />}
-                />
-                <Route path='/portfolio' component={Portfolio} />
-              </Main>
-            </Container>
-          </MarketDataProvider>
-        </Router>
-      </UserProvider>
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <UserProvider>
+          <Router>
+            <MarketDataProvider>
+              <Container>
+                <SideBar />
+                <Header>
+                  <Nav />
+                </Header>
+                <Main>
+                  <Route exact path="/" component={Home} />
+                  <Route path="/calculators" component={Calculators} />
+                  <PrivateRoute path="/user" component={User} />
+                  <Route path="/login" render={() => <AuthForm type="login" />} />
+                  <Route
+                    path="/signup"
+                    render={() => <AuthForm type="signup" />}
+                  />
+                  <Route path='/portfolio' component={Portfolio} />
+                </Main>
+              </Container>
+            </MarketDataProvider>
+          </Router>
+        </UserProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
