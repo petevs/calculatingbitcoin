@@ -4,6 +4,7 @@ import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioRedu
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
 import { db } from 'firebase'
 import { AuthContext } from './Auth'
+import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
 
 export const UserContext = createContext()
 
@@ -13,6 +14,7 @@ const UserProvider = ({children}) => {
 
     const [settings, settingsDispatch] = useReducer(userReducer, initialState)
     const [portfolio, portfolioDispatch] = useReducer(portfolioReducer, initialPortfolio)
+    const [calculators, calculatorsDispatch] = useReducer(calculatorReducer, initialCalculators)
 
     useEffect(() => {
         db.collection('users').doc(user.uid).collection('transactions').onSnapshot(snapshot => {
@@ -32,7 +34,9 @@ const UserProvider = ({children}) => {
                 settings,
                 settingsDispatch,
                 portfolio,
-                portfolioDispatch
+                portfolioDispatch,
+                calculators,
+                calculatorsDispatch
             }}
         >
             {children}

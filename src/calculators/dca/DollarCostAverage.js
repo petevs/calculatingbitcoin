@@ -9,110 +9,132 @@ import NumberFormat from "react-number-format";
 import CalculatorPage from "layouts/CalculatorPage";
 import { UserContext } from "state/contexts/UserContext";
 import SummaryRow from "components/styledComponents/SummaryRow";
+import { updateDcaCalculator } from "state/actions/updateCalculators";
 
 const DollarCostAverage = () => {
-  const { settings } = useContext(UserContext);
+  const { settings, calculators, calculatorsDispatch } = useContext(UserContext);
 
-  const convertDate = (x) => {
-    const theDate = new Date(x);
-    return theDate.toLocaleDateString();
-  };
+  const { dca } = calculators
+  const { inputs, data, calculations} = dca
 
-  let todayDate = new Date();
-  todayDate = todayDate.toISOString().split("T")[0];
+  useEffect(() => {
+    console.log(inputs)
+  },[dca])
 
-  const getTimeBetweenDates = (x) => {
-    const today = new Date();
-    const start = new Date(x);
 
-    const diff_in_time = today.getTime() - start.getTime();
-    const diff_in_days = diff_in_time / (1000 * 3600 * 24);
+  // const convertDate = (x) => {
+  //   const theDate = new Date(x);
+  //   return theDate.toLocaleDateString();
+  // };
 
-    return Math.round(diff_in_days);
-  };
+  // let todayDate = new Date();
+  // todayDate = todayDate.toISOString().split("T")[0];
 
-  const [daysBtwn, setDaysBtwn] = useState(getTimeBetweenDates("2021-01-01"));
-  const [prices, setPrices] = useState([]);
-  const [inputs, setInputs] = useState({
-    purchaseAmount: "5",
-  });
-  const [lastEntry, setLastEntry] = useState(null);
+  // const getTimeBetweenDates = (x) => {
+  //   const today = new Date();
+  //   const start = new Date(x);
+
+  //   const diff_in_time = today.getTime() - start.getTime();
+  //   const diff_in_days = diff_in_time / (1000 * 3600 * 24);
+
+  //   return Math.round(diff_in_days);
+  // };
+
+  // const [daysBtwn, setDaysBtwn] = useState(getTimeBetweenDates("2021-01-01"));
+  // const [prices, setPrices] = useState([]);
+  // const [inputs, setInputs] = useState({
+  //   purchaseAmount: "5",
+  // });
+  // const [lastEntry, setLastEntry] = useState(null);
 
   const newHandleChange = (val, fName) => {
-    setInputs({
-      ...inputs,
-      [fName]: val,
-    });
+    // setInputs({
+    //   ...inputs,
+    //   [fName]: val,
+    // });
+    const payload = {
+      name: fName,
+      value: val
+    }
+    calculatorsDispatch(updateDcaCalculator(payload))
   };
 
   const handleDateChange = (e) => {
-    setDaysBtwn(getTimeBetweenDates(e.target.value));
-  };
-
-  const getValues = () => {
-    axios
-      .get(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${daysBtwn}&interval=daily`
-      )
-      .then((res) => {
-        const data = res.data.prices;
-        const historicalData = [];
-
-        let runningBal = 0;
-        let totalInvested = 0;
-
-        data.map((item) => {
-          let friendlyDate = convertDate(item[0]);
-
-          const price = Math.round(item[1]);
-          const bitcoinAdded = Number(
-            (inputs.purchaseAmount / Math.round(item[1])).toFixed(8)
-          );
-
-          runningBal = runningBal + bitcoinAdded;
-
-          totalInvested = totalInvested + Number(inputs.purchaseAmount);
-
-          const value = Number((price * runningBal).toFixed(2));
-          const profit = value - totalInvested;
-
-          const roi = ((value - totalInvested) / totalInvested) * 100;
-
-          historicalData.push({
-            date: friendlyDate,
-            price: price,
-            bitcoinAdded: bitcoinAdded,
-            bal: runningBal.toFixed(8),
-            value: value,
-            totalInvested: totalInvested,
-            roi: `${roi.toFixed(2)}%`,
-            profit: Math.round(profit),
-          });
-        });
-
-        setPrices(historicalData);
-      });
-  };
-
-  useEffect(() => {
-    if (prices.length > 1) {
-      const latestEntry = prices[prices.length - 1];
-      // const averageCost = latestEntry.totalInvested
-
-      setLastEntry({
-        ...latestEntry,
-        averageCost: Math.round(latestEntry.totalInvested / latestEntry.bal),
-      });
+    const payload = {
+      name: e.target.id,
+      value: e.target.value
     }
-  }, [prices]);
+    calculatorsDispatch(updateDcaCalculator(payload))
+  }
 
-  useEffect(() => {
-    getValues();
-  }, [settings.currency]);
+  // const handleDateChange = (e) => {
+  //   setDaysBtwn(getTimeBetweenDates(e.target.value));
+  // };
+
+  // const getValues = () => {
+  //   axios
+  //     .get(
+  //       `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${daysBtwn}&interval=daily`
+  //     )
+  //     .then((res) => {
+  //       const data = res.data.prices;
+  //       const historicalData = [];
+
+  //       let runningBal = 0;
+  //       let totalInvested = 0;
+
+  //       data.map((item) => {
+  //         let friendlyDate = convertDate(item[0]);
+
+  //         const price = Math.round(item[1]);
+  //         const bitcoinAdded = Number(
+  //           (inputs.purchaseAmount / Math.round(item[1])).toFixed(8)
+  //         );
+
+  //         runningBal = runningBal + bitcoinAdded;
+
+  //         totalInvested = totalInvested + Number(input.purchaseAmount);
+
+  //         const value = Number((price * runningBal).toFixed(2));
+  //         const profit = value - totalInvested;
+
+  //         const roi = ((value - totalInvested) / totalInvested) * 100;
+
+  //         historicalData.push({
+  //           date: friendlyDate,
+  //           price: price,
+  //           bitcoinAdded: bitcoinAdded,
+  //           bal: runningBal.toFixed(8),
+  //           value: value,
+  //           totalInvested: totalInvested,
+  //           roi: `${roi.toFixed(2)}%`,
+  //           profit: Math.round(profit),
+  //         });
+  //       });
+
+  //       setPrices(historicalData);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (prices.length > 1) {
+  //     const latestEntry = prices[prices.length - 1];
+  //     // const averageCost = latestEntry.totalInvested
+
+  //     setLastEntry({
+  //       ...latestEntry,
+  //       averageCost: Math.round(latestEntry.totalInvested / latestEntry.bal),
+  //     });
+  //   }
+  // }, [prices]);
+
+  // useEffect(() => {
+  //   getValues();
+  // }, [settings.currency]);
 
   return (
     <CalculatorPage title="Dollar Cost Average">
-      <SummaryRow>
+      {/* <SummaryRow>
         <Scorecard
           // value={!condition(prices) ? '' : prices[prices.length - 1].value}
           value={!lastEntry ? "" : lastEntry.value}
@@ -158,6 +180,7 @@ const DollarCostAverage = () => {
           })}
           currency={settings.currency}
         />
+        */}
 
         <InputBox>
           <h3>DCA Settings</h3>
@@ -176,7 +199,7 @@ const DollarCostAverage = () => {
             autoComplete="off"
           />
           <MyCalField
-            id="start"
+            id="startDate"
             label="Start Date"
             type="date"
             variant="outlined"
@@ -184,20 +207,21 @@ const DollarCostAverage = () => {
             onChange={handleDateChange}
             defaultValue={"2021-01-01"}
             inputProps={{
-              max: todayDate,
+              max: inputs.today(),
             }}
           />
-          <Button
+          {/* <Button
             color="secondary"
             variant="contained"
             onClick={getValues}
             size="large"
           >
             Calculate
-          </Button>
+          </Button> */}
         </InputBox>
-      </TwoCol>
 
+      {/*
+      </TwoCol>
       <Results>
         <h3>Details</h3>
         <Row
@@ -218,7 +242,7 @@ const DollarCostAverage = () => {
             return <Row item={{ ...item }} />;
           })}
         </RowResults>
-      </Results>
+      </Results> */}
     </CalculatorPage>
   );
 };
