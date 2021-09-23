@@ -1,29 +1,23 @@
 import React, { useState, useContext } from 'react'
-import { TextField, Modal } from '@material-ui/core'
 import styled from 'styled-components'
-import Row from "components/Row";
-import { styles } from "styles/theme";
 import SummaryRow from 'components/styledComponents/SummaryRow';
 import Scorecard from 'components/Scorecard';
-import { db } from 'firebase'
-import { AuthContext } from "state/contexts/Auth";
 import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from 'state/actions/updateSettings';
 import TransactionForm from 'components/TransactionForm';
 import MainModal from 'components/MainModal';
 import { updateEditingTransaction } from 'state/actions/updatePortfolio';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import MyTableHead from 'components/styledComponents/MyTableHead';
 import MyTableRow from 'components/styledComponents/MyTableRow';
 import EditTransaction from 'components/EditTransaction';
 import { StyledButton } from 'components/styledComponents/Button'
+import PortfolioChart from 'components/PortfolioChart'
+import CalculatorPage from 'layouts/CalculatorPage';
 
 const Portfolio = () => {
     
-    const { user } = useContext(AuthContext);
     const { settings, settingsDispatch, portfolio, portfolioDispatch } = useContext(UserContext)
-
-    console.log(portfolio.transactions)
 
     const summaryValues = [
         {
@@ -88,13 +82,20 @@ const Portfolio = () => {
     }
 
     return (
-        <Wrapper>
-            <h2>I am the Portfolio</h2>
+        <CalculatorPage title='Portfolio'>
             <SummaryRow>
                 {summaryValues.map(item => {
                     return( <Scorecard {...item} />)
                 })}
             </SummaryRow>
+            <PortfolioChart
+                dates={portfolio.calculatedTransactions().map((item) => {
+                return item.date;
+                })}
+                data={portfolio.calculatedTransactions().map((item) => {
+                return item.runningBal;
+                })}
+            />
             <MainModal open={settings.modalOpen} onClose={handleClose}>
                 <TransactionForm />
             </MainModal>
@@ -151,7 +152,7 @@ const Portfolio = () => {
                         </TableBody>
                     </Table>
             </Results>
-        </Wrapper>
+        </CalculatorPage>
     )
 }
 
