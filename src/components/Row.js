@@ -9,39 +9,39 @@ const Row = (props) => {
 
   const columns = [];
 
-  for (const key in item) {
-    let valClass;
-    let theItem = item[key];
+  // for (const key in item) {
+  //   let valClass;
+  //   let theItem = item[key];
 
-    if (key === "roi") {
-      let newVal = theItem.substring(0, theItem.length - 1);
-      newVal = Number(newVal);
-      if (newVal < 0) {
-        valClass = "neg";
-      } else {
-        valClass = "pos";
-      }
-    }
+  //   if (key === "roi") {
+  //     let newVal = theItem.substring(0, theItem.length - 1);
+  //     newVal = Number(newVal);
+  //     if (newVal < 0) {
+  //       valClass = "neg";
+  //     } else {
+  //       valClass = "pos";
+  //     }
+  //   }
 
-    if (key === "profit") {
-      if (item[key] < 0) {
-        valClass = "neg";
-        theItem = `-$${numberWithCommas(item[key].toFixed()).slice(1)}`;
-      } else {
-        valClass = "pos";
-        theItem = `$${numberWithCommas(theItem)}`;
-      }
-    }
+  //   if (key === "profit") {
+  //     if (item[key] < 0) {
+  //       valClass = "neg";
+  //       theItem = `-$${numberWithCommas(item[key].toFixed()).slice(1)}`;
+  //     } else {
+  //       valClass = "pos";
+  //       theItem = `$${numberWithCommas(theItem)}`;
+  //     }
+  //   }
 
-    if (key.match(/^(price|value|totalInvested)$/)) {
-      theItem = `$${numberWithCommas(theItem)}`;
-    }
+  //   if (key.match(/^(price|value|totalInvested)$/)) {
+  //     theItem = `$${numberWithCommas(theItem)}`;
+  //   }
 
-    columns.push({
-      val: theItem,
-      valClass: valClass,
-    });
-  }
+  //   columns.push({
+  //     val: theItem,
+  //     valClass: valClass,
+  //   });
+  // }
 
   return (
     <MyRow className={itemClass}>
