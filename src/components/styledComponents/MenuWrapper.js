@@ -2,17 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { styles } from "styles/theme";
 
-const MenuWrapper = ({children}) => {
-    return (
-        <Wrapper>
-            {children}
-        </Wrapper>
-    )
-}
 
-export default MenuWrapper
-
-const Wrapper = styled.div`
+export const MenuWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   min-width: 200px;

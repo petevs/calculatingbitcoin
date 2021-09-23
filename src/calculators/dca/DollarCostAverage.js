@@ -1,159 +1,133 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import Row from "components/Row";
-import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
+import NumberFormat from "react-number-format";
+
+//CONTEXT & ACTIONS
+import { UserContext } from "state/contexts/UserContext";
+import { updateDcaCalculator, updateDcaHistoricalData } from "state/actions/updateCalculators";
+
+//PAGES & COMPONENTS
+import CalculatorPage from "layouts/CalculatorPage";
 import MyChart from "components/MyChart";
 import Scorecard from "components/Scorecard";
-import NumberFormat from "react-number-format";
-import CalculatorPage from "layouts/CalculatorPage";
-import { UserContext } from "state/contexts/UserContext";
+
+
+//STYLED COMPONENTS
+import MyTableHead from 'components/styledComponents/MyTableHead';
+import MyTableRow from 'components/styledComponents/MyTableRow';
 import SummaryRow from "components/styledComponents/SummaryRow";
 
+
+//MATERIAL UI
+import { Button, TextField } from "@material-ui/core";
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
+
 const DollarCostAverage = () => {
-  const { settings } = useContext(UserContext);
 
-  const convertDate = (x) => {
-    const theDate = new Date(x);
-    return theDate.toLocaleDateString();
-  };
+  const { settings, calculators, calculatorsDispatch } = useContext(UserContext);
+  const { dca } = calculators
 
-  let todayDate = new Date();
-  todayDate = todayDate.toISOString().split("T")[0];
 
-  const getTimeBetweenDates = (x) => {
-    const today = new Date();
-    const start = new Date(x);
-
-    const diff_in_time = today.getTime() - start.getTime();
-    const diff_in_days = diff_in_time / (1000 * 3600 * 24);
-
-    return Math.round(diff_in_days);
-  };
-
-  const [daysBtwn, setDaysBtwn] = useState(getTimeBetweenDates("2021-01-01"));
-  const [prices, setPrices] = useState([]);
-  const [inputs, setInputs] = useState({
-    purchaseAmount: "5",
-  });
-  const [lastEntry, setLastEntry] = useState(null);
+const [userInputs, setUserInputs] = useState({
+  purchaseAmount: dca.purchaseAmount,
+  startDate: dca.startDate
+})
 
   const newHandleChange = (val, fName) => {
-    setInputs({
-      ...inputs,
-      [fName]: val,
-    });
+    // const payload = {
+    //   name: fName,
+    //   value: val
+    // }
+    setUserInputs({
+      ...userInputs,
+      [fName]: val
+    })
+    // calculatorsDispatch(updateDcaCalculator(payload))
   };
 
   const handleDateChange = (e) => {
-    setDaysBtwn(getTimeBetweenDates(e.target.value));
-  };
+    // const payload = {
+    //   name: e.target.id,
+    //   value: e.target.value
+    // }
+    setUserInputs({
+      ...userInputs,
+      [e.target.id]: e.target.value
+    })
+    // calculatorsDispatch(updateDcaCalculator(payload))
+  }
+
+  const updateState = () => {
+    for (const key in userInputs){
+      const payload = {
+        name: key,
+        value: userInputs[key]
+      }
+      calculatorsDispatch(updateDcaCalculator(payload))
+    }
+  }
+
 
   const getValues = () => {
-    axios
-      .get(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${daysBtwn}&interval=daily`
-      )
-      .then((res) => {
-        const data = res.data.prices;
-        const historicalData = [];
-
-        let runningBal = 0;
-        let totalInvested = 0;
-
-        data.map((item) => {
-          let friendlyDate = convertDate(item[0]);
-
-          const price = Math.round(item[1]);
-          const bitcoinAdded = Number(
-            (inputs.purchaseAmount / Math.round(item[1])).toFixed(8)
-          );
-
-          runningBal = runningBal + bitcoinAdded;
-
-          totalInvested = totalInvested + Number(inputs.purchaseAmount);
-
-          const value = Number((price * runningBal).toFixed(2));
-          const profit = value - totalInvested;
-
-          const roi = ((value - totalInvested) / totalInvested) * 100;
-
-          historicalData.push({
-            date: friendlyDate,
-            price: price,
-            bitcoinAdded: bitcoinAdded,
-            bal: runningBal.toFixed(8),
-            value: value,
-            totalInvested: totalInvested,
-            roi: `${roi.toFixed(2)}%`,
-            profit: Math.round(profit),
-          });
-        });
-
-        setPrices(historicalData);
-      });
-  };
-
-  useEffect(() => {
-    if (prices.length > 1) {
-      const latestEntry = prices[prices.length - 1];
-      // const averageCost = latestEntry.totalInvested
-
-      setLastEntry({
-        ...latestEntry,
-        averageCost: Math.round(latestEntry.totalInvested / latestEntry.bal),
-      });
-    }
-  }, [prices]);
+    updateState()
+      axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${dca.timeBetween()}&interval=daily`)
+              .then((res) => {
+                const data = res.data.prices;
+                calculatorsDispatch(updateDcaHistoricalData(data))
+              })}
 
   useEffect(() => {
     getValues();
   }, [settings.currency]);
+
+
 
   return (
     <CalculatorPage title="Dollar Cost Average">
       <SummaryRow>
         <Scorecard
           // value={!condition(prices) ? '' : prices[prices.length - 1].value}
-          value={!lastEntry ? "" : lastEntry.value}
+          value={!dca.lastEntry() ? "" : dca.lastEntry().value}
           name={`Portfolio Value (${settings.currency})`}
           prefix="$"
         />
         <Scorecard
-          value={!lastEntry ? "" : lastEntry.bal}
+          value={!dca.lastEntry() ? "" : dca.lastEntry().runningBal}
           name="Bitcoin Balance"
         />
         <Scorecard
-          value={!lastEntry ? "" : lastEntry.totalInvested}
+          value={!dca.lastEntry() ? "" : dca.lastEntry().totalInvested}
           name={`Total Invested (${settings.currency})`}
           prefix="$"
         />
         <Scorecard
-          value={!lastEntry ? "" : lastEntry.averageCost}
+          value={!dca.lastEntry() ? "" : dca.lastEntry().averageCost}
           name="Avg. BTC Purchase Price"
           prefix="$"
         />
         <Scorecard
-          value={!lastEntry ? "" : lastEntry.profit}
+          value={!dca.lastEntry() ? "" : dca.lastEntry().profit}
           name="Profit"
           prefix="$"
         />
         <Scorecard
-          value={!lastEntry ? "" : lastEntry.roi}
+          value={!dca.lastEntry() ? "" : dca.lastEntry().roi}
           name="ROI"
           suffix="%"
         />
       </SummaryRow>
+     
 
       <TwoCol>
         <MyChart
-          dates={prices.map((item) => {
+          dates={dca.dataTable().map((item) => {
             return item.date;
           })}
-          data={prices.map((item) => {
+          data={dca.dataTable().map((item) => {
             return item.value;
           })}
-          invested={prices.map((item) => {
+          invested={dca.dataTable().map((item) => {
             return item.totalInvested;
           })}
           currency={settings.currency}
@@ -165,7 +139,7 @@ const DollarCostAverage = () => {
             id="purchaseAmount"
             customInput={TextField}
             label="Daily Purchase Amount"
-            value={inputs.purchaseAmount}
+            value={userInputs.purchaseAmount}
             variant="outlined"
             size="small"
             thousandSeparator={true}
@@ -176,7 +150,7 @@ const DollarCostAverage = () => {
             autoComplete="off"
           />
           <MyCalField
-            id="start"
+            id="startDate"
             label="Start Date"
             type="date"
             variant="outlined"
@@ -184,7 +158,7 @@ const DollarCostAverage = () => {
             onChange={handleDateChange}
             defaultValue={"2021-01-01"}
             inputProps={{
-              max: todayDate,
+              max: dca.today(),
             }}
           />
           <Button
@@ -196,28 +170,57 @@ const DollarCostAverage = () => {
             Calculate
           </Button>
         </InputBox>
-      </TwoCol>
-
+        </TwoCol>
       <Results>
         <h3>Details</h3>
-        <Row
-          item={{
-            col1: "Date",
-            col2: "BTC Price",
-            col3: "BTC Purchased",
-            col4: "BTC Balance",
-            col5: `Portfolio Value (${settings.currency})`,
-            col6: `Total Invested (${settings.currency})`,
-            col7: "ROI",
-            col8: "Gain / Loss",
-          }}
-          itemClass="header"
-        />
-        <RowResults>
-          {prices.map((item) => {
-            return <Row item={{ ...item }} />;
-          })}
-        </RowResults>
+     
+        <Table>
+
+          <MyTableHead>
+              <TableRow>
+                  <TableCell>Date</TableCell>
+                  <TableCell>BTC Price</TableCell>
+                  <TableCell>BTC Purchased</TableCell>
+                  <TableCell>BTC Balance</TableCell>
+                  <TableCell>{`Portfolio Value (${settings.currency})`}</TableCell>
+                  <TableCell>{`Total Invested (${settings.currency})`}</TableCell>
+                  <TableCell>ROI</TableCell>
+                  <TableCell>Gain / Loss</TableCell>
+              </TableRow>
+          </MyTableHead>
+
+          <TableBody>{dca.dataTable().map((row) => (
+              <MyTableRow>
+                <TableCell>
+                  {row.date}
+                </TableCell>
+                <TableCell>
+                  {row.price}
+                </TableCell>
+                <TableCell>
+                  {row.bitcoinAdded}
+                </TableCell>
+                <TableCell>
+                  {row.runningBal}
+                </TableCell>
+                <TableCell>
+                  {row.value}
+                </TableCell>
+                <TableCell>
+                  {row.totalInvested}
+                </TableCell>
+                <TableCell>
+                  {row.roi}
+                </TableCell>
+                <TableCell>
+                  {row.profit}
+                </TableCell>
+              </MyTableRow>
+            ))}
+          </TableBody>
+
+        </Table>
+
       </Results>
     </CalculatorPage>
   );
@@ -239,11 +242,6 @@ const Results = styled.div`
   }
 `;
 
-const RowResults = styled.div`
-  position: relative;
-  height: 200px;
-  overflow: auto;
-`;
 
 const TwoCol = styled.div`
   display: grid;

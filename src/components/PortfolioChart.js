@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Chart from "react-apexcharts";
-import { numberWithCommas } from "utils/numberFormatting";
 
-const MyChart = ({ dates, data, invested, currency }) => {
+const PortfolioChart = ({ dates, data }) => {
   // const ath = marketData.data.ath.cad
 
   const options = {
@@ -22,9 +21,9 @@ const MyChart = ({ dates, data, invested, currency }) => {
       labels: {
         // show: false,
         //   show: false,
-        formatter: function (value) {
-          return "$" + numberWithCommas(value);
-        },
+        // formatter: function (value) {
+        //   return "$" + numberWithCommas(value);
+        // },
         style: {
           colors: ["#fff"],
         },
@@ -77,22 +76,22 @@ const MyChart = ({ dates, data, invested, currency }) => {
         colors: "#fff",
       },
     },
+    markers: {
+        shape: "circle",
+        size: [5]
+    }
   };
 
   const series = [
     {
-      name: `Portfolio Value (${currency})`,
+      name: `Bitcoin Holdings`,
       data: data.reverse(),
-    },
-    // {
-    //   name: `Amount Invested (${currency})`,
-    //   data: invested.reverse(),
-    // },
+    }
   ];
 
   return (
     <Wrapper>
-      <h3>Portfolio Value Over Time</h3>
+      <h3>Bitcoin Holdings Over Time</h3>
       <ChartWrapper>
         <Chart
           options={options}
@@ -106,7 +105,7 @@ const MyChart = ({ dates, data, invested, currency }) => {
   );
 };
 
-export default MyChart;
+export default PortfolioChart;
 
 const Wrapper = styled.div`
   display: grid;
@@ -126,6 +125,7 @@ const Wrapper = styled.div`
   & h3 {
     padding: 1rem;
   }
+  margin-bottom: 1rem;
 `;
 
 const ChartWrapper = styled.div`

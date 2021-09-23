@@ -2,19 +2,9 @@ import { TableHead } from '@mui/material'
 import React from 'react'
 import styled from 'styled-components'
 
-const MyTableHead = ({props, children}) => {
-    return (
-        <StyledTableHead
-            {...props}
-        >
-            {children}
-        </StyledTableHead>
-    )
-}
 
-export default MyTableHead
 
-const StyledTableHead = styled(TableHead)`
+const MyTableHead = styled(TableHead)`
 
     & th {
         color: #fff;
@@ -29,4 +19,6 @@ const StyledTableHead = styled(TableHead)`
             border-radius: 0 0.5rem 0.5rem 0;
         }
     }
-`   
+`
+
+export default MyTableHead

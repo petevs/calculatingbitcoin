@@ -6,10 +6,10 @@ export const UPDATE_EDITING_TRANSACTION = 'UPDATE_EDITING_TRANSACTION'
 export const initialPortfolio = {
     bitcoin: 0,
     amountInvested: 0,
-    currentPrice: 0,
+    currentPrice: 56705,
     priceChange24h: 0,
     value: function() {
-        return (this.bitcoin * this.currentPrice).toFixed(0)
+        return (this.calculatedTotal() * this.currentPrice).toFixed(0)
         },
     avgCost: function() {
         if(this.bitcoin !== 0 || this.amountInvested !== 0){
@@ -27,15 +27,44 @@ export const initialPortfolio = {
     transactions: [
         {}
     ],
+    calculatedTransactions: function(){
+        let runningBal = 0
+        let newTrans = []
+        this.transactions.slice().reverse().forEach(trans => {
+            runningBal = Number(runningBal) + Number(trans.bitcoinAmount)
+            newTrans.push({
+                ...trans,
+                runningBal: runningBal.toFixed(8)
+            })
+        })
+        return newTrans.slice().reverse()
+    },
     currentlyEditing: false,
     editing: {
         id: null,
         values: {
             type: '',
             date: '',
-            description: '',
-            amount: 0,
+            memo: '',
+            bitcoinAmount: 0,
+            dollarAmount: 0
         }
+    },
+    calculatedTotal: function(){
+        let total = 0
+        this.transactions.map(trans => (total += Number(trans.bitcoinAmount) ))
+        return total.toFixed(8)
+    },
+    calculatedTotalInvested: function(){
+        let total = 0
+        this.transactions.forEach(trans => (total += Number(trans.dollarAmount)))
+        return total
+    },
+    calculatedRoi: function(){
+        return (((this.value() - this.calculatedTotalInvested()) / this.calculatedTotalInvested()) * 100).toFixed(2)
+    },
+    calculatedAvgCost: function(){
+        return (this.calculatedTotalInvested() / this.calculatedTotal()).toFixed(0)
     }
 }
 
@@ -63,8 +92,9 @@ export const portfolioReducer = (state, action) => {
                         ...state.values,
                         type: action.payload.type,
                         date: action.payload.date,
-                        description: action.payload.description,
-                        amount: action.payload.amount
+                        memo: action.payload.memo,
+                        bitcoinAmount: action.payload.bitcoinAmount,
+                        dollarAmount: action.payload.dollarAmount
                         }
                     }
                 }

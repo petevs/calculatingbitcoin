@@ -9,6 +9,7 @@ import { updateEditingTransaction } from 'state/actions/updatePortfolio'
 import { updateSettings } from 'state/actions/updateSettings'
 import { Select } from '@mui/material'
 import MySelect from './styledComponents/MySelect'
+import { StyledButton } from './styledComponents/Button'
 
 const TransactionForm = () => {
 
@@ -24,8 +25,9 @@ const TransactionForm = () => {
         id: null,
         date: '',
         type: '',
-        description: '',
-        amount: 0
+        memo: '',
+        dollarAmount: 0,
+        bitcoinAmount: 0
     }
 
     const [currentTransaction, setCurrentTransaction] = useState(portfolio.editing)
@@ -78,8 +80,9 @@ const TransactionForm = () => {
             <h3>{!portfolio.editing.id ? 'Add Transaction' : 'Edit Transaction'}</h3>
                 <MyTextField 
                     name='date'
-                    label='date'
+                    label='Date'
                     type='date'
+                    value={currentTransaction.date}
                     defaultValue={todayDate}
                     onChange={handleChange}
                 />
@@ -104,20 +107,26 @@ const TransactionForm = () => {
                     </Select>
                 </FormControl>
                 <MyTextField 
-                    name='description' 
-                    label='description'
-                    value={currentTransaction.description}
+                    name='dollarAmount' 
+                    label='Dollars'
+                    value={currentTransaction.dollarAmount}
                     onChange={handleChange}
                 />
                 <MyTextField 
-                    name='amount' 
-                    label='amount'
-                    value={currentTransaction.amount}
+                    name='bitcoinAmount' 
+                    label='Bitcoin'
+                    value={currentTransaction.bitcoinAmount}
                     onChange={handleChange}
                 />
-                <Button variant='outlined' color='primary' type='submit'>
-                    {!portfolio.editing.id ? 'Add Transaction' : 'Edit Transaction'}
-                </Button>
+                <MyTextField 
+                name='memo' 
+                label='Memo'
+                value={currentTransaction.memo}
+                onChange={handleChange}
+            />
+                <StyledButton primary type='submit'>
+                    {!portfolio.editing.id ? 'Add Transaction' : 'Save Changes'}
+                </StyledButton>
             </MyForm>
     )
 }

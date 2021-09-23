@@ -1,40 +1,54 @@
 import React, { useState, useContext } from 'react'
-import { TextField, Modal } from '@material-ui/core'
 import styled from 'styled-components'
-import Row from "components/Row";
-import { styles } from "styles/theme";
 import SummaryRow from 'components/styledComponents/SummaryRow';
 import Scorecard from 'components/Scorecard';
-import { db } from 'firebase'
-import { AuthContext } from "state/contexts/Auth";
 import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from 'state/actions/updateSettings';
 import TransactionForm from 'components/TransactionForm';
 import MainModal from 'components/MainModal';
 import { updateEditingTransaction } from 'state/actions/updatePortfolio';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import MyTableHead from 'components/styledComponents/MyTableHead';
 import MyTableRow from 'components/styledComponents/MyTableRow';
 import EditTransaction from 'components/EditTransaction';
+import { StyledButton } from 'components/styledComponents/Button'
+import PortfolioChart from 'components/PortfolioChart'
+import CalculatorPage from 'layouts/CalculatorPage';
 
 const Portfolio = () => {
     
-    const { user } = useContext(AuthContext);
     const { settings, settingsDispatch, portfolio, portfolioDispatch } = useContext(UserContext)
-
 
     const summaryValues = [
         {
-            name: 'Portfolio Value',
-            prefix: '$',
+            name: 'Bitcoin Holdings',
+            prefix: '',
             suffix: '',
-            value: 1000000
+            value: portfolio.calculatedTotal()
+        },
+        {
+            name: 'Portfolio Value',
+            prefix: '',
+            suffix: '',
+            value: portfolio.value()
+        },
+        {
+            name: 'Total Invested',
+            prefix: '',
+            suffix: '',
+            value: portfolio.calculatedTotalInvested()
         },
         {
             name: 'ROI',
             suffix: '%',
             prefix: '',
-            value: 350
+            value: portfolio.calculatedRoi()
+        },
+        {
+            name: 'Avg BTC Purchase Price',
+            suffix: '',
+            prefix: '$',
+            value: portfolio.calculatedAvgCost()
         }
     ]
 
@@ -68,37 +82,46 @@ const Portfolio = () => {
     }
 
     return (
-        <Wrapper>
-            <h2>I am the Portfolio</h2>
+        <CalculatorPage title='Portfolio'>
             <SummaryRow>
                 {summaryValues.map(item => {
                     return( <Scorecard {...item} />)
                 })}
             </SummaryRow>
+            <PortfolioChart
+                dates={portfolio.calculatedTransactions().map((item) => {
+                return item.date;
+                })}
+                data={portfolio.calculatedTransactions().map((item) => {
+                return item.runningBal;
+                })}
+            />
             <MainModal open={settings.modalOpen} onClose={handleClose}>
                 <TransactionForm />
             </MainModal>
             <Results>
                 <HeaderRow>
                     <h2>Transactions</h2>
-                    <Button
-                        color='primary'
+                    <StyledButton
+                        primary
                         onClick={handleOpen}
-                    >Add Transaction</Button>
+                    >Add Transaction</StyledButton>
                 </HeaderRow>
                     <Table>
                         <MyTableHead>
                             <TableRow>
                                 <TableCell>Date</TableCell>
                                 <TableCell>Type</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell>Amount</TableCell>
+                                <TableCell>Memo</TableCell>
+                                <TableCell>Dollar Amount</TableCell>
+                                <TableCell>Bitcoin Amount</TableCell>
+                                <TableCell>Balance</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </MyTableHead>
                         <TableBody>
                             {
-                                portfolio.transactions.map((row) => (
+                                portfolio.calculatedTransactions().map((row) => (
                                     <MyTableRow
                                         key={row.id}
                                     >
@@ -109,10 +132,16 @@ const Portfolio = () => {
                                             {row.type}
                                         </TableCell>
                                         <TableCell>
-                                            {row.description}
+                                            {row.memo}
                                         </TableCell>
                                         <TableCell>
-                                            {row.amount}
+                                            {row.dollarAmount}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.bitcoinAmount}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.runningBal}
                                         </TableCell>
                                         <TableCell>
                                             <EditTransaction {...row} />
@@ -123,7 +152,7 @@ const Portfolio = () => {
                         </TableBody>
                     </Table>
             </Results>
-        </Wrapper>
+        </CalculatorPage>
     )
 }
 
