@@ -23,19 +23,38 @@ const Portfolio = () => {
     const { user } = useContext(AuthContext);
     const { settings, settingsDispatch, portfolio, portfolioDispatch } = useContext(UserContext)
 
+    console.log(portfolio.transactions)
 
     const summaryValues = [
         {
-            name: 'Portfolio Value',
-            prefix: '$',
+            name: 'Bitcoin Holdings',
+            prefix: '',
             suffix: '',
             value: portfolio.calculatedTotal()
+        },
+        {
+            name: 'Portfolio Value',
+            prefix: '',
+            suffix: '',
+            value: portfolio.value()
+        },
+        {
+            name: 'Total Invested',
+            prefix: '',
+            suffix: '',
+            value: portfolio.calculatedTotalInvested()
         },
         {
             name: 'ROI',
             suffix: '%',
             prefix: '',
-            value: 350
+            value: portfolio.calculatedRoi()
+        },
+        {
+            name: 'Avg BTC Purchase Price',
+            suffix: '',
+            prefix: '$',
+            value: portfolio.calculatedAvgCost()
         }
     ]
 
@@ -92,14 +111,16 @@ const Portfolio = () => {
                             <TableRow>
                                 <TableCell>Date</TableCell>
                                 <TableCell>Type</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell>Amount</TableCell>
+                                <TableCell>Memo</TableCell>
+                                <TableCell>Dollar Amount</TableCell>
+                                <TableCell>Bitcoin Amount</TableCell>
+                                <TableCell>Balance</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </MyTableHead>
                         <TableBody>
                             {
-                                portfolio.transactions.map((row) => (
+                                portfolio.calculatedTransactions().map((row) => (
                                     <MyTableRow
                                         key={row.id}
                                     >
@@ -110,10 +131,16 @@ const Portfolio = () => {
                                             {row.type}
                                         </TableCell>
                                         <TableCell>
-                                            {row.description}
+                                            {row.memo}
                                         </TableCell>
                                         <TableCell>
-                                            {row.amount}
+                                            {row.dollarAmount}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.bitcoinAmount}
+                                        </TableCell>
+                                        <TableCell>
+                                            {row.runningBal}
                                         </TableCell>
                                         <TableCell>
                                             <EditTransaction {...row} />

@@ -24,32 +24,58 @@ import { Button, TextField } from "@material-ui/core";
 import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 
 const DollarCostAverage = () => {
-  const { settings, calculators, calculatorsDispatch } = useContext(UserContext);
 
+  const { settings, calculators, calculatorsDispatch } = useContext(UserContext);
   const { dca } = calculators
 
+
+const [userInputs, setUserInputs] = useState({
+  purchaseAmount: dca.purchaseAmount,
+  startDate: dca.startDate
+})
+
   const newHandleChange = (val, fName) => {
-    const payload = {
-      name: fName,
-      value: val
-    }
-    calculatorsDispatch(updateDcaCalculator(payload))
+    // const payload = {
+    //   name: fName,
+    //   value: val
+    // }
+    setUserInputs({
+      ...userInputs,
+      [fName]: val
+    })
+    // calculatorsDispatch(updateDcaCalculator(payload))
   };
 
   const handleDateChange = (e) => {
-    const payload = {
-      name: e.target.id,
-      value: e.target.value
-    }
-    calculatorsDispatch(updateDcaCalculator(payload))
+    // const payload = {
+    //   name: e.target.id,
+    //   value: e.target.value
+    // }
+    setUserInputs({
+      ...userInputs,
+      [e.target.id]: e.target.value
+    })
+    // calculatorsDispatch(updateDcaCalculator(payload))
   }
 
+  const updateState = () => {
+    for (const key in userInputs){
+      const payload = {
+        name: key,
+        value: userInputs[key]
+      }
+      calculatorsDispatch(updateDcaCalculator(payload))
+    }
+  }
+
+
   const getValues = () => {
-    axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${dca.timeBetween()}&interval=daily`)
-            .then((res) => {
-              const data = res.data.prices;
-              calculatorsDispatch(updateDcaHistoricalData(data))
-            })}
+    updateState()
+      axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${dca.timeBetween()}&interval=daily`)
+              .then((res) => {
+                const data = res.data.prices;
+                calculatorsDispatch(updateDcaHistoricalData(data))
+              })}
 
   useEffect(() => {
     getValues();
@@ -113,7 +139,7 @@ const DollarCostAverage = () => {
             id="purchaseAmount"
             customInput={TextField}
             label="Daily Purchase Amount"
-            value={dca.purchaseAmount}
+            value={userInputs.purchaseAmount}
             variant="outlined"
             size="small"
             thousandSeparator={true}
@@ -149,6 +175,7 @@ const DollarCostAverage = () => {
         <h3>Details</h3>
      
         <Table>
+
           <MyTableHead>
               <TableRow>
                   <TableCell>Date</TableCell>
@@ -161,6 +188,7 @@ const DollarCostAverage = () => {
                   <TableCell>Gain / Loss</TableCell>
               </TableRow>
           </MyTableHead>
+
           <TableBody>{dca.dataTable().map((row) => (
               <MyTableRow>
                 <TableCell>
@@ -190,7 +218,9 @@ const DollarCostAverage = () => {
               </MyTableRow>
             ))}
           </TableBody>
+
         </Table>
+
       </Results>
     </CalculatorPage>
   );

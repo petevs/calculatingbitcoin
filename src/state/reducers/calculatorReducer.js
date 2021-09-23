@@ -62,7 +62,7 @@ export const initialCalculators = {
                     price: item.price,
                     bitcoinAdded: bitcoinAdded,
                     runningBal: runningBal.toFixed(8),
-                    value: value,
+                    value: Math.round(value),
                     totalInvested: totalInvested,
                     roi: `${roi.toFixed(2)}%`,
                     profit: Math.round(profit),

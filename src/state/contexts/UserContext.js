@@ -17,7 +17,7 @@ const UserProvider = ({children}) => {
     const [calculators, calculatorsDispatch] = useReducer(calculatorReducer, initialCalculators)
 
     useEffect(() => {
-        db.collection('users').doc(user.uid).collection('transactions').onSnapshot(snapshot => {
+        db.collection('users').doc(user.uid).collection('transactions').orderBy('date', 'desc').onSnapshot(snapshot => {
             portfolioDispatch(updatePortfolioTransactions(snapshot.docs.map(doc => {
                 const data = doc.data()
                 const id = doc.id
