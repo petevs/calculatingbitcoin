@@ -23,8 +23,8 @@ const TransactionForm = () => {
 
     let initialTransaction = {
         id: null,
-        date: '',
-        type: '',
+        date: todayDate,
+        type: 'Purchase',
         memo: '',
         dollarAmount: 0,
         bitcoinAmount: 0
@@ -50,7 +50,7 @@ const TransactionForm = () => {
         if(portfolio.editing.id){
             db.collection('users').doc(user.uid).collection('transactions').doc(portfolio.editing.id).update(currentTransaction)
             setCurrentTransaction(initialTransaction)
-            portfolioDispatch(updateEditingTransaction({...initialTransaction}))
+            portfolioDispatch(updateEditingTransaction(initialTransaction))
 
             const payload = {
                 name: 'modalOpen',
@@ -62,7 +62,7 @@ const TransactionForm = () => {
         else {
             db.collection('users').doc(user.uid).collection('transactions').doc().set(currentTransaction)
             setCurrentTransaction(initialTransaction)
-            portfolioDispatch(updateEditingTransaction({...initialTransaction}))
+            portfolioDispatch(updateEditingTransaction(initialTransaction))
 
             const payload = {
                 name: 'modalOpen',
@@ -71,8 +71,9 @@ const TransactionForm = () => {
             settingsDispatch(updateSettings(payload))
         }
         
-
     }
+
+    console.log(currentTransaction)
 
     return (
         <MyForm onSubmit={handleSubmit}>
@@ -82,7 +83,7 @@ const TransactionForm = () => {
                     label='Date'
                     type='date'
                     value={currentTransaction.date}
-                    defaultValue={todayDate}
+                    defaultValue={currentTransaction.date}
                     onChange={handleChange}
                 />
                 {/* <MyTextField 
