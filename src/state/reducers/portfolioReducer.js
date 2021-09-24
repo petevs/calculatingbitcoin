@@ -30,6 +30,11 @@ export const initialPortfolio = {
     transactions: [
         {}
     ],
+    firstTransactionDate: function(){
+        const last = this.transactions.length
+        const firstDate = this.transactions[last - 1].date
+        return new Date(firstDate).getTime() / 1000
+    },
     priceHistory: [],
     calculatedTransactions: function(){
         let runningBal = 0
