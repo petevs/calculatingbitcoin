@@ -1,7 +1,10 @@
+import { convertDateTwo } from 'utils/convertDate'
+
 export const UPDATE_PORTFOLIO = 'UPDATE_PORTFOLIO'
 export const UPDATE_PRICE = 'UPDATE_PRICE'
 export const UPDATE_PORTFOLIO_TRANSACTIONS = 'UPDATE_PORTFOLIO_TRANSACTIONS'
 export const UPDATE_EDITING_TRANSACTION = 'UPDATE_EDITING_TRANSACTION'
+export const UPDATE_PRICE_HISTORY = 'UPDATE_PRICE_HISTORY'
 
 export const initialPortfolio = {
     bitcoin: 0,
@@ -27,6 +30,7 @@ export const initialPortfolio = {
     transactions: [
         {}
     ],
+    priceHistory: [],
     calculatedTransactions: function(){
         let runningBal = 0
         let newTrans = []
@@ -98,6 +102,48 @@ export const portfolioReducer = (state, action) => {
                         }
                     }
                 }
+        case UPDATE_PRICE_HISTORY:
+
+            const data = action.payload
+
+            const transactions = [...state.transactions]
+        
+            let newTransactions = {}
+
+            transactions.forEach(item => {
+                if(item.date in newTransactions){
+                    newTransactions[item.date].bitcoin = newTransactions[item.date].bitcoin + Number(item.bitcoinAmount)
+                }
+                else {
+                    newTransactions[item.date] = {bitcoin: Number(item.bitcoinAmount)}
+                }
+            })
+
+            const histData = [];
+            let bitcoinBal = 0
+
+            data.forEach((item) => {
+                let friendlyDate = convertDateTwo(item[0])
+                const price = Math.round(item[1]);
+
+                if(friendlyDate in newTransactions){
+                    bitcoinBal = bitcoinBal + Number(newTransactions[friendlyDate].bitcoin)
+                }
+
+                histData.push({
+                    date: friendlyDate,
+                    price: price,
+                    bitcoinBal: bitcoinBal
+                })
+                
+            })
+
+            console.log(histData)
+
+            return {
+                ...state,
+                priceHistory: histData
+            }
             default:
                 return state
         }

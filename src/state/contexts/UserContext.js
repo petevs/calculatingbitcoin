@@ -5,6 +5,8 @@ import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
 import { db } from 'firebase'
 import { AuthContext } from './Auth'
 import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
+import { updatePriceHistory } from 'state/actions/updatePortfolio'
+import axios from 'axios'
 
 export const UserContext = createContext()
 
@@ -26,6 +28,14 @@ const UserProvider = ({children}) => {
             ))
         })
     },[])
+
+    useEffect(() => {
+        axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=cad&from=1600956624&to=1632492624`)
+              .then((res) => {
+                const data = res.data.prices;
+                portfolioDispatch(updatePriceHistory(data))
+              })}
+    ,[])
 
 
     return (

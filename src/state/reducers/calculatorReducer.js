@@ -1,11 +1,9 @@
+import { convertDate } from 'utils/convertDate'
+
 export const UPDATE_DCA_CALCULATOR = 'UPDATE_DCA_CALCULATOR'
 export const UPDATE_HISTORICAL_DATA = 'UPDATE_HISTORICAL_DATA'
 
 
-  const convertDate = (x) => {
-    const theDate = new Date(x);
-    return theDate.toLocaleDateString();
-  };
 
 export const initialCalculators = {
 
