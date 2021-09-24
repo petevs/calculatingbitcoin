@@ -84,10 +84,10 @@ const MyChart = ({ dates, data, invested, currency }) => {
       name: `Portfolio Value (${currency})`,
       data: data.reverse(),
     },
-    // {
-    //   name: `Amount Invested (${currency})`,
-    //   data: invested.reverse(),
-    // },
+    {
+      name: `Amount Invested (${currency})`,
+      data: invested.reverse(),
+    },
   ];
 
   return (
