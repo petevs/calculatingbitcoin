@@ -6,7 +6,7 @@ import { UserContext } from "state/contexts/UserContext";
 import { updateSettings } from 'state/actions/updateSettings';
 import TransactionForm from 'components/TransactionForm';
 import MainModal from 'components/MainModal';
-import { updateEditingTransaction } from 'state/actions/updatePortfolio';
+import { updateChartType, updateEditingTransaction } from 'state/actions/updatePortfolio';
 import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import MyTableHead from 'components/styledComponents/MyTableHead';
 import MyTableRow from 'components/styledComponents/MyTableRow';
@@ -81,6 +81,11 @@ const Portfolio = () => {
         portfolioDispatch(updateEditingTransaction({...initialTransaction}))
     }
 
+    const handleChartChange = (e) => {
+        portfolioDispatch(updateChartType(e.target.value))
+    }
+    
+
     return (
         <CalculatorPage title='Portfolio'>
             <SummaryRow>
@@ -88,13 +93,21 @@ const Portfolio = () => {
                     return( <Scorecard {...item} />)
                 })}
             </SummaryRow>
+            <select onChange={handleChartChange} value={portfolio.chartType} style={{margin: '0 0 1rem 0'}}>
+                <option value='portfolio'>Portfolio Value Over Time</option>
+                <option value='bitcoin'>Bitcoin Holdings Over Time</option>
+            </select>
             <PortfolioChart
-                dates={portfolio.calculatedTransactions().map((item) => {
-                return item.date;
+                title={portfolio.chartTitle()}
+                dates={portfolio.chartData().map((item) => {
+                return item.dates;
                 })}
-                data={portfolio.calculatedTransactions().map((item) => {
-                return item.runningBal;
-                })}
+                // data={portfolio.calculatedTransactions().map((item) => {
+                // return item.runningBal;
+                // })}
+                portfolio={portfolio.chartData().map((item) => {
+                    return item.values;
+                    })}
             />
             <MainModal open={settings.modalOpen} onClose={handleClose}>
                 <TransactionForm />

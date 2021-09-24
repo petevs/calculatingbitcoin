@@ -1,7 +1,11 @@
+import { convertDateTwo } from 'utils/convertDate'
+
 export const UPDATE_PORTFOLIO = 'UPDATE_PORTFOLIO'
 export const UPDATE_PRICE = 'UPDATE_PRICE'
 export const UPDATE_PORTFOLIO_TRANSACTIONS = 'UPDATE_PORTFOLIO_TRANSACTIONS'
 export const UPDATE_EDITING_TRANSACTION = 'UPDATE_EDITING_TRANSACTION'
+export const UPDATE_PRICE_HISTORY = 'UPDATE_PRICE_HISTORY'
+export const UPDATE_CHART_TYPE = 'UPDATE_CHART_TYPE'
 
 export const initialPortfolio = {
     bitcoin: 0,
@@ -27,6 +31,12 @@ export const initialPortfolio = {
     transactions: [
         {}
     ],
+    firstTransactionDate: function(){
+        const last = this.transactions.length
+        const firstDate = this.transactions[last - 1].date
+        return new Date(firstDate).getTime() / 1000
+    },
+    priceHistory: [],
     calculatedTransactions: function(){
         let runningBal = 0
         let newTrans = []
@@ -38,6 +48,37 @@ export const initialPortfolio = {
             })
         })
         return newTrans.slice().reverse()
+    },
+    portfolioValueOverTime: function(){
+        const newTransactions = {}
+
+        this.transactions.forEach(item => {
+            if(item.date in newTransactions){
+                newTransactions[item.date].bitcoin = newTransactions[item.date].bitcoin + Number(item.bitcoinAmount)
+            }
+            else {
+                newTransactions[item.date] = {bitcoin: Number(item.bitcoinAmount)}
+            }
+        })
+
+        let bitcoinBal = 0
+
+        const results = this.priceHistory.map((transaction) => {
+            if(transaction.date in newTransactions){
+                bitcoinBal = Number(bitcoinBal) + Number(newTransactions[transaction.date].bitcoin)
+            }
+
+            const value = Math.round(transaction.price * bitcoinBal)
+
+            return {
+                ...transaction,
+                bitcoinBal: bitcoinBal,
+                value: value
+            }
+        })
+
+        return results
+
     },
     currentlyEditing: false,
     editing: {
@@ -65,6 +106,35 @@ export const initialPortfolio = {
     },
     calculatedAvgCost: function(){
         return (this.calculatedTotalInvested() / this.calculatedTotal()).toFixed(0)
+    },
+    chartType: 'portfolio',
+    chartTitle: function(){
+        if(this.chartType === 'portfolio'){
+            return 'Portfolio Value Over Time'
+        }
+
+        else {
+            return 'Bitcoin Holdings Over Time'
+        }
+    },
+    chartData: function (){
+        if(this.chartType === 'portfolio'){
+            return this.portfolioValueOverTime().map(item => {
+                return {
+                    dates: item.date,
+                    values: item.value
+                }
+            })
+        }
+
+        else {
+            return this.calculatedTransactions().map(item => {
+                return {
+                    dates: item.date,
+                    values: item.runningBal
+                }
+            })
+        }
     }
 }
 
@@ -98,6 +168,33 @@ export const portfolioReducer = (state, action) => {
                         }
                     }
                 }
+        case UPDATE_PRICE_HISTORY:
+
+            const data = action.payload
+
+            const histData = [];
+
+            data.forEach((item) => {
+                let friendlyDate = convertDateTwo(item[0])
+                const price = Math.round(item[1]);
+
+                histData.push({
+                    date: friendlyDate,
+                    price: price,
+                })
+                
+            })
+
+            return {
+                ...state,
+                priceHistory: histData
+            }
+        case UPDATE_CHART_TYPE:
+            return {
+                ...state,
+                chartType: action.payload
+
+            }
             default:
                 return state
         }

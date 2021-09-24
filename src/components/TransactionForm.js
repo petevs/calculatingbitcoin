@@ -34,7 +34,6 @@ const TransactionForm = () => {
 
     useEffect(() => {
         setCurrentTransaction(portfolio.editing.values)
-        console.log(portfolio.editing.id, portfolio.editing.values)
     },[portfolio.editing])
 
 
