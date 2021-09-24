@@ -43,6 +43,37 @@ export const initialPortfolio = {
         })
         return newTrans.slice().reverse()
     },
+    portfolioValueOverTime: function(){
+        const newTransactions = {}
+
+        this.transactions.forEach(item => {
+            if(item.date in newTransactions){
+                newTransactions[item.date].bitcoin = newTransactions[item.date].bitcoin + Number(item.bitcoinAmount)
+            }
+            else {
+                newTransactions[item.date] = {bitcoin: Number(item.bitcoinAmount)}
+            }
+        })
+
+        let bitcoinBal = 0
+
+        const results = this.priceHistory.map((transaction) => {
+            if(transaction.date in newTransactions){
+                bitcoinBal = Number(bitcoinBal) + Number(newTransactions[transaction.date].bitcoin)
+            }
+
+            const value = Math.round(transaction.price * bitcoinBal)
+
+            return {
+                ...transaction,
+                bitcoinBal: bitcoinBal,
+                value: value
+            }
+        })
+
+        return results
+
+    },
     currentlyEditing: false,
     editing: {
         id: null,
@@ -106,39 +137,18 @@ export const portfolioReducer = (state, action) => {
 
             const data = action.payload
 
-            const transactions = [...state.transactions]
-        
-            let newTransactions = {}
-
-            transactions.forEach(item => {
-                if(item.date in newTransactions){
-                    newTransactions[item.date].bitcoin = newTransactions[item.date].bitcoin + Number(item.bitcoinAmount)
-                }
-                else {
-                    newTransactions[item.date] = {bitcoin: Number(item.bitcoinAmount)}
-                }
-            })
-
             const histData = [];
-            let bitcoinBal = 0
 
             data.forEach((item) => {
                 let friendlyDate = convertDateTwo(item[0])
                 const price = Math.round(item[1]);
 
-                if(friendlyDate in newTransactions){
-                    bitcoinBal = bitcoinBal + Number(newTransactions[friendlyDate].bitcoin)
-                }
-
                 histData.push({
                     date: friendlyDate,
                     price: price,
-                    bitcoinBal: bitcoinBal
                 })
                 
             })
-
-            console.log(histData)
 
             return {
                 ...state,

@@ -81,6 +81,9 @@ const Portfolio = () => {
         portfolioDispatch(updateEditingTransaction({...initialTransaction}))
     }
 
+
+    console.log(portfolio.portfolioValueOverTime())
+
     return (
         <CalculatorPage title='Portfolio'>
             <SummaryRow>
@@ -89,12 +92,15 @@ const Portfolio = () => {
                 })}
             </SummaryRow>
             <PortfolioChart
-                dates={portfolio.calculatedTransactions().map((item) => {
+                dates={portfolio.priceHistory.map((item) => {
                 return item.date;
                 })}
-                data={portfolio.calculatedTransactions().map((item) => {
-                return item.runningBal;
-                })}
+                // data={portfolio.calculatedTransactions().map((item) => {
+                // return item.runningBal;
+                // })}
+                portfolio={portfolio.portfolioValueOverTime().map((item) => {
+                    return item.value;
+                    })}
             />
             <MainModal open={settings.modalOpen} onClose={handleClose}>
                 <TransactionForm />

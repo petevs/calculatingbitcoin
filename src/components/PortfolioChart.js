@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Chart from "react-apexcharts";
 
-const PortfolioChart = ({ dates, data }) => {
+const PortfolioChart = ({ dates, data, portfolio }) => {
   // const ath = marketData.data.ath.cad
 
   const options = {
@@ -76,16 +76,20 @@ const PortfolioChart = ({ dates, data }) => {
         colors: "#fff",
       },
     },
-    markers: {
-        shape: "circle",
-        size: [5]
-    }
+    // markers: {
+    //     shape: "circle",
+    //     size: [5]
+    // }
   };
 
   const series = [
+    // {
+    //   name: `Bitcoin Holdings`,
+    //   data: data.reverse(),
+    // },
     {
-      name: `Bitcoin Holdings`,
-      data: data.reverse(),
+      name: 'Portfolio Value',
+      data: portfolio.reverse()
     }
   ];
 
