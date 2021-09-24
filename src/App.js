@@ -37,7 +37,7 @@ function App() {
                     path="/signup"
                     render={() => <AuthForm type="signup" />}
                   />
-                  <Route path='/portfolio' component={Portfolio} />
+                  <PrivateRoute path='/portfolio' component={Portfolio} />
                 </Main>
               </Container>
             </MarketDataProvider>
