@@ -27,6 +27,7 @@ const PortfolioChart = ({ dates, data, portfolio, title }) => {
         style: {
           colors: ["#fff"],
         },
+        min: 0,
       },
       // opposite: true,
     },

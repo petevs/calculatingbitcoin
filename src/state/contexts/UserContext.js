@@ -30,21 +30,22 @@ const UserProvider = ({children}) => {
         })
     },[])
 
-    useEffect(() => {
-        axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=cad&from=${portfolio.firstTransactionDate()}&to=1632492624`)
-              .then((res) => {
-                const data = res.data.prices;
-                portfolioDispatch(updatePriceHistory(data))
-              })}
-    ,[portfolio.transactions])
+    // useEffect(() => {
+    //     axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=cad&from=${portfolio.firstTransactionDate()}&to=1632492624`)
+    //           .then((res) => {
+    //             const data = res.data.prices;
+    //             portfolioDispatch(updatePriceHistory(data))
+    //           })}
+    // ,[portfolio.transactions])
 
     useEffect(() => {
-        axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=cad&days=3650&interval=daily`)
+        axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=3650&interval=daily`)
         .then((res) => {
           const data = res.data.prices;
           calculatorsDispatch(updateDcaHistoricalData(data))
+          portfolioDispatch(updatePriceHistory(data))
         })
-    },[])
+    },[settings.currency])
 
 
     return (

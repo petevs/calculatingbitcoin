@@ -7,7 +7,6 @@ export const UPDATE_HISTORICAL_DATA = 'UPDATE_HISTORICAL_DATA'
 
 
 export const initialCalculators = {
-
     // DOLLAR COST AVERAGE CALCULATOR
     dca: {
         purchaseAmount: 5,
@@ -17,11 +16,9 @@ export const initialCalculators = {
 
             const dataLength = this.historicalData.length
 
-
             if(dataLength < 1){
                 return null
             }
-
 
             const today = moment()
             const startDate = moment(this.startDate)

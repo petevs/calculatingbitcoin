@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
 import moment from 'moment'
 
 //CONTEXT & ACTIONS
 import { UserContext } from "state/contexts/UserContext";
-import { updateDcaCalculator, updateDcaHistoricalData } from "state/actions/updateCalculators";
+import { updateDcaCalculator} from "state/actions/updateCalculators";
 
 //PAGES & COMPONENTS
 import CalculatorPage from "layouts/CalculatorPage";
@@ -49,15 +48,6 @@ const DollarCostAverage = () => {
     })
   }
 
-  // const getValues = () => {
-  //   updateState()
-  //   axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${dca.timeBetween()}&interval=daily`)
-  //           .then((res) => {
-  //             const data = res.data.prices;
-  //             calculatorsDispatch(updateDcaHistoricalData(data))
-  //           })
-  //   }
-
   const updateState = () => {
     for (const key in userInputs){
       const payload = {
@@ -67,13 +57,6 @@ const DollarCostAverage = () => {
       calculatorsDispatch(updateDcaCalculator(payload))
     }
   }
-
-  // useEffect(() => {
-  //   getValues();
-  // }, [settings.currency]);
-
-
-  console.log(dca.calculatedData())
 
   if(!dca.calculatedData()){
     return (
