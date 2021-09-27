@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { convertDateTwo } from 'utils/convertDate'
 
 export const UPDATE_PORTFOLIO = 'UPDATE_PORTFOLIO'
@@ -67,7 +68,14 @@ export const initialPortfolio = {
 
         let bitcoinBal = 0
 
-        const results = this.priceHistory.map((transaction) => {
+        const firstEntry = this.transactions[this.transactions.length - 1]
+        const today = moment()
+        const firstEntryDate = moment(firstEntry.date)
+        const daysDiff = today.diff(firstEntryDate, 'days')
+
+        const startIndex = this.priceHistory.length - daysDiff - 2
+
+        const results = this.priceHistory.slice(startIndex).map((transaction) => {
             if(transaction.date in newTransactions){
                 bitcoinBal = Number(bitcoinBal) + Number(newTransactions[transaction.date].bitcoin)
             }
@@ -77,7 +85,7 @@ export const initialPortfolio = {
             return {
                 ...transaction,
                 bitcoinBal: bitcoinBal,
-                value: value.toFixed(0)
+                value: Math.round(value)
             }
         })
 

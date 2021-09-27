@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
+import moment from 'moment'
 
 //CONTEXT & ACTIONS
 import { UserContext } from "state/contexts/UserContext";
-import { updateDcaCalculator, updateDcaHistoricalData } from "state/actions/updateCalculators";
+import { updateDcaCalculator} from "state/actions/updateCalculators";
 
 //PAGES & COMPONENTS
 import CalculatorPage from "layouts/CalculatorPage";
@@ -29,33 +29,23 @@ const DollarCostAverage = () => {
   const { dca } = calculators
 
 
-const [userInputs, setUserInputs] = useState({
-  purchaseAmount: dca.purchaseAmount,
-  startDate: dca.startDate
-})
+  const [userInputs, setUserInputs] = useState({
+    purchaseAmount: dca.purchaseAmount,
+    startDate: dca.startDate
+  })
 
   const newHandleChange = (val, fName) => {
-    // const payload = {
-    //   name: fName,
-    //   value: val
-    // }
     setUserInputs({
       ...userInputs,
       [fName]: val
     })
-    // calculatorsDispatch(updateDcaCalculator(payload))
   };
 
   const handleDateChange = (e) => {
-    // const payload = {
-    //   name: e.target.id,
-    //   value: e.target.value
-    // }
     setUserInputs({
       ...userInputs,
       [e.target.id]: e.target.value
     })
-    // calculatorsDispatch(updateDcaCalculator(payload))
   }
 
   const updateState = () => {
@@ -68,24 +58,17 @@ const [userInputs, setUserInputs] = useState({
     }
   }
 
-
-  const getValues = () => {
-    updateState()
-      axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=${dca.timeBetween()}&interval=daily`)
-              .then((res) => {
-                const data = res.data.prices;
-                calculatorsDispatch(updateDcaHistoricalData(data))
-              })}
-
-  useEffect(() => {
-    getValues();
-  }, [settings.currency]);
-
-
+  if(!dca.calculatedData()){
+    return (
+      <>
+        Loading...
+      </>
+    )
+  }
 
   return (
     <CalculatorPage title="Dollar Cost Average">
-      <SummaryRow>
+    <SummaryRow>
         <Scorecard
           // value={!condition(prices) ? '' : prices[prices.length - 1].value}
           value={!dca.lastEntry() ? "" : dca.lastEntry().value}
@@ -117,17 +100,16 @@ const [userInputs, setUserInputs] = useState({
           suffix="%"
         />
       </SummaryRow>
-     
 
       <TwoCol>
         <MyChart
-          dates={dca.dataTable().map((item) => {
+          dates={dca.calculatedData().map((item) => {
             return item.date;
           })}
-          data={dca.dataTable().map((item) => {
+          data={dca.calculatedData().map((item) => {
             return item.value;
           })}
-          invested={dca.dataTable().map((item) => {
+          invested={dca.calculatedData().map((item) => {
             return item.totalInvested;
           })}
           currency={settings.currency}
@@ -158,20 +140,20 @@ const [userInputs, setUserInputs] = useState({
             onChange={handleDateChange}
             defaultValue={"2021-01-01"}
             inputProps={{
-              max: dca.today(),
+              max: moment().format('YYYY-MM-DD'),
             }}
           />
           <Button
             color="secondary"
             variant="contained"
-            onClick={getValues}
+            onClick={updateState}
             size="large"
           >
             Calculate
           </Button>
         </InputBox>
         </TwoCol>
-      <Results>
+      {/* <Results>
         <h3>Details</h3>
      
         <Table>
@@ -221,7 +203,7 @@ const [userInputs, setUserInputs] = useState({
 
         </Table>
 
-      </Results>
+      </Results> */}
     </CalculatorPage>
   );
 };
