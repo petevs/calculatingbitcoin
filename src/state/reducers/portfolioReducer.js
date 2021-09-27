@@ -7,6 +7,10 @@ export const UPDATE_EDITING_TRANSACTION = 'UPDATE_EDITING_TRANSACTION'
 export const UPDATE_PRICE_HISTORY = 'UPDATE_PRICE_HISTORY'
 export const UPDATE_CHART_TYPE = 'UPDATE_CHART_TYPE'
 
+
+let todayDate = new Date();
+todayDate = todayDate.toISOString().split("T")[0];
+
 export const initialPortfolio = {
     bitcoin: 0,
     amountInvested: 0,
@@ -73,7 +77,7 @@ export const initialPortfolio = {
             return {
                 ...transaction,
                 bitcoinBal: bitcoinBal,
-                value: value
+                value: value.toFixed(0)
             }
         })
 
@@ -84,8 +88,8 @@ export const initialPortfolio = {
     editing: {
         id: null,
         values: {
-            type: '',
-            date: '',
+            type: 'Purchase',
+            date: todayDate,
             memo: '',
             bitcoinAmount: 0,
             dollarAmount: 0
