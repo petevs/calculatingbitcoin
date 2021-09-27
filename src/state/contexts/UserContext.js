@@ -2,6 +2,7 @@ import React, { createContext,  useReducer, useEffect, useContext } from 'react'
 import { userReducer, initialState } from 'state/reducers/userReducer'
 import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioReducer'
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
+import { updateDcaHistoricalData } from 'state/actions/updateCalculators'
 import { db } from 'firebase'
 import { AuthContext } from './Auth'
 import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
@@ -36,6 +37,14 @@ const UserProvider = ({children}) => {
                 portfolioDispatch(updatePriceHistory(data))
               })}
     ,[portfolio.transactions])
+
+    useEffect(() => {
+        axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=cad&days=3650&interval=daily`)
+        .then((res) => {
+          const data = res.data.prices;
+          calculatorsDispatch(updateDcaHistoricalData(data))
+        })
+    },[])
 
 
     return (

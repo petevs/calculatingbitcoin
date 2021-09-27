@@ -1,4 +1,5 @@
-import { convertDate } from 'utils/convertDate'
+import { convertDate, convertDateTwo } from 'utils/convertDate'
+import moment from 'moment'
 
 export const UPDATE_DCA_CALCULATOR = 'UPDATE_DCA_CALCULATOR'
 export const UPDATE_HISTORICAL_DATA = 'UPDATE_HISTORICAL_DATA'
@@ -11,68 +12,56 @@ export const initialCalculators = {
     dca: {
         purchaseAmount: 5,
         startDate: '2021-01-01',
-
-        today: function(){
-            let todayDate = new Date()
-            todayDate = todayDate.toISOString().split("T")[0]
-            return todayDate
-            },
-
-        timeBetween: function(){
-            const today = new Date();
-            const start = new Date(this.startDate);
-
-            const diff_in_time = today.getTime() - start.getTime();
-            const diff_in_days = diff_in_time / (1000 * 3600 * 24);
-
-            return Math.round(diff_in_days);
-            },
-
         historicalData: [],
+        calculatedData: function(){
 
-        dataTable: function(){
+            const dataLength = this.historicalData.length
 
-            // let calculated = [{
-            //     date: '',
-            //     price: 0,
-            //     bitcoinAdded: 0,
-            //     runningBal: 0,
-            //     totalInvested: 0,
-            //     roi: 0,
-            //     profit: 0
-            // }]
 
-            let calculated = []
+            if(dataLength < 1){
+                return null
+            }
+
+
+            const today = moment()
+            const startDate = moment(this.startDate)
+
+            const daysDiff = today.diff(startDate, 'days')
+
+            const startIndex = dataLength - daysDiff - 1
+
             let runningBal = 0
             let totalInvested = 0
 
-            this.historicalData.forEach(item => {
-                let date = convertDate(item.date)
-                const bitcoinAdded = Number((this.purchaseAmount / item.price).toFixed(8))
-                runningBal = runningBal + bitcoinAdded
+            const calculatedValues = this.historicalData.slice(startIndex).map(item => {
+                const friendlyDate = moment(item[0]).format('YYYY-MM-DD')
+                const price = item[1]
+
                 totalInvested = Number(totalInvested) + Number(this.purchaseAmount)
-                const value = Number((item.price * runningBal).toFixed(2));
+                const bitcoinAdded = Number((this.purchaseAmount / price))
+                runningBal = runningBal + bitcoinAdded
+                const value = Number((price * runningBal).toFixed(2));
                 const profit = value - totalInvested;
                 const roi = ((value - totalInvested) / totalInvested) * 100;
 
-                calculated.push({
-                    date: date,
-                    price: item.price,
-                    bitcoinAdded: bitcoinAdded,
+                return {
+                    date: friendlyDate,
+                    price: Math.round(price),
+                    totalInvested: Math.round(totalInvested),
                     runningBal: runningBal.toFixed(8),
                     value: Math.round(value),
-                    totalInvested: totalInvested,
-                    roi: `${roi.toFixed(2)}%`,
                     profit: Math.round(profit),
-                })
-                })
+                    roi: roi.toFixed(2),
+                    days: daysDiff
+                }
+            })
 
-                return calculated
-            },
-            
+            return calculatedValues
+
+        },
         lastEntry: function(){
-            const length = this.dataTable().length
-            const latest = this.dataTable()[length - 1]
+            const length = this.calculatedData().length
+            const latest = this.calculatedData()[length - 1]
             let averageCost = 0
             if(latest){
                 averageCost = Math.round(Number(latest.totalInvested) / Number(latest.runningBal))
@@ -98,26 +87,11 @@ export const calculatorReducer = (state, action) => {
                     }
                 }
             case UPDATE_HISTORICAL_DATA:
-                const data = action.payload
-
-                const histData = [];
-
-                data.forEach((item) => {
-                    let friendlyDate = item[0]
-
-                    const price = Math.round(item[1]);
-
-                    histData.push({
-                        date: friendlyDate,
-                        price: price,
-                    })
-                })
-                    
                 return {
                     ...state,
                     dca: {
                         ...state.dca,
-                        historicalData: histData
+                        historicalData: action.payload
                     }
                 }
             
