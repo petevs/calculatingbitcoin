@@ -9,7 +9,7 @@ export const initialMarketData = {
   dailyPrices: [],
   filteredPrices: function(){
 
-    const startIndex = this.dailyPrices.length - this.timeFrame
+    const startIndex = this.dailyPrices.length - this.timeFrame - 2
     const dates = this.dailyPrices.slice(startIndex).map(item => item[0])
     const prices = this.dailyPrices.slice(startIndex).map(item => Math.round(item[1]))
 

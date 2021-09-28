@@ -6,6 +6,7 @@ import React, { useContext } from 'react'
 import { UserContext } from 'state/contexts/UserContext'
 import { updateTimeFrame } from 'state/actions/updateMarketData'
 import { StyledButton } from 'components/styledComponents/Button'
+import moment from 'moment'
 
 const CurrentMarket = () => {
 
@@ -19,12 +20,19 @@ const CurrentMarket = () => {
         }
     ]
 
+    const ytd = () => {
+        let today = moment()
+        let startYear = moment('2021-01-01')
+        return today.diff(startYear, 'days')
+    }
+
 
     const timeValues = [
         {label: '1W', value: 7},
         {label: '1M', value: 30},
         {label: '3M', value: 90},
         {label: '6M', value: 180},
+        {label: 'YTD', value: ytd()},
         {label: '1Y', value: 365},
         {label: '5Y', value: 1825},
 
