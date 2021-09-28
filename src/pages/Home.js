@@ -7,7 +7,7 @@ const Home = () => {
         <PageWrapper>
             <Hero
                 title='Calculating Bitcoin'
-                subtitle='Coming Soon'
+                subtitle='Coming Soon...'
             />
         </PageWrapper>
     )
