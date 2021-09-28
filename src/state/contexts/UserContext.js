@@ -28,7 +28,7 @@ const UserProvider = ({children}) => {
                 })
             ))
         })
-    },[])
+    },[user.uid])
 
     // useEffect(() => {
     //     axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=cad&from=${portfolio.firstTransactionDate()}&to=1632492624`)

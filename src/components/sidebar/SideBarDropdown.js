@@ -22,7 +22,7 @@ const SideBarDropdown = ({ item }) => {
       <MyAccordionDetails>
         <MyList>
           {item.subMenu.map((subMenuItem) => {
-            return <SubMenuItem item={{ ...subMenuItem }} />;
+            return <SubMenuItem key={subMenuItem.title} item={{ ...subMenuItem }} />;
           })}
         </MyList>
       </MyAccordionDetails>

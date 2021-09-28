@@ -74,6 +74,7 @@ const Ticker = () => {
                     {dateSelectors.map((item) => {
                         return (
                             <button
+                                key={item.label}
                                 value={item.value}
                                 onClick={handleDateChange}
                                 className={checkActive(item.value)}

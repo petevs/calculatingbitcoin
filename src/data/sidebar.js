@@ -37,7 +37,7 @@ export const menuList = [
             },
             {
                 title: 'Buy The Dip',
-                path: ''
+                path: '/calculators/buy-the-dip'
             },
             {
                 title: 'DCA vs Buy The Dip',
@@ -45,23 +45,23 @@ export const menuList = [
             },
             {
                 title: 'Retire on Bitcoin',
-                path: ''
+                path: '/calculators/retire'
             },
             {
                 title: 'Speculative Attack',
-                path: ''
+                path: '/calculators/speculative-attack'
             },
             {
                 title: 'Opportunity Cost',
-                path: ''
+                path: '/calculators/opportunity-cost'
             },
             {
                 title: 'Scenario Planning',
-                path: ''
+                path: '/calculators/scenario-planning'
             },
             {
                 title: 'Tax Liability',
-                path: ''
+                path: '/calculators/tax-liability'
             },
     ]
     },
@@ -71,29 +71,31 @@ export const menuList = [
         subMenu: [
             {
                 title: 'Articles',
-                path: ''
+                path: '/resources/articles'
             },
             {
                 title: 'People to Follow',
-                path: ''
+                path: '/resources/people-to-follow'
             },
             {
                 title: 'Cool Companies',
-                path: ''
+                path: '/resources/cool-companies'
             },
             {
                 title: 'Hardware Wallets',
-                path: ''
+                path: '/resources/hardware-wallets'
             },
 
     ]
     },
     {
         title: 'Profile',
-        icon: <PersonIcon />
+        icon: <PersonIcon />,
+        path: '/profile'
     },
     {
         title: 'Settings',
-        icon: <SettingsIcon />
+        icon: <SettingsIcon />,
+        path: '/settings'
     }
 ]

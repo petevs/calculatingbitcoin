@@ -15,7 +15,7 @@ const SideBar = () => {
         img="https://avatars.githubusercontent.com/u/23281466?v=4"
       />
       {menuList.map((item) => {
-        return <SideBarMenu item={{ ...item }} />;
+        return <SideBarMenu key={item.title} item={{ ...item }} />;
       })}
     </MyDrawer>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, FormControl, InputLabel, MenuItem } from '@mui/material'
+import { FormControl, InputLabel, MenuItem } from '@mui/material'
 import { db } from 'firebase'
 import { AuthContext } from 'state/contexts/Auth'
 import MyTextField from './styledComponents/MyTextField'
@@ -8,7 +8,6 @@ import { UserContext } from 'state/contexts/UserContext'
 import { updateEditingTransaction } from 'state/actions/updatePortfolio'
 import { updateSettings } from 'state/actions/updateSettings'
 import { Select } from '@mui/material'
-import MySelect from './styledComponents/MySelect'
 import { StyledButton } from './styledComponents/Button'
 
 const TransactionForm = () => {

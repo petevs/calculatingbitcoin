@@ -30,8 +30,3 @@ const MyProfileCard = styled.div`
   align-items: center;
   margin: 1rem;
 `;
-
-const ProfileImage = styled.img`
-  width: 100%;
-  border-radius: 50%;
-`;

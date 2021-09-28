@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import SummaryRow from 'components/styledComponents/SummaryRow';
 import Scorecard from 'components/Scorecard';
@@ -90,7 +90,7 @@ const Portfolio = () => {
         <CalculatorPage title='Portfolio'>
             <SummaryRow>
                 {summaryValues.map(item => {
-                    return( <Scorecard {...item} />)
+                    return( <Scorecard key={item.name} {...item} />)
                 })}
             </SummaryRow>
             <select onChange={handleChartChange} value={portfolio.chartType} style={{margin: '0 0 1rem 0'}}>
@@ -171,11 +171,6 @@ const Portfolio = () => {
 
 export default Portfolio
 
-
-const Wrapper = styled.div`
-    padding: 2rem;
-`
-
 const Results = styled.div`
   display: grid;
   gap: 0.5rem;
@@ -201,12 +196,4 @@ const HeaderRow = styled.div`
       justify-self: end;
       padding: .5rem;
   }
-
 `
-
-const RowResults = styled.div`
-  position: relative;
-  height: 200px;
-  overflow: auto;
-  scrollbar-color: light;
-`;

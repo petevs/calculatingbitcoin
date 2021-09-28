@@ -1,4 +1,3 @@
-import React from "react";
 import { MenuItem } from "@mui/material";
 import styled from "styled-components";
 import { styles } from "styles/theme";

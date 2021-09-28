@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Popover, MenuItem, Button } from "@material-ui/core";
+import { MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { styles } from "styles/theme";
 import { UserContext } from "state/contexts/UserContext";
