@@ -11,6 +11,8 @@ import { AuthContext } from './Auth'
 import { userReducer, initialState } from 'state/reducers/userReducer'
 import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioReducer'
 import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
+import { marketDataReducer, initialMarketData } from 'state/reducers/marketDataReducer'
+import { setMarketData } from 'state/actions/setMarketData'
 
 //ACTIONS
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
@@ -27,6 +29,7 @@ const UserProvider = ({children}) => {
     const [settings, settingsDispatch] = useReducer(userReducer, initialState)
     const [portfolio, portfolioDispatch] = useReducer(portfolioReducer, initialPortfolio)
     const [calculators, calculatorsDispatch] = useReducer(calculatorReducer, initialCalculators)
+    const [marketData, marketDataDispatch] = useReducer(marketDataReducer, initialMarketData)
 
     useEffect(() => {
         db.collection('users').doc(user.uid).collection('transactions').orderBy('date', 'desc').onSnapshot(snapshot => {
@@ -38,6 +41,15 @@ const UserProvider = ({children}) => {
             ))
         })
     },[user.uid])
+
+
+    useEffect(() => {
+        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin?localization=cad')
+            .then(res => {
+                const data = res.data.market_data
+                marketDataDispatch(setMarketData(data))
+            })
+    },[settings.currency])
 
     useEffect(() => {
         axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=3650&interval=daily`)
@@ -57,7 +69,9 @@ const UserProvider = ({children}) => {
                 portfolio,
                 portfolioDispatch,
                 calculators,
-                calculatorsDispatch
+                calculatorsDispatch,
+                marketData,
+                marketDataDispatch
             }}
         >
             {children}

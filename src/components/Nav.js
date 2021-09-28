@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { MarketDataContext } from "state/contexts/MarketData";
 import { UserContext } from "state/contexts/UserContext";
 import styled from "styled-components";
 import CurrencySelect from "./CurrencySelect";
@@ -10,8 +9,7 @@ import AvatarDropdown from "components/AvatarDropdown";
 
 
 const Nav = () => {
-  const { marketData } = useContext(MarketDataContext);
-  const { settings } = useContext(UserContext);
+  const { settings, marketData } = useContext(UserContext);
 
   const price = marketData.data.current_price[settings.currency];
   const percentageChange =

@@ -1,6 +1,6 @@
 export const GET_DATA = "GET_DATA";
 
-export const initialState = {
+export const initialMarketData = {
   data: {
     current_price: {
       cad: 0,

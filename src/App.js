@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import MarketDataProvider from "state/contexts/MarketData";
 import Home from "pages/Home";
 import Calculators from "pages/Calculators";
 import Nav from "components/Nav";
@@ -22,12 +21,14 @@ function App() {
       <AuthProvider>
         <UserProvider>
           <Router>
-            <MarketDataProvider>
               <Container>
+
                 <SideBar />
+                
                 <Header>
                   <Nav />
                 </Header>
+                
                 <Main>
                   <Route exact path="/" component={Home} />
                   <Route path="/calculators" component={Calculators} />
@@ -39,8 +40,8 @@ function App() {
                   />
                   <PrivateRoute path='/portfolio' component={Portfolio} />
                 </Main>
+              
               </Container>
-            </MarketDataProvider>
           </Router>
         </UserProvider>
       </AuthProvider>
