@@ -36,6 +36,7 @@ const AllCalcs = () => {
             />
             {listOfCalcs.map(calc =>
                 <Card
+                    key={calc.title}
                     title={calc.title}
                     description={calc.description}
                     path={calc.path}

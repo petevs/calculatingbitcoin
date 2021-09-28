@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   if (pending) {
     return (
-    <Backdrop sx={{ backgroundColor: 'black'}}>
+    <Backdrop sx={{ backgroundColor: 'black'}} open>
       <CircularProgress />
     </Backdrop>);
   }

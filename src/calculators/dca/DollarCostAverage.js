@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
 import moment from 'moment'
@@ -14,14 +14,14 @@ import Scorecard from "components/Scorecard";
 
 
 //STYLED COMPONENTS
-import MyTableHead from 'components/styledComponents/MyTableHead';
-import MyTableRow from 'components/styledComponents/MyTableRow';
+// import MyTableHead from 'components/styledComponents/MyTableHead';
+// import MyTableRow from 'components/styledComponents/MyTableRow';
 import SummaryRow from "components/styledComponents/SummaryRow";
 
 
 //MATERIAL UI
 import { Button, TextField } from "@material-ui/core";
-import { Table, TableBody, TableCell, TableRow } from '@mui/material';
+// import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 
 const DollarCostAverage = () => {
 
@@ -210,19 +210,19 @@ const DollarCostAverage = () => {
 
 export default DollarCostAverage;
 
-const Results = styled.div`
-  display: grid;
-  gap: 0.5rem;
-  padding: 1rem;
-  background-color: #212b36;
-  box-shadow: rgb(145 158 171 / 24%) 0px 0px 2px 0px,
-    rgb(145 158 171 / 24%) 0px 16px 32px -4px;
-  border-radius: 1rem;
-  overflow-x: scroll;
-  & h3 {
-    padding: 1rem;
-  }
-`;
+// const Results = styled.div`
+//   display: grid;
+//   gap: 0.5rem;
+//   padding: 1rem;
+//   background-color: #212b36;
+//   box-shadow: rgb(145 158 171 / 24%) 0px 0px 2px 0px,
+//     rgb(145 158 171 / 24%) 0px 16px 32px -4px;
+//   border-radius: 1rem;
+//   overflow-x: scroll;
+//   & h3 {
+//     padding: 1rem;
+//   }
+// `;
 
 
 const TwoCol = styled.div`

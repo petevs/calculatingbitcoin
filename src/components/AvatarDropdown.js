@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import NavDropDown from "components/styledComponents/NavDropDown";
-import { Avatar, Button, MenuItem } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { MenuWrapper } from 'components/styledComponents/MenuWrapper'
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";

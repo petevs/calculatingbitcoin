@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { MarketDataContext } from "state/contexts/MarketData";
 import { UserContext } from "state/contexts/UserContext";
-import { updateSettings } from "state/actions/updateSettings";
 import styled from "styled-components";
 import CurrencySelect from "./CurrencySelect";
 import { numberWithCommas } from "utils/numberFormatting";
@@ -13,15 +11,7 @@ import AvatarDropdown from "components/AvatarDropdown";
 
 const Nav = () => {
   const { marketData } = useContext(MarketDataContext);
-  const { settings, settingsDispatch } = useContext(UserContext);
-
-  const handleSettingsChange = (e) => {
-    const payload = {
-      name: e.target.name,
-      value: e.target.value,
-    };
-    settingsDispatch(updateSettings(payload));
-  };
+  const { settings } = useContext(UserContext);
 
   const price = marketData.data.current_price[settings.currency];
   const percentageChange =
@@ -111,19 +101,5 @@ const ColOne = styled.div`
     &.neg {
       color: #f72e2f;
     }
-  }
-`;
-
-const NavLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-`;
-const ProfileImage = styled.img`
-  width: 100%;
-  border-radius: 50%;
-  cursor: pointer;
-  &:hover {
-    transition: all 0.2s ease-in-out;
-    transform: scale(1.1);
   }
 `;
