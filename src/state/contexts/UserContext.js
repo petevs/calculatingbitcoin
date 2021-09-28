@@ -1,13 +1,22 @@
 import React, { createContext,  useReducer, useEffect, useContext } from 'react'
+import axios from 'axios'
+
+//DB
+import { db } from 'firebase'
+
+//CONTEXTS
+import { AuthContext } from './Auth'
+
+//REDUCERS
 import { userReducer, initialState } from 'state/reducers/userReducer'
 import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioReducer'
+import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
+
+//ACTIONS
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
 import { updateDcaHistoricalData } from 'state/actions/updateCalculators'
-import { db } from 'firebase'
-import { AuthContext } from './Auth'
-import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
 import { updatePriceHistory } from 'state/actions/updatePortfolio'
-import axios from 'axios'
+
 
 export const UserContext = createContext()
 
