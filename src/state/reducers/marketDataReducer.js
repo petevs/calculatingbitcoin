@@ -1,12 +1,14 @@
 export const GET_DATA = "GET_DATA";
 export const UPDATE_DAILY_PRICES = "UPDATE_DAILY_PRICES"
 export const UPDATE_TIME_FRAME = "UPDATE_TIME_FRAME"
+export const UPDATE_ACTIVE_BUTTON = "UPDATE_ACTIVE_BUTTON"
 
 export const initialMarketData = {
   loaded: false,
   timeFrame: 7,
   data: {},
   dailyPrices: [],
+  activeButton: '1W',
   filteredPrices: function(){
 
     const startIndex = this.dailyPrices.length - this.timeFrame - 2
@@ -38,6 +40,11 @@ export const marketDataReducer = (state, action) => {
       return {
         ...state,
         timeFrame: action.payload,
+      };
+    case UPDATE_ACTIVE_BUTTON:
+      return {
+        ...state,
+        activeButton: action.payload,
       };
     default:
       return state;

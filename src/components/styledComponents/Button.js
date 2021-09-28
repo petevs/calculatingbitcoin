@@ -19,6 +19,10 @@ export const StyledButton = styled.button.attrs(props => ({
             background-color: rgb(196, 205, 213);
         }
 
+        & .active{
+            background-color: red;
+        }
+
         ${props => props.primary &&`
             background-color: rgb(255, 48, 48);
             color: #fff;
