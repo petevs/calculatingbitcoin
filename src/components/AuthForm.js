@@ -50,13 +50,13 @@ const AuthForm = ({ type }) => {
       return {
         link: "/signup",
         text: "Don't have an account? Sign Up",
-        title: "Sign Up"
+        title: "Login"
       };
     } else {
       return {
         link: "/login",
         text: "Already have an account? Log in",
-        title: "Login"
+        title: "Sign Up"
       };
     }
   };

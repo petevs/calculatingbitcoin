@@ -68,6 +68,10 @@ export const initialPortfolio = {
 
         let bitcoinBal = 0
 
+        if(this.transactions.length < 1){
+            return []
+        }
+
         const firstEntry = this.transactions[this.transactions.length - 1]
         const today = moment()
         const firstEntryDate = moment(firstEntry.date)
