@@ -15,7 +15,7 @@ import { userReducer, initialState } from 'state/reducers/userReducer'
 import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioReducer'
 import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
 import { marketDataReducer, initialMarketData } from 'state/reducers/marketDataReducer'
-import { setMarketData, updateDailyPrices } from 'state/actions/updateMarketData'
+import { setMarketData, updateDailyPrices, updateMDCurrency } from 'state/actions/updateMarketData'
 
 //ACTIONS
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
@@ -52,6 +52,9 @@ const UserProvider = ({children}) => {
 
     //GET & SET CURRENT MARKET DATA
     useEffect(() => {
+
+        marketDataDispatch(updateMDCurrency(settings.currency))
+        
         axios.get('https://api.coingecko.com/api/v3/coins/bitcoin?localization=cad')
             .then(res => {
                 const data = res.data.market_data
@@ -65,7 +68,8 @@ const UserProvider = ({children}) => {
             portfolioDispatch(updatePriceHistory(data))
             marketDataDispatch(updateDailyPrices(data))
             })
-            setPending(false)
+
+        setPending(false)
     },[settings.currency])
 
     if (pending) {

@@ -15,10 +15,33 @@ const CurrentMarket = () => {
 
     const summaryItems = [
         {
-            name: `Current Price ${settings.currency}`,
-            value: marketData.data.current_price[settings.currency],
-            prefix: '$'
-        }
+            name: `Current Price (${settings.currency})`,
+            value: marketData.currentPrice(),
+            prefix: '$',
+            change: marketData.lastEntry().percentageChange
+        },
+        {
+            name: `24H High (${settings.currency})`,
+            value: marketData.summaryData().high_24h,
+            prefix: '$',
+        },
+        {
+            name: `24H Low (${settings.currency})`,
+            value: marketData.summaryData().low_24h,
+            prefix: '$',
+        },
+        {
+            name: `All Time High (${settings.currency})`,
+            value: marketData.summaryData().ath,
+            prefix: '$',
+            change: marketData.summaryData().ath_change_percentage
+        },
+        {
+            name: `Market Cap (${settings.currency})`,
+            value: marketData.summaryData().market_cap,
+            prefix: '$',
+        },
+
     ]
 
     const ytd = () => {
