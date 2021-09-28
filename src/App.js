@@ -1,25 +1,46 @@
+import { useContext } from 'react'
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Home from "pages/Home";
-import Calculators from "pages/Calculators";
-import Nav from "components/Nav";
-import styled, { ThemeProvider } from "styled-components";
-import { theme } from 'theme'
 
 import "./App.css";
-import SideBar from "components/sidebar/SideBar";
-import UserProvider from "state/contexts/UserContext";
-import { AuthProvider } from "state/contexts/Auth";
-import User from "pages/User";
 import PrivateRoute from "routes/PrivateRoute";
+
+
+//CONTEXT
+import styled, { ThemeProvider } from "styled-components";
+import { UserContext } from "state/contexts/UserContext";
+import { theme } from 'theme'
+
+
+//LIBRARIES
+import { Backdrop, CircularProgress } from "@mui/material";
+
+//COMPONENTS & PAGES
+import Nav from "components/Nav";
+import SideBar from "components/sidebar/SideBar";
+import User from "pages/User";
+import Home from "pages/Home";
+import Calculators from "pages/Calculators";
 import AuthForm from "components/AuthForm";
 import Portfolio from "pages/Portfolio";
+import CurrentMarket from "pages/CurrentMarket";
 
 
 function App() {
+
+  const { marketData } = useContext(UserContext)
+
+
+  // IF MARKET DATA NOT YET LOADED RETURN LOADING SPINNER
+  if (!marketData.loaded) {
+    return (
+    <Backdrop sx={{ backgroundColor: 'black'}} open>
+      <CircularProgress />
+    </Backdrop>);
+  }
+
+
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <UserProvider>
           <Router>
               <Container>
 
@@ -32,6 +53,7 @@ function App() {
                 <Main>
                   <Route exact path="/" component={Home} />
                   <Route path="/calculators" component={Calculators} />
+                  <Route path="/current-market" component={CurrentMarket} />
                   <PrivateRoute path="/user" component={User} />
                   <Route path="/login" render={() => <AuthForm type="login" />} />
                   <Route
@@ -43,8 +65,6 @@ function App() {
               
               </Container>
           </Router>
-        </UserProvider>
-      </AuthProvider>
     </ThemeProvider>
   );
 }

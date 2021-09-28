@@ -1,5 +1,8 @@
-import React, { createContext,  useReducer, useEffect, useContext } from 'react'
+import React, { createContext,  useReducer, useEffect, useContext, useState } from 'react'
+
+//LIBRARIES
 import axios from 'axios'
+import { Backdrop, CircularProgress } from "@mui/material";
 
 //DB
 import { db } from 'firebase'
@@ -12,7 +15,7 @@ import { userReducer, initialState } from 'state/reducers/userReducer'
 import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioReducer'
 import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
 import { marketDataReducer, initialMarketData } from 'state/reducers/marketDataReducer'
-import { setMarketData } from 'state/actions/updateMarketData'
+import { setMarketData, updateDailyPrices } from 'state/actions/updateMarketData'
 
 //ACTIONS
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
@@ -30,6 +33,8 @@ const UserProvider = ({children}) => {
     const [portfolio, portfolioDispatch] = useReducer(portfolioReducer, initialPortfolio)
     const [calculators, calculatorsDispatch] = useReducer(calculatorReducer, initialCalculators)
     const [marketData, marketDataDispatch] = useReducer(marketDataReducer, initialMarketData)
+
+    const [pending, setPending] = useState(true);
 
 
     //GET & SET USER TRANSACTIONS
@@ -52,17 +57,24 @@ const UserProvider = ({children}) => {
                 const data = res.data.market_data
                 marketDataDispatch(setMarketData(data))
             })
-    },[settings.currency])
 
-    //GET & SET HISTORICAL DATA
-    useEffect(() => {
         axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=3650&interval=daily`)
             .then((res) => {
             const data = res.data.prices;
             calculatorsDispatch(updateDcaHistoricalData(data))
             portfolioDispatch(updatePriceHistory(data))
+            marketDataDispatch(updateDailyPrices(data))
             })
+            setPending(false)
     },[settings.currency])
+
+    if (pending) {
+        return (
+        <Backdrop sx={{ backgroundColor: 'black'}} open>
+          <CircularProgress />
+        </Backdrop>);
+      }
+    
 
 
     return (
