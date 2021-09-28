@@ -1,13 +1,27 @@
-import React, { createContext,  useReducer, useEffect, useContext } from 'react'
+import React, { createContext,  useReducer, useEffect, useContext, useState } from 'react'
+
+//LIBRARIES
+import axios from 'axios'
+import { Backdrop, CircularProgress } from "@mui/material";
+
+//DB
+import { db } from 'firebase'
+
+//CONTEXTS
+import { AuthContext } from './Auth'
+
+//REDUCERS
 import { userReducer, initialState } from 'state/reducers/userReducer'
 import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioReducer'
+import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
+import { marketDataReducer, initialMarketData } from 'state/reducers/marketDataReducer'
+import { setMarketData, updateDailyPrices, updateMDCurrency } from 'state/actions/updateMarketData'
+
+//ACTIONS
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
 import { updateDcaHistoricalData } from 'state/actions/updateCalculators'
-import { db } from 'firebase'
-import { AuthContext } from './Auth'
-import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
 import { updatePriceHistory } from 'state/actions/updatePortfolio'
-import axios from 'axios'
+
 
 export const UserContext = createContext()
 
@@ -18,7 +32,12 @@ const UserProvider = ({children}) => {
     const [settings, settingsDispatch] = useReducer(userReducer, initialState)
     const [portfolio, portfolioDispatch] = useReducer(portfolioReducer, initialPortfolio)
     const [calculators, calculatorsDispatch] = useReducer(calculatorReducer, initialCalculators)
+    const [marketData, marketDataDispatch] = useReducer(marketDataReducer, initialMarketData)
 
+    const [pending, setPending] = useState(true);
+
+
+    //GET & SET USER TRANSACTIONS
     useEffect(() => {
         db.collection('users').doc(user.uid).collection('transactions').orderBy('date', 'desc').onSnapshot(snapshot => {
             portfolioDispatch(updatePortfolioTransactions(snapshot.docs.map(doc => {
@@ -30,22 +49,36 @@ const UserProvider = ({children}) => {
         })
     },[user.uid])
 
-    // useEffect(() => {
-    //     axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=cad&from=${portfolio.firstTransactionDate()}&to=1632492624`)
-    //           .then((res) => {
-    //             const data = res.data.prices;
-    //             portfolioDispatch(updatePriceHistory(data))
-    //           })}
-    // ,[portfolio.transactions])
 
+    //GET & SET CURRENT MARKET DATA
     useEffect(() => {
+
+        marketDataDispatch(updateMDCurrency(settings.currency))
+        
+        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin?localization=cad')
+            .then(res => {
+                const data = res.data.market_data
+                marketDataDispatch(setMarketData(data))
+            })
+
         axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=3650&interval=daily`)
             .then((res) => {
             const data = res.data.prices;
             calculatorsDispatch(updateDcaHistoricalData(data))
             portfolioDispatch(updatePriceHistory(data))
+            marketDataDispatch(updateDailyPrices(data))
             })
+
+        setPending(false)
     },[settings.currency])
+
+    if (pending) {
+        return (
+        <Backdrop sx={{ backgroundColor: 'black'}} open>
+          <CircularProgress />
+        </Backdrop>);
+      }
+    
 
 
     return (
@@ -56,7 +89,9 @@ const UserProvider = ({children}) => {
                 portfolio,
                 portfolioDispatch,
                 calculators,
-                calculatorsDispatch
+                calculatorsDispatch,
+                marketData,
+                marketDataDispatch
             }}
         >
             {children}

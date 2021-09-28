@@ -84,6 +84,13 @@ const Portfolio = () => {
     const handleChartChange = (e) => {
         portfolioDispatch(updateChartType(e.target.value))
     }
+
+    const chartDates = portfolio.chartData().map((item) => {
+        return item.dates;
+        })
+    const portfolioData = portfolio.chartData().map((item) => {
+        return item.values;
+        })
     
 
     return (
@@ -99,15 +106,8 @@ const Portfolio = () => {
             </select>
             <PortfolioChart
                 title={portfolio.chartTitle()}
-                dates={portfolio.chartData().map((item) => {
-                return item.dates;
-                })}
-                // data={portfolio.calculatedTransactions().map((item) => {
-                // return item.runningBal;
-                // })}
-                portfolio={portfolio.chartData().map((item) => {
-                    return item.values;
-                    })}
+                dates={chartDates}
+                portfolio={portfolioData}
             />
             <MainModal open={settings.modalOpen} onClose={handleClose}>
                 <TransactionForm />

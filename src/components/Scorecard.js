@@ -31,6 +31,7 @@ const Scorecard = ({ name, value, change, prefix, suffix }) => {
               displayType={"text"}
               thousandSeparator={true}
               prefix={`${changeClass().prefix} `}
+              suffix='%'
             />
           </Change>
         ) : (
