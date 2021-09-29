@@ -14,6 +14,7 @@ import EditTransaction from 'components/EditTransaction';
 import { StyledButton } from 'components/styledComponents/Button'
 import PortfolioChart from 'components/PortfolioChart'
 import CalculatorPage from 'layouts/CalculatorPage';
+import MySelect from 'components/styledComponents/MySelect'
 
 const Portfolio = () => {
     
@@ -100,10 +101,10 @@ const Portfolio = () => {
                     return( <Scorecard key={item.name} {...item} />)
                 })}
             </SummaryRow>
-            <select onChange={handleChartChange} value={portfolio.chartType} style={{margin: '0 0 1rem 0'}}>
+            <MySelect onChange={handleChartChange} value={portfolio.chartType} style={{margin: '0 0 1rem 0'}}>
                 <option value='portfolio'>Portfolio Value Over Time</option>
                 <option value='bitcoin'>Bitcoin Holdings Over Time</option>
-            </select>
+            </MySelect>
             <PortfolioChart
                 title={portfolio.chartTitle()}
                 dates={chartDates}
