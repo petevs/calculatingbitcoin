@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import CalculatorPage from 'layouts/CalculatorPage'
 import MyTextField from 'components/styledComponents/MyTextField'
 import { UserContext } from 'state/contexts/UserContext'
@@ -6,6 +6,7 @@ import { UserContext } from 'state/contexts/UserContext'
 //Components
 import SummaryRow from 'components/styledComponents/SummaryRow'
 import Scorecard from 'components/Scorecard'
+import DataChart from 'components/DataChart'
 
 const BuyTheDip = () => {
 
@@ -37,24 +38,22 @@ const BuyTheDip = () => {
             name: `Number of ${btd.dipPercentage}% Dips`,
             value: btd.lastEntry().numberOfDips,
         },
-        // {
-        //     name: `24H Low (${settings.currency})`,
-        //     value: marketData.summaryData().low_24h,
-        //     prefix: '$',
-        // },
-        // {
-        //     name: `All Time High (${settings.currency})`,
-        //     value: marketData.summaryData().ath,
-        //     prefix: '$',
-        //     change: marketData.summaryData().ath_change_percentage
-        // },
-        // {
-        //     name: `Market Cap (${settings.currency})`,
-        //     value: marketData.summaryData().market_cap,
-        //     prefix: '$',
-        // },
 
     ]
+
+    const [chartType, setChartType] = useState({
+        title: `Portfolio Value (${settings.currency})`,
+        data: 'value'
+    })
+
+    const handleChange = (e) => {
+        setChartType({
+            title: e.target.name,
+            data: e.target.value
+        })
+    }
+
+
 
     return (
         <CalculatorPage title='Buy The Dip Calculator'>
@@ -67,6 +66,15 @@ const BuyTheDip = () => {
             <SummaryRow>
                 {summaryItems.map(item => <Scorecard key={item.name} {...item} />)}
             </SummaryRow>
+            <select onChange={handleChange}>
+                <option name='Portfolio Value' value='value'>Portfolio Value</option>
+                <option name='Bitcoin Holdings' value='runningBal'>Bitcoin Holdings</option>
+            </select>
+            <DataChart
+                title={chartType.title}
+                dates={btd.calculatedBtd().map(item => item['date'])}
+                data={btd.calculatedBtd().map(item => item[chartType.data])}
+            />
         </CalculatorPage>
     )
 }
