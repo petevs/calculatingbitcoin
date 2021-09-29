@@ -1,12 +1,13 @@
 import moment from 'moment'
 
 export const UPDATE_BTD_PRICE_HISTORY = "UPDATE_BTD_PRICE_HISTORY"
+export const UPDATE_BTD_INPUTS = "UPDATE_BTD_INPUTS"
 
 export const initialBtd = {
     dipPercentage: 5,
-    purchaseAmount: 5625,
+    purchaseAmount: 500,
     priceHistory: [],
-    startDate: '2020-04-30',
+    startDate: '2021-01-01',
     calculatedBtd: function(){
 
         //If price history has not loaded return empty array
@@ -54,7 +55,7 @@ export const initialBtd = {
                 value: value,
                 totalInvested: totalInvested,
                 numberOfDips: numberOfDips,
-                roi: roi
+                roi: roi.toFixed(2)
             }
         })
 
@@ -90,6 +91,13 @@ export const btdReducer = (state, action) => {
             return {
                 ...state,
                 priceHistory: action.payload
+            }
+        case UPDATE_BTD_INPUTS:
+            return {
+                ...state,
+                dipPercentage: action.payload.dipPercentage,
+                purchaseAmount: action.payload.purchaseAmount,
+                startDate: action.payload.startDate
             }
         default:
             return state

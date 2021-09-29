@@ -1,16 +1,25 @@
 import React, { useContext, useState } from 'react'
 import CalculatorPage from 'layouts/CalculatorPage'
-import MyTextField from 'components/styledComponents/MyTextField'
 import { UserContext } from 'state/contexts/UserContext'
+
+import moment from 'moment'
+
+//Styled Components
+import MyTextField from 'components/styledComponents/MyTextField'
+import MyCalField from 'components/styledComponents/MyCalField'
 
 //Components
 import SummaryRow from 'components/styledComponents/SummaryRow'
+import { StyledButton } from 'components/styledComponents/Button'
 import Scorecard from 'components/Scorecard'
 import DataChart from 'components/DataChart'
 
+//Actions
+import { updateBtdInputs } from 'state/actions/updateCalculators'
+
 const BuyTheDip = () => {
 
-    const { btd, settings } = useContext(UserContext)
+    const { btd, btdDispatch, settings } = useContext(UserContext)
 
     console.log(btd.calculatedBtd())
 
@@ -53,16 +62,60 @@ const BuyTheDip = () => {
         })
     }
 
+    const initialInputs = {
+        startDate: btd.startDate,
+        dipPercentage: btd.dipPercentage,
+        purchaseAmount: btd.purchaseAmount
+    }
 
+    const [inputData, setInputData] = useState(initialInputs)
+
+    const handleInputChange = (e) => {
+        let value = e.target.value
+
+        if(e.target.name !== 'startDate'){
+            value = Number(e.target.value)
+        }
+
+        setInputData({
+            ...inputData,
+            [e.target.name]: value
+        })
+    }
+
+    const handleSubmit = () => {
+        btdDispatch(updateBtdInputs(inputData))
+    }
+
+    console.log(inputData)
 
     return (
         <CalculatorPage title='Buy The Dip Calculator'>
-            <MyTextField
-                label='Dip Drop Before Buying'
+            <MyCalField
+                type="date"
+                name='startDate'
+                variant='outlined'
+                label='Start Date'
+                value={inputData.startDate}
+                onChange={handleInputChange}
+                inputProps={{
+                    max: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+                  }}
+
             />
             <MyTextField
-                label='Purchase Amount'
+                name='dipPercentage'
+                label='Dip % Drop Before Buying'
+                value={inputData.dipPercentage}
+                onChange={handleInputChange}
             />
+            <MyTextField
+                name='purchaseAmount'
+                label='Purchase Amount Per Dip'
+                value={inputData.purchaseAmount}
+                onChange={handleInputChange}
+            />
+            <StyledButton primary onClick={handleSubmit}>Calculate</StyledButton>
             <SummaryRow>
                 {summaryItems.map(item => <Scorecard key={item.name} {...item} />)}
             </SummaryRow>
