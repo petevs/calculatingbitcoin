@@ -7,6 +7,7 @@ import moment from 'moment'
 //Styled Components
 import MyTextField from 'components/styledComponents/MyTextField'
 import MyCalField from 'components/styledComponents/MyCalField'
+import MySelect from 'components/styledComponents/MySelect'
 
 //Components
 import SummaryRow from 'components/styledComponents/SummaryRow'
@@ -16,6 +17,7 @@ import DataChart from 'components/DataChart'
 
 //Actions
 import { updateBtdInputs } from 'state/actions/updateCalculators'
+import { MenuItem } from '@mui/material'
 
 const BuyTheDip = () => {
 
@@ -87,8 +89,6 @@ const BuyTheDip = () => {
         btdDispatch(updateBtdInputs(inputData))
     }
 
-    console.log(inputData)
-
     return (
         <CalculatorPage title='Buy The Dip Calculator'>
             <MyCalField
@@ -119,10 +119,10 @@ const BuyTheDip = () => {
             <SummaryRow>
                 {summaryItems.map(item => <Scorecard key={item.name} {...item} />)}
             </SummaryRow>
-            <select onChange={handleChange}>
+            <MySelect onChange={handleChange}>
                 <option name='Portfolio Value' value='value'>Portfolio Value</option>
                 <option name='Bitcoin Holdings' value='runningBal'>Bitcoin Holdings</option>
-            </select>
+            </MySelect>
             <DataChart
                 title={chartType.title}
                 dates={btd.calculatedBtd().map(item => item['date'])}

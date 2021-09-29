@@ -1,6 +1,17 @@
-import { Select } from '@mui/material'
 import styled from 'styled-components'
 
-export const MySelect = styled(Select)`
+const MySelect = styled.select`
+    padding: .5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    background-color: #333D48;
     color: #fff;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+
+    &:focus{
+        outline: none;
+    }
 `
+
+export default MySelect
