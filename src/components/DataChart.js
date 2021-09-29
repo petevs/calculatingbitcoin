@@ -2,10 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Chart from "react-apexcharts";
 
-const DataChart = ({ dates, data, title}) => {
+const DataChart = ({ xdata, data, title, xtype, annotation}) => {
   // const ath = marketData.data.ath.cad
-
-  console.log(data)
 
   const options = {
     chart: {
@@ -34,8 +32,8 @@ const DataChart = ({ dates, data, title}) => {
       // opposite: true,
     },
     xaxis: {
-      type: "datetime",
-      categories: dates.reverse(),
+      type: xtype,
+      categories: xdata.reverse(),
       labels: {
         style: {
           colors: "#fff",
@@ -49,22 +47,7 @@ const DataChart = ({ dates, data, title}) => {
       },
       theme: "dark",
     },
-    annotations: {
-      // yaxis: [
-      //     {
-      //         y: ath,
-      //         borderColor: '#00E396',
-      //         label: {
-      //         borderColor: '#00E396',
-      //         style: {
-      //             color: '#fff',
-      //             background: '#00E396'
-      //         },
-      //         text: `ATH: $${ath}`
-      //         },
-      //     },
-      // ]
-    },
+    annotations: annotation,
     grid: {
       yaxis: {
         lines: {

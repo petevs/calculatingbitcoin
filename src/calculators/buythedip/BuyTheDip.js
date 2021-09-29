@@ -126,8 +126,9 @@ const BuyTheDip = () => {
                 <option name='Portfolio Value' value='value'>Portfolio Value</option>
             </MySelect>
             <DataChart
+                xtype='datetime'
                 title={btd.chartData().title}
-                dates={btd.calculatedBtd().map(item => item['date'])}
+                xdata={btd.calculatedBtd().map(item => item['date'])}
                 data={btd.chartData().series}
             />
         </CalculatorPage>

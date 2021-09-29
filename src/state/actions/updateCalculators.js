@@ -1,5 +1,6 @@
 import { UPDATE_DCA_CALCULATOR, UPDATE_HISTORICAL_DATA } from "state/reducers/calculatorReducer"
 import { UPDATE_BTD_INPUTS, UPDATE_BTD_PRICE_HISTORY, UPDATE_BTD_CHART_TYPE } from "state/reducers/btdReducer"
+import { UPDATE_TRADE_DATA } from "state/reducers/tradeReducer"
 
 
 export const updateDcaCalculator = (data) => {
@@ -19,4 +20,8 @@ export const updateBtdInputs = (data) => {
 
 export const updateBtdChartType = (data) => {
     return { type: UPDATE_BTD_CHART_TYPE, payload: data}
+}
+
+export const updateTradeData = (data) => {
+    return { type: UPDATE_TRADE_DATA, payload: data}
 }

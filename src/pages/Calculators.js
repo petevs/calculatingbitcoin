@@ -9,6 +9,7 @@ import {
     useRouteMatch
 } from 'react-router-dom'
 import BuyTheDip from 'calculators/buythedip/BuyTheDip'
+import Trade from 'calculators/trade/Trade'
 
 const Calculators = () => {
 
@@ -30,6 +31,9 @@ const Calculators = () => {
             </Route>
             <Route path={`${match.path}/dca`}>
                 <DollarCostAverage />
+            </Route>
+            <Route path={`${match.path}/trade`}>
+                <Trade />
             </Route>
             <Route path={`${match.path}/buy-the-dip`}>
                 <BuyTheDip />

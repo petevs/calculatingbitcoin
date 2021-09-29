@@ -36,9 +36,13 @@ export const menuList = [
                 path: '/calculators/buy-the-dip'
             },
             {
-                title: 'Sell and Buy Back',
-                path: '/calculators/hello'
+                title: 'Trade',
+                path: '/calculators/trade'
             },
+            // {
+            //     title: 'Sell and Buy Back',
+            //     path: '/calculators/hello'
+            // },
             {
                 title: 'DCA vs Buy The Dip',
                 path: '/calculators/dca'
