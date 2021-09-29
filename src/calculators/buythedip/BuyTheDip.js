@@ -8,6 +8,7 @@ import moment from 'moment'
 import MyTextField from 'components/styledComponents/MyTextField'
 import MyCalField from 'components/styledComponents/MyCalField'
 import MySelect from 'components/styledComponents/MySelect'
+import InlineInputBox from "components/styledComponents/InlineInputBox";
 
 //Components
 import SummaryRow from 'components/styledComponents/SummaryRow'
@@ -16,14 +17,12 @@ import Scorecard from 'components/Scorecard'
 import DataChart from 'components/DataChart'
 
 //Actions
-import { updateBtdInputs } from 'state/actions/updateCalculators'
-import { MenuItem } from '@mui/material'
+import { updateBtdInputs, updateBtdChartType } from 'state/actions/updateCalculators'
+
 
 const BuyTheDip = () => {
 
     const { btd, btdDispatch, settings } = useContext(UserContext)
-
-    console.log(btd.calculatedBtd())
 
     const summaryItems = [
         {
@@ -52,18 +51,13 @@ const BuyTheDip = () => {
 
     ]
 
-    const [chartType, setChartType] = useState({
-        title: `Portfolio Value (${settings.currency})`,
-        data: 'value'
-    })
+    //CHART CHANGE
 
-    const handleChange = (e) => {
-        setChartType({
-            title: e.target.name,
-            data: e.target.value
-        })
+    const handleChartChange = (e) => {
+        btdDispatch(updateBtdChartType(e.target.value))
     }
 
+    // CALCULATOR INPUTS
     const initialInputs = {
         startDate: btd.startDate,
         dipPercentage: btd.dipPercentage,
@@ -71,6 +65,7 @@ const BuyTheDip = () => {
     }
 
     const [inputData, setInputData] = useState(initialInputs)
+
 
     const handleInputChange = (e) => {
         let value = e.target.value
@@ -91,42 +86,44 @@ const BuyTheDip = () => {
 
     return (
         <CalculatorPage title='Buy The Dip Calculator'>
-            <MyCalField
-                type="date"
-                name='startDate'
-                variant='outlined'
-                label='Start Date'
-                value={inputData.startDate}
-                onChange={handleInputChange}
-                inputProps={{
-                    max: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-                  }}
+            <InlineInputBox>
+                <MyCalField
+                    type="date"
+                    name='startDate'
+                    variant='outlined'
+                    label='Start Date'
+                    value={inputData.startDate}
+                    onChange={handleInputChange}
+                    inputProps={{
+                        max: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+                    }}
 
-            />
-            <MyTextField
-                name='dipPercentage'
-                label='Dip % Drop Before Buying'
-                value={inputData.dipPercentage}
-                onChange={handleInputChange}
-            />
-            <MyTextField
-                name='purchaseAmount'
-                label='Purchase Amount Per Dip'
-                value={inputData.purchaseAmount}
-                onChange={handleInputChange}
-            />
-            <StyledButton primary onClick={handleSubmit}>Calculate</StyledButton>
+                />
+                <MyTextField
+                    name='dipPercentage'
+                    label='Dip % Drop Before Buying'
+                    value={inputData.dipPercentage}
+                    onChange={handleInputChange}
+                />
+                <MyTextField
+                    name='purchaseAmount'
+                    label='Purchase Amount Per Dip'
+                    value={inputData.purchaseAmount}
+                    onChange={handleInputChange}
+                />
+                <StyledButton primary onClick={handleSubmit}>Calculate</StyledButton>
+            </InlineInputBox>
             <SummaryRow>
                 {summaryItems.map(item => <Scorecard key={item.name} {...item} />)}
             </SummaryRow>
-            <MySelect onChange={handleChange}>
-                <option name='Portfolio Value' value='value'>Portfolio Value</option>
+            <MySelect onChange={handleChartChange}>
                 <option name='Bitcoin Holdings' value='runningBal'>Bitcoin Holdings</option>
+                <option name='Portfolio Value' value='value'>Portfolio Value</option>
             </MySelect>
             <DataChart
-                title={chartType.title}
+                title={btd.chartData().title}
                 dates={btd.calculatedBtd().map(item => item['date'])}
-                data={btd.calculatedBtd().map(item => item[chartType.data])}
+                data={btd.chartData().series}
             />
         </CalculatorPage>
     )

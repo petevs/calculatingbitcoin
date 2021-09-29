@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Chart from "react-apexcharts";
 
-const DataChart = ({ dates, data, title }) => {
+const DataChart = ({ dates, data, title}) => {
   // const ath = marketData.data.ath.cad
+
+  console.log(data)
 
   const options = {
     chart: {
@@ -83,16 +85,7 @@ const DataChart = ({ dates, data, title }) => {
     // }
   };
 
-  const series = [
-    // {
-    //   name: `Bitcoin Holdings`,
-    //   data: data.reverse(),
-    // },
-    {
-      name: title,
-      data: data.reverse()
-    }
-  ];
+  const series = data;
 
   return (
     <Wrapper>
