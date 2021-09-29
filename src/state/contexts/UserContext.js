@@ -17,12 +17,14 @@ import { calculatorReducer, initialCalculators } from 'state/reducers/calculator
 import { marketDataReducer, initialMarketData } from 'state/reducers/marketDataReducer'
 import { setMarketData, updateDailyPrices, updateMDCurrency } from 'state/actions/updateMarketData'
 import { btdReducer, initialBtd } from 'state/reducers/btdReducer';
+import { tradeReducer } from 'state/reducers/tradeReducer';
 
 //ACTIONS
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
 import { updateDcaHistoricalData } from 'state/actions/updateCalculators'
 import { updatePriceHistory } from 'state/actions/updatePortfolio'
 import { updateBtdPriceHistory } from 'state/actions/updateCalculators';
+import { initialTrade } from 'state/reducers/tradeReducer';
 
 
 export const UserContext = createContext()
@@ -36,6 +38,7 @@ const UserProvider = ({children}) => {
     const [calculators, calculatorsDispatch] = useReducer(calculatorReducer, initialCalculators)
     const [marketData, marketDataDispatch] = useReducer(marketDataReducer, initialMarketData)
     const [btd, btdDispatch] = useReducer(btdReducer, initialBtd)
+    const [trade, tradeDispatch] = useReducer(tradeReducer, initialTrade)
 
     const [pending, setPending] = useState(true);
 
@@ -71,7 +74,7 @@ const UserProvider = ({children}) => {
             const data = res.data.prices;
             calculatorsDispatch(updateDcaHistoricalData(data))
             portfolioDispatch(updatePriceHistory(data))
-        marketDataDispatch(updateDailyPrices(data))
+            marketDataDispatch(updateDailyPrices(data))
             btdDispatch(updateBtdPriceHistory(data))
 
             })
@@ -100,7 +103,9 @@ const UserProvider = ({children}) => {
                 marketData,
                 marketDataDispatch,
                 btd,
-                btdDispatch
+                btdDispatch,
+                trade,
+                tradeDispatch
             }}
         >
             {children}
