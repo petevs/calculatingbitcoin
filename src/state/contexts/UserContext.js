@@ -16,11 +16,13 @@ import { portfolioReducer, initialPortfolio } from 'state/reducers/portfolioRedu
 import { calculatorReducer, initialCalculators } from 'state/reducers/calculatorReducer'
 import { marketDataReducer, initialMarketData } from 'state/reducers/marketDataReducer'
 import { setMarketData, updateDailyPrices, updateMDCurrency } from 'state/actions/updateMarketData'
+import { btdReducer, initialBtd } from 'state/reducers/btdReducer';
 
 //ACTIONS
 import { updatePortfolioTransactions } from 'state/actions/updatePortfolio'
 import { updateDcaHistoricalData } from 'state/actions/updateCalculators'
 import { updatePriceHistory } from 'state/actions/updatePortfolio'
+import { updateBtdPriceHistory } from 'state/actions/updateCalculators';
 
 
 export const UserContext = createContext()
@@ -33,6 +35,7 @@ const UserProvider = ({children}) => {
     const [portfolio, portfolioDispatch] = useReducer(portfolioReducer, initialPortfolio)
     const [calculators, calculatorsDispatch] = useReducer(calculatorReducer, initialCalculators)
     const [marketData, marketDataDispatch] = useReducer(marketDataReducer, initialMarketData)
+    const [btd, btdDispatch] = useReducer(btdReducer, initialBtd)
 
     const [pending, setPending] = useState(true);
 
@@ -55,18 +58,22 @@ const UserProvider = ({children}) => {
 
         marketDataDispatch(updateMDCurrency(settings.currency))
         
+        //SET MARKET DATA
         axios.get('https://api.coingecko.com/api/v3/coins/bitcoin?localization=cad')
             .then(res => {
                 const data = res.data.market_data
                 marketDataDispatch(setMarketData(data))
             })
 
+        //SET PRICE HISTORY
         axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${settings.currency}&days=3650&interval=daily`)
             .then((res) => {
             const data = res.data.prices;
             calculatorsDispatch(updateDcaHistoricalData(data))
             portfolioDispatch(updatePriceHistory(data))
-            marketDataDispatch(updateDailyPrices(data))
+        marketDataDispatch(updateDailyPrices(data))
+            btdDispatch(updateBtdPriceHistory(data))
+
             })
 
         setPending(false)
@@ -91,7 +98,9 @@ const UserProvider = ({children}) => {
                 calculators,
                 calculatorsDispatch,
                 marketData,
-                marketDataDispatch
+                marketDataDispatch,
+                btd,
+                btdDispatch
             }}
         >
             {children}

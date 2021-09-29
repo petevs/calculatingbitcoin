@@ -17,6 +17,10 @@ import Scorecard from "components/Scorecard";
 // import MyTableHead from 'components/styledComponents/MyTableHead';
 // import MyTableRow from 'components/styledComponents/MyTableRow';
 import SummaryRow from "components/styledComponents/SummaryRow";
+import InputBox from "components/styledComponents/InputBox";
+import MyNumberFormat from "components/styledComponents/MyNumberFormat"
+import MyCalField from "components/styledComponents/MyCalField"
+import TwoCol from "components/styledComponents/TwoCol";
 
 
 //MATERIAL UI
@@ -209,73 +213,3 @@ const DollarCostAverage = () => {
 };
 
 export default DollarCostAverage;
-
-// const Results = styled.div`
-//   display: grid;
-//   gap: 0.5rem;
-//   padding: 1rem;
-//   background-color: #212b36;
-//   box-shadow: rgb(145 158 171 / 24%) 0px 0px 2px 0px,
-//     rgb(145 158 171 / 24%) 0px 16px 32px -4px;
-//   border-radius: 1rem;
-//   overflow-x: scroll;
-//   & h3 {
-//     padding: 1rem;
-//   }
-// `;
-
-
-const TwoCol = styled.div`
-  display: grid;
-  grid-template-columns: auto 300px;
-  gap: 1rem;
-  padding: 1rem 0;
-  align-items: start;
-  @media (max-width: 900px) {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-`;
-
-const InputBox = styled.div`
-  display: grid;
-  background-color: #293139;
-  border-radius: 1rem;
-  padding: 2rem;
-  gap: 1rem;
-  @media (max-width: 900px) {
-    width: 100%;
-  }
-`;
-
-const MyNumberFormat = styled(NumberFormat)`
-  & .MuiFormLabel-root {
-    color: #fff !important;
-  }
-
-  & .MuiInputBase-root {
-    color: #fff !important;
-  }
-
-  & .MuiOutlinedInput-notchedOutline {
-    border-color: #fff !important;
-  }
-`;
-
-const MyCalField = styled(TextField)`
-  & .MuiFormLabel-root {
-    color: #fff !important;
-  }
-
-  & .MuiInputBase-root {
-    color: #fff !important;
-  }
-
-  & .MuiOutlinedInput-notchedOutline {
-    border-color: #fff !important;
-  }
-
-  & ::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-  }
-`;
