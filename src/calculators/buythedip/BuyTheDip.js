@@ -35,8 +35,13 @@ const BuyTheDip = () => {
             prefix: '$',
         },
         {
-            name: `TotalInvested (${settings.currency})`,
+            name: `Total Invested (${settings.currency})`,
             value: btd.lastEntry().totalInvested,
+            prefix: '$',
+        },
+        {
+            name: `Average Cost (${settings.currency})`,
+            value: btd.lastEntry().averageCost,
             prefix: '$',
         },
         {

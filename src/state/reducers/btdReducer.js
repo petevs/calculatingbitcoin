@@ -80,16 +80,20 @@ export const initialBtd = {
             value: '-',
             totalInvested: '-',
             numberOfDips: '-',
-            roi: '-'
+            roi: '-',
+            averageCost: '-'
         }
 
         if(this.calculatedBtd().length < 1){
             return initial
         }
 
+        const latest = this.calculatedBtd()[this.calculatedBtd().length - 1]
+
         return {
             ...initial,
-            ...this.calculatedBtd()[this.calculatedBtd().length - 1]
+            ...latest,
+            averageCost: Math.round(Number(latest.totalInvested) / Number(latest.runningBal))
         }
     },
     chartType: 'runningBal',

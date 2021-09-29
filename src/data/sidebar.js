@@ -28,16 +28,16 @@ export const menuList = [
         icon: <CalculateIcon />,
         subMenu: [
             {
-                title: 'Sell and Buy Back',
-                path: '/calculators/hello'
-            },
-            {
                 title: 'Dollar Cost Average',
                 path: '/calculators/dca'
             },
             {
                 title: 'Buy The Dip',
                 path: '/calculators/buy-the-dip'
+            },
+            {
+                title: 'Sell and Buy Back',
+                path: '/calculators/hello'
             },
             {
                 title: 'DCA vs Buy The Dip',
