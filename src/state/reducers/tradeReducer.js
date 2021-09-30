@@ -1,4 +1,5 @@
 export const UPDATE_TRADE_DATA = "UPDATE_TRADE_DATA"
+export const UPDATE_TRADE_BUYBACK = "UPDATE_TRADE_BUYBACK"
 
 
 export const initialTrade = {
@@ -7,6 +8,7 @@ export const initialTrade = {
     currentPrice: 50000,
     taxRate: 30,
     capitalGain: true,
+    buyBackPrice: 50000,
     proceeds: function(){
         return this.bitcoin * this.currentPrice
     },
@@ -54,7 +56,7 @@ export const initialTrade = {
         }
     },
     simulation: function(){
-        const range =  [...Array(201).keys()].slice(50)
+        const range =  [...Array(201).keys()].slice(20)
         const prices = range.map(item => {
             return Math.round((item / 100) * this.currentPrice)
         })
@@ -72,6 +74,17 @@ export const initialTrade = {
                 }
             ]
         }
+    },
+    buyBackCalc: function(){
+       const newBitcoinAcquired = this.results().leftOverCash / this.buyBackPrice
+       const changeInBitcoin = Number((newBitcoinAcquired - this.bitcoin).toFixed(2))
+       const percentChange = Number((changeInBitcoin / this.bitcoin * 100).toFixed(2))
+
+       return {
+           newBitcoinAcquired: newBitcoinAcquired,
+           changeInBitcoin: changeInBitcoin,
+           percentChange: percentChange
+       }
     }
 }
 
@@ -86,6 +99,11 @@ export const tradeReducer = (state, action) => {
                 currentPrice: Number(action.payload.currentPrice),
                 taxRate: Number(action.payload.taxRate),
                 capitalGain: action.payload.capitalGain,
+            }
+        case UPDATE_TRADE_BUYBACK:
+            return {
+                ...state,
+                buyBackPrice: action.payload
             }
         default:
             return state

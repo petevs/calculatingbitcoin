@@ -1,12 +1,13 @@
 import DataChart from 'components/DataChart'
 import CalculatorPage from 'layouts/CalculatorPage'
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { numberWithCommas } from 'utils/numberFormatting'
 import styled from 'styled-components'
 
 //CONTEXTS
 
 import { UserContext } from 'state/contexts/UserContext'
+import { updateTradeBuyback } from 'state/actions/updateCalculators'
 
 //Styled Components
 import TradeSellForm from './TradeSellForm'
@@ -14,10 +15,12 @@ import Results from 'components/styledComponents/Results'
 import ResultRow from 'layouts/ResultRow'
 import TwoColEven from 'components/styledComponents/TwoColEven'
 import TradeResults from './TradeResults'
+import { Slider } from '@mui/material'
+import MyTextField from 'components/styledComponents/MyTextField'
 
 const Trade = () => {
 
-    const { trade, settings } = useContext(UserContext)
+    const { trade, tradeDispatch, settings } = useContext(UserContext)
 
     const annotations =
         {
@@ -25,10 +28,6 @@ const Trade = () => {
                 {
                     y: trade.bitcoin,
                     label: {
-                    // style: {
-                    //     color: '#fff',
-                    //     background: '#00E396'
-                    // },
                     text: `BreakEven Bitcoin: ${trade.bitcoin}`
                     },
                 },
@@ -42,6 +41,10 @@ const Trade = () => {
               }
             ]
           }
+
+    const handleChange = (e) => {
+        tradeDispatch(updateTradeBuyback(e.target.value))
+    }
 
     return (
         <CalculatorPage title='Trade Calculator'>
@@ -63,6 +66,17 @@ const Trade = () => {
                     To end up with the same amount of bitcoin you started with,<br /> your buyback price will need to be: 
                     <h2>${numberWithCommas(trade.results().breakEven)}</h2>
                     <h4>Requiring a {trade.results().percentageLess}% drop in price.</h4>
+                </CallOutBox>
+                <CallOutBox>
+                    {/* BuyBack Price */}
+                    <MyTextField
+                        label='Buyback Price'
+                        value={trade.buyBackPrice}
+                        onChange={handleChange}
+                    />
+                    <br />
+                    <h4>Bitcoin Acquired: {trade.buyBackCalc().newBitcoinAcquired}</h4>
+                    Net {trade.buyBackCalc().changeInBitcoin < 0 ? 'Decrease' : 'Increase'} in Bitcoin: {trade.buyBackCalc().changeInBitcoin} ({trade.buyBackCalc().percentChange})%
                 </CallOutBox>
 
             </RightCol>
