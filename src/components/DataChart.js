@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Chart from "react-apexcharts";
+import { numberWithCommas } from "utils/numberFormatting";
 
-const DataChart = ({ xdata, data, title, xtype, annotation}) => {
+const DataChart = ({ xdata, data, title, xtype, annotation, ttip}) => {
   // const ath = marketData.data.ath.cad
 
   const options = {
@@ -41,7 +42,7 @@ const DataChart = ({ xdata, data, title, xtype, annotation}) => {
       },
     },
     colors: ["#2E99FE", "#FF2F30"],
-    tooltip: {
+    tooltip: ttip || { 
       x: {
         format: "dd MMM HH:mm",
       },

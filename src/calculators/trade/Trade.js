@@ -17,6 +17,8 @@ import TwoColEven from 'components/styledComponents/TwoColEven'
 import TradeResults from './TradeResults'
 import { Slider } from '@mui/material'
 import MyTextField from 'components/styledComponents/MyTextField'
+import SummaryRow from 'components/styledComponents/SummaryRow'
+import Scorecard from 'components/Scorecard'
 
 const Trade = () => {
 
@@ -42,6 +44,7 @@ const Trade = () => {
             ]
           }
 
+
     const handleChange = (e) => {
         tradeDispatch(updateTradeBuyback(e.target.value))
     }
@@ -49,26 +52,29 @@ const Trade = () => {
     return (
         <CalculatorPage title='Trade Calculator'>
             <TradeSellForm />
-            <TwoColEven>
-                <DataChart
-                    title={`Bitcoin Acquired with $${numberWithCommas(trade.results().leftOverCash)} Net Proceeds at Various Price Points`}
-                    xtype='numeric'
-                    xdata={trade.simulation().xdata}
-                    data={trade.simulation().series}
-                    annotation={annotations}
+            <SummaryRow>
+                <Scorecard
+                    name={`Sale Proceeds (${settings.currency})`}
+                    value={numberWithCommas(trade.proceeds())}
+                    prefix='$'
                 />
-                <RightCol>
-                <Results>
-                    <h2>Results</h2>
-                    <TradeResults />
-                </Results>
-                <CallOutBox>
-                    To end up with the same amount of bitcoin you started with,<br /> your buyback price will need to be: 
-                    <h2>${numberWithCommas(trade.results().breakEven)}</h2>
-                    <h4>Requiring a {trade.results().percentageLess}% drop in price.</h4>
-                </CallOutBox>
-                <CallOutBox>
-                    {/* BuyBack Price */}
+                <Scorecard
+                    name={`Approx. Taxes Owed (${settings.currency})`}
+                    value={numberWithCommas(trade.taxResults().tax)}
+                    prefix='$'
+                />
+                <Scorecard
+                    name={`Net Sale Proceeds (${settings.currency})`}
+                    value={numberWithCommas(trade.results().leftOverCash)}
+                    prefix='$'
+                />
+                <Scorecard
+                    name={`Breakeven Price (${settings.currency})`}
+                    value={numberWithCommas(trade.results().breakEven)}
+                    prefix='$'
+                    change={trade.results().percentageLess}
+                />
+                {/* <CallOutBox>
                     <MyTextField
                         label='Buyback Price'
                         value={trade.buyBackPrice}
@@ -77,10 +83,15 @@ const Trade = () => {
                     <br />
                     <h4>Bitcoin Acquired: {trade.buyBackCalc().newBitcoinAcquired}</h4>
                     Net {trade.buyBackCalc().changeInBitcoin < 0 ? 'Decrease' : 'Increase'} in Bitcoin: {trade.buyBackCalc().changeInBitcoin} ({trade.buyBackCalc().percentChange})%
-                </CallOutBox>
-
-            </RightCol>
-            </TwoColEven>
+                </CallOutBox> */}
+            </SummaryRow>
+                <DataChart
+                    title={`Bitcoin Acquired with $${numberWithCommas(trade.results().leftOverCash)} Net Proceeds at Various Price Points`}
+                    xtype='numeric'
+                    xdata={trade.simulation().xdata}
+                    data={trade.simulation().series}
+                    annotation={annotations}
+                />
         </CalculatorPage>
     )
 }
@@ -90,6 +101,7 @@ export default Trade
 const RightCol = styled.div`
     display: grid;
     grid-template-columns: 1fr;
+    min-width: 500px;
     gap: 1rem;
 `
 

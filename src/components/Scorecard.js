@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
 
-const Scorecard = ({ name, value, change, prefix, suffix }) => {
+const Scorecard = ({ name, value, comp, change, prefix, suffix }) => {
   const changeClass = () => {
     if (change < 0) {
       return { class: "neg", prefix: "" };
@@ -24,6 +24,7 @@ const Scorecard = ({ name, value, change, prefix, suffix }) => {
             suffix={suffix}
           />
         </Value>
+        {comp}
         {change ? (
           <Change className={changeClass().class}>
             <NumberFormat

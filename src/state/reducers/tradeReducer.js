@@ -46,7 +46,7 @@ export const initialTrade = {
         const netProfit = this.profit() - this.taxResults().tax
         const leftOverCash = this.proceeds() - this.taxResults().tax
         const breakEven = leftOverCash / this.bitcoin
-        const percentageLess  = Math.round((1 - breakEven / this.currentPrice) * 100)
+        const percentageLess  = Math.round((1 - breakEven / this.currentPrice) * 100 * -1)
 
         return {
             netProfit: netProfit,

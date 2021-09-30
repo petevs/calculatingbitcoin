@@ -10,6 +10,7 @@ import InlineInputBox from 'components/styledComponents/InlineInputBox'
 import MyNumberFormat from 'components/styledComponents/MyNumberFormat'
 import { FormControlLabel, Switch, TextField } from '@mui/material'
 import { StyledButton } from 'components/styledComponents/Button'
+import FormWrapper from 'components/styledComponents/FormWrapper'
 
 const TradeSellForm = () => {
 
@@ -37,6 +38,7 @@ const TradeSellForm = () => {
     }
 
     return (
+      <>
         <InlineInputBox>
                 <MyNumberFormat
                     name="bitcoin"
@@ -89,8 +91,20 @@ const TradeSellForm = () => {
                     }
                     label="Capital Gain"
                 />
-                <StyledButton onClick={handleClick} primary>Calculate</StyledButton>
+                  <MyNumberFormat
+                    label='Buy Back Price'
+                    customInput={TextField}
+                    value={form.buyBackPrice}
+                    variant='filled'
+                    prefix='$'
+                    thousandSeparator={true}
+                    onValueChange={({ value: v }) => {
+                        handleChange(v, "buyBackPrice");
+                      }}
+                />
+              <StyledButton onClick={handleClick} primary>Calculate</StyledButton>
             </InlineInputBox>
+          </>
     )
 }
 
