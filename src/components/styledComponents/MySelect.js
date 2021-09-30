@@ -7,7 +7,6 @@ const MySelect = styled.select`
     background-color: #333D48;
     color: #fff;
     border-radius: .5rem;
-    margin-bottom: 1rem;
 
     &:focus{
         outline: none;

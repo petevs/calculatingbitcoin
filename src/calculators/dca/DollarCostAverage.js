@@ -142,7 +142,7 @@ const DollarCostAverage = () => {
             variant="outlined"
             size="small"
             onChange={handleDateChange}
-            defaultValue={"2021-01-01"}
+            value={userInputs.startDate}
             inputProps={{
               max: moment().format('YYYY-MM-DD'),
             }}

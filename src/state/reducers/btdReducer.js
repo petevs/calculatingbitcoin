@@ -20,7 +20,10 @@ export const initialBtd = {
         const days = today.diff(moment(this.startDate), 'days')
         const startIndex = this.priceHistory.length - days - 2
 
-        return startIndex
+        return {
+            startIndex: startIndex,
+            days: days
+        }
 
     },
     calculatedBtd: function(){
@@ -31,13 +34,13 @@ export const initialBtd = {
         }
 
         //Set starting price and balance
-        let previousDayPrice = this.priceHistory.slice(this.startIndex())[0][1]
+        let previousDayPrice = this.priceHistory.slice(this.startIndex().startIndex)[0][1]
         let runningBal = 0
         let totalInvested = 0
         let numberOfDips = 0
 
         // Loop through prices and if price dip lower than set amount buy
-        const transactionTable = this.priceHistory.slice(this.startIndex() + 1).map(item => {
+        const transactionTable = this.priceHistory.slice(this.startIndex().startIndex + 1).map(item => {
             
             const todayPrice = item[1]
             const percentDiff = (todayPrice - previousDayPrice) / previousDayPrice * 100
@@ -123,8 +126,10 @@ export const initialBtd = {
                 }
             ]
         }
+    },
+    dcaEquivalent: function(){
+        return this.lastEntry().totalInvested / this.startIndex().days
     }
-
 }
 
 export const btdReducer = (state, action) => {

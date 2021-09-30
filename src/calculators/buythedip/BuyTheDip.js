@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import CalculatorPage from 'layouts/CalculatorPage'
 import { UserContext } from 'state/contexts/UserContext'
+import { useHistory } from 'react-router'
 
 import moment from 'moment'
 
@@ -17,12 +18,15 @@ import Scorecard from 'components/Scorecard'
 import DataChart from 'components/DataChart'
 
 //Actions
-import { updateBtdInputs, updateBtdChartType } from 'state/actions/updateCalculators'
+import { updateBtdInputs, updateBtdChartType, updateDcaCalculator } from 'state/actions/updateCalculators'
+import AboveChartRow from 'components/styledComponents/AboveChartRow'
 
 
 const BuyTheDip = () => {
 
-    const { btd, btdDispatch, settings } = useContext(UserContext)
+    const history = useHistory()
+
+    const { btd, btdDispatch, settings, calculatorsDispatch } = useContext(UserContext)
 
     const summaryItems = [
         {
@@ -52,6 +56,10 @@ const BuyTheDip = () => {
         {
             name: `Number of ${btd.dipPercentage}% Dips`,
             value: btd.lastEntry().numberOfDips,
+        },
+        {
+            name: `Number of Days`,
+            value: btd.startIndex().days,
         },
 
     ]
@@ -89,6 +97,35 @@ const BuyTheDip = () => {
         btdDispatch(updateBtdInputs(inputData))
     }
 
+    //HANDLE COMPARE TO DCA
+
+    const goToDca = () => {
+
+        const dcaValues = {
+            purchaseAmount: Number(btd.dcaEquivalent().toFixed(2)),
+            startDate: btd.startDate
+        }
+
+        for (const key in dcaValues){
+            const payload = {
+              name: key,
+              value: dcaValues[key]
+            }
+            calculatorsDispatch(updateDcaCalculator(payload))
+          }
+
+        history.push('/calculators/dca')
+
+    }
+
+    if(btd.priceHistory.length < 1){
+        return (
+          <>
+            Loading...
+          </>
+        )
+      }
+
     return (
         <CalculatorPage title='Buy The Dip Calculator'>
             <InlineInputBox>
@@ -121,10 +158,13 @@ const BuyTheDip = () => {
             <SummaryRow>
                 {summaryItems.map(item => <Scorecard key={item.name} {...item} />)}
             </SummaryRow>
-            <MySelect onChange={handleChartChange}>
-                <option name='Bitcoin Holdings' value='runningBal'>Bitcoin Holdings</option>
-                <option name='Portfolio Value' value='value'>Portfolio Value</option>
-            </MySelect>
+            <AboveChartRow>
+                <MySelect onChange={handleChartChange}>
+                    <option name='Bitcoin Holdings' value='runningBal'>Bitcoin Holdings</option>
+                    <option name='Portfolio Value' value='value'>Portfolio Value</option>
+                </MySelect>
+                <StyledButton onClick={goToDca}>Compare to DCA of ${Number(btd.dcaEquivalent().toFixed(2))} ➡</StyledButton>
+            </AboveChartRow>
             <DataChart
                 xtype='datetime'
                 title={btd.chartData().title}
