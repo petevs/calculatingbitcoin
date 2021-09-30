@@ -47,7 +47,7 @@ const DataChart = ({ xdata, data, title, xtype, annotation}) => {
       },
       theme: "dark",
     },
-    annotations: annotation,
+    annotations: annotation || {},
     grid: {
       yaxis: {
         lines: {
