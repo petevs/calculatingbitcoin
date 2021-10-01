@@ -16,6 +16,8 @@ const CalculatorPage = ({ title, subtitle, children }) => {
 export default CalculatorPage;
 
 const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
   padding: 2rem;
   & h2 {
     padding: 1rem 0;

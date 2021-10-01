@@ -6,6 +6,7 @@ import { numberWithCommas } from "utils/numberFormatting";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import AvatarDropdown from "components/AvatarDropdown";
+import MenuIcon from '@mui/icons-material/Menu';
 
 
 const Nav = () => {
@@ -33,6 +34,7 @@ const Nav = () => {
     <NavBar>
       <Menu>
         <ColOne>
+          <MenuIconBox><MyMenuIcon sx={{fill: '#fff !important'}} /></MenuIconBox>
           <h2>
             ${numberWithCommas(price)}
             <span className={direction}>
@@ -77,17 +79,30 @@ const NavBar = styled.div`
   }
 `;
 
+const MenuIconBox = styled.div`
+  padding-right: .5rem;
+  @media (min-width: 1024px){
+    display: none;
+  }
+`
+
+const MyMenuIcon = styled(MenuIcon)`
+  fill: #fff;
+`
+
 const Menu = styled.div`
   display: grid;
   grid-template-columns: 1fr 40px 40px;
   justify-items: center;
   gap: 2rem;
   align-items: center;
+
 `;
 
 const ColOne = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: auto 1fr;
+  align-items: center;
   justify-self: start;
   & span {
     & svg {

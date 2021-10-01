@@ -9,7 +9,7 @@ import { AuthProvider } from "state/contexts/Auth";
 ReactDOM.render(
   <AuthProvider>
     <UserProvider>
-      <App />
+      <App className='App' />
     </UserProvider>
   </AuthProvider>,
   document.getElementById('root')

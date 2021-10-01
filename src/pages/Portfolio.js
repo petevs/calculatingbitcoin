@@ -15,6 +15,7 @@ import { StyledButton } from 'components/styledComponents/Button'
 import PortfolioChart from 'components/PortfolioChart'
 import CalculatorPage from 'layouts/CalculatorPage';
 import MySelect from 'components/styledComponents/MySelect'
+import {motion} from 'framer-motion'
 
 const Portfolio = () => {
     
@@ -116,7 +117,7 @@ const Portfolio = () => {
             <Results>
                 <HeaderRow>
                     <h2>Transactions</h2>
-                    <StyledButton
+                    <StyledButton as={motion.button} whileHover={{scale: 1.1}}
                         primary
                         onClick={handleOpen}
                     >Add Transaction</StyledButton>
@@ -171,6 +172,7 @@ const Portfolio = () => {
 }
 
 export default Portfolio
+
 
 const Results = styled.div`
   display: grid;

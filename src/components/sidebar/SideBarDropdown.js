@@ -45,6 +45,7 @@ const MenuHeading = styled.div`
 
 const MyAccordion = styled(Accordion)`
   box-shadow: none !important;
+  border: none !important;
 
   &.Mui-expanded {
     margin: 0 !important;
