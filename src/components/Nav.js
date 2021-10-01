@@ -7,10 +7,11 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import AvatarDropdown from "components/AvatarDropdown";
 import MenuIcon from '@mui/icons-material/Menu';
+import { updateDrawerOpen } from "state/actions/updateSettings";
 
 
 const Nav = () => {
-  const { settings, marketData } = useContext(UserContext);
+  const { settings, settingsDispatch, marketData } = useContext(UserContext);
 
   const price = marketData.data.current_price[settings.currency];
   const percentageChange =
@@ -34,7 +35,7 @@ const Nav = () => {
     <NavBar>
       <Menu>
         <ColOne>
-          <MenuIconBox><MyMenuIcon sx={{fill: '#fff !important'}} /></MenuIconBox>
+          <MenuIconBox onClick={() => settingsDispatch(updateDrawerOpen(true))}><MyMenuIcon sx={{fill: '#fff !important'}} /></MenuIconBox>
           <h2>
             ${numberWithCommas(price)}
             <span className={direction}>

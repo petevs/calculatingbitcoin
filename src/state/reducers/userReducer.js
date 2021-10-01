@@ -1,5 +1,6 @@
 export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 export const UPDATE_BROWSER_WIDTH = "UPDATE_BROWSER_WIDTH"
+export const UPDATE_DRAWER_OPEN = "UPDATE_DRAWER_OPEN"
 
 export const initialState = {
   firstName: "User",
@@ -7,7 +8,14 @@ export const initialState = {
   colorMode: "dark",
   currency: "cad",
   modalOpen: false,
-  browserWidth: 0
+  browserWidth: 0,
+  drawerOpen: true,
+  drawerVariant: function(){
+    if(this.browserWidth > 1024){
+      return 'permanent'
+    }
+    return 'temporary'
+  }
 };
 
 export const userReducer = (state, action) => {
@@ -22,6 +30,11 @@ export const userReducer = (state, action) => {
           ...state,
           browserWidth: action.payload
         }
+    case UPDATE_DRAWER_OPEN:
+      return {
+        ...state,
+        drawerOpen: action.payload,
+      }
     default:
       return state;
   }

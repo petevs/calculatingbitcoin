@@ -25,7 +25,7 @@ import { updateDcaHistoricalData } from 'state/actions/updateCalculators'
 import { updatePriceHistory } from 'state/actions/updatePortfolio'
 import { updateBtdPriceHistory } from 'state/actions/updateCalculators';
 import { initialTrade } from 'state/reducers/tradeReducer';
-import { updateBrowserWidth } from 'state/actions/updateSettings';
+import { updateBrowserWidth, updateDrawerOpen } from 'state/actions/updateSettings';
 
 
 export const UserContext = createContext()
@@ -59,9 +59,14 @@ const UserProvider = ({children}) => {
     //MONITOR BROWSER SIZE
 
     useEffect(() => {
+
+        settingsDispatch(updateBrowserWidth(window.innerWidth))
         
         const handleResize = () => {
                 settingsDispatch(updateBrowserWidth(window.innerWidth))
+                if(window.innerWidth < 1024) {
+                    settingsDispatch(updateDrawerOpen(false))
+                }
         }
 
         window.addEventListener('resize', handleResize)

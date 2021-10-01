@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { menuList } from "data/sidebar";
 import SideBarMenu from "./SideBarMenu";
@@ -7,24 +7,24 @@ import ProfileCard from "../ProfileCard";
 import { styles } from "styles/theme";
 import { ClickAwayListener, Drawer } from "@mui/material";
 import { StyledButton } from "components/styledComponents/Button";
+import { UserContext } from "state/contexts/UserContext";
+import { updateDrawerOpen } from "state/actions/updateSettings";
 
 const SideBar = () => {
 
-  const [open, setOpen] = useState(true)
-
-  const handelDrawerOpen = () => {
-    setOpen(true)
-  }
+  const { settings, settingsDispatch } = useContext(UserContext)
 
   const handleDrawerClose = () => [
-    setOpen(false)
+    settingsDispatch(updateDrawerOpen(false))
   ]
+
+  console.log(settings.browserWidth)
 
   return (
     <OuterDrawer
         anchor='left'
-        open={open}
-        variant='permanent'
+        open={settings.drawerOpen}
+        variant={settings.drawerVariant()}
       >
     <ClickAwayListener onClickAway={handleDrawerClose}>
         <InnerDrawer>
