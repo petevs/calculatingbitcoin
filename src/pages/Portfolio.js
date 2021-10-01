@@ -21,6 +21,8 @@ const Portfolio = () => {
     
     const { settings, settingsDispatch, portfolio, portfolioDispatch } = useContext(UserContext)
 
+    console.log(settings)
+
     const summaryValues = [
         {
             name: 'Bitcoin Holdings',

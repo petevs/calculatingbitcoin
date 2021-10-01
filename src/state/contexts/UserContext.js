@@ -25,6 +25,7 @@ import { updateDcaHistoricalData } from 'state/actions/updateCalculators'
 import { updatePriceHistory } from 'state/actions/updatePortfolio'
 import { updateBtdPriceHistory } from 'state/actions/updateCalculators';
 import { initialTrade } from 'state/reducers/tradeReducer';
+import { updateBrowserWidth } from 'state/actions/updateSettings';
 
 
 export const UserContext = createContext()
@@ -54,6 +55,18 @@ const UserProvider = ({children}) => {
             ))
         })
     },[user.uid])
+
+    //MONITOR BROWSER SIZE
+
+    useEffect(() => {
+        
+        const handleResize = () => {
+                settingsDispatch(updateBrowserWidth(window.innerWidth))
+        }
+
+        window.addEventListener('resize', handleResize)
+
+    },[])
 
 
     //GET & SET CURRENT MARKET DATA

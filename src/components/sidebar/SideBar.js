@@ -1,32 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { menuList } from "data/sidebar";
 import SideBarMenu from "./SideBarMenu";
 import Logo from "../Logo";
 import ProfileCard from "../ProfileCard";
 import { styles } from "styles/theme";
-import { Drawer } from "@mui/material";
+import { ClickAwayListener, Drawer } from "@mui/material";
+import { StyledButton } from "components/styledComponents/Button";
 
 const SideBar = () => {
 
+  const [open, setOpen] = useState(true)
+
+  const handelDrawerOpen = () => {
+    setOpen(true)
+  }
+
+  const handleDrawerClose = () => [
+    setOpen(false)
+  ]
 
   return (
     <OuterDrawer
-      anchor='left'
-      open={true}
-      variant='permanent'
-    >
-      <InnerDrawer>
-        <Logo />
-        <ProfileCard
-          name="Pete"
-          img="https://avatars.githubusercontent.com/u/23281466?v=4"
-        />
-        {menuList.map((item) => {
-          return <SideBarMenu key={item.title} item={{ ...item }} />;
-        })}
-      </InnerDrawer>
-    </OuterDrawer>
+        anchor='left'
+        open={open}
+        variant='permanent'
+      >
+    <ClickAwayListener onClickAway={handleDrawerClose}>
+        <InnerDrawer>
+          <Logo />
+          <ProfileCard
+            name="Pete"
+            img="https://avatars.githubusercontent.com/u/23281466?v=4"
+          />
+          {menuList.map((item) => {
+            return <SideBarMenu key={item.title} item={{ ...item }} />;
+          })}
+        </InnerDrawer>
+    </ClickAwayListener>
+      </OuterDrawer>
   );
 };
 
