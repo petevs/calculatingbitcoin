@@ -15,7 +15,7 @@ import { theme } from 'theme'
 import { Backdrop, CircularProgress } from "@mui/material";
 
 //COMPONENTS & PAGES
-import Nav from "components/Nav";
+import Nav from "components/nav/Nav";
 import SideBar from "components/sidebar/SideBar";
 import User from "pages/User";
 import Home from "pages/Home";

@@ -3,9 +3,7 @@ import { UserContext } from "state/contexts/UserContext";
 import styled from "styled-components";
 import CurrencySelect from "./CurrencySelect";
 import { numberWithCommas } from "utils/numberFormatting";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import AvatarDropdown from "components/AvatarDropdown";
+import AvatarDropdown from "components/nav/AvatarDropdown";
 import MenuIcon from '@mui/icons-material/Menu';
 import { updateDrawerOpen } from "state/actions/updateSettings";
 
@@ -39,11 +37,6 @@ const Nav = () => {
           <h2>
             ${numberWithCommas(price)}
             <span className={direction}>
-              {direction === "pos" ? (
-                <TrendingUpIcon fontSize="inherit" />
-              ) : (
-                <TrendingDownIcon fontSize="inherit" />
-              )}
               {`${numberWithCommas(changeInPrice)} (${percentageChange.toFixed(
                 2
               )}%)`}

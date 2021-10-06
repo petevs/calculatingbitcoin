@@ -10,7 +10,7 @@ import { Link, useHistory } from "react-router-dom";
 
 import { AuthContext } from "state/contexts/Auth";
 import { auth } from "firebase";
-import MenuHeading from "./styledComponents/MenuHeading";
+import MenuHeading from "../styledComponents/MenuHeading";
 
 const AvatarDropdown = () => {
   const history = useHistory();

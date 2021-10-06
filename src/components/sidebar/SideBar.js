@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { menuList } from "data/sidebar";
 import SideBarMenu from "./SideBarMenu";
 import Logo from "../Logo";
-import ProfileCard from "../ProfileCard";
+import ProfileCard from "./ProfileCard";
 import { styles } from "styles/theme";
 import { ClickAwayListener, Drawer } from "@mui/material";
 import { StyledButton } from "components/styledComponents/Button";
@@ -29,10 +29,10 @@ const SideBar = () => {
     <ClickAwayListener onClickAway={handleDrawerClose}>
         <InnerDrawer>
           <Logo />
-          <ProfileCard
+          {/* <ProfileCard
             name="Pete"
             img="https://avatars.githubusercontent.com/u/23281466?v=4"
-          />
+          /> */}
           {menuList.map((item) => {
             return <SideBarMenu key={item.title} item={{ ...item }} />;
           })}
